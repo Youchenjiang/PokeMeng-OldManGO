@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--CircularProgressBar樣式：https://blog.csdn.net/qq_38436214/article/details/130078072-->
+<resources>
+    <!--文字顏色-->
+    <attr name="textColor" format="color|reference" />
+    <!--文字大小-->
+    <attr name="textSize" format="dimension" />
+    <!--藍牙位址輸入控制項-->
+    <declare-styleable name="MacAddressEditText">
+        <!-- 方框大小，寬高一致 -->
+        <attr name="boxWidth" format="dimension" />
+        <!-- 方框背景顏色 -->
+        <attr name="boxBackgroundColor" format="color|reference" />
+        <!-- 方框描邊顏色 -->
+        <attr name="boxStrokeColor" format="color|reference" />
+        <!-- 方框描邊寬度 -->
+        <attr name="boxStrokeWidth" format="dimension" />
+        <!--文字顏色-->
+        <attr name="textColor" />
+        <!--文字大小-->
+        <attr name="textSize" />
+        <!--分隔符號，: 、- -->
+        <attr name="separator" format="string|reference" />
+    </declare-styleable>
+    <!--圓形進度條控制項-->
+    <declare-styleable name="ChallengeNowProgressBar">
+        <!--半徑-->
+        <attr name="radius" format="dimension" />
+        <!--進度條寬度-->
+        <attr name="strokeWidth" format="dimension" />
+        <!--進度條背景顏色-->
+        <attr name="progressbarBackgroundColor" format="color|reference" />
+        <!--進度條進度顏色-->
+        <attr name="progressbarColor" format="color|reference" />
+        <!--最大進度-->
+        <attr name="maxProgress" format="integer" />
+        <!--當前進度-->
+        <attr name="progress" format="integer" />
+        <!--文字-->
+        <attr name="text" format="string" />
+        <!--文字顏色-->
+        <attr name="textColor" />
+        <!--文字大小-->
+        <attr name="textSize" />
+    </declare-styleable>
+</resources>

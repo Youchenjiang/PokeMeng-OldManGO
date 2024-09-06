@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="wrap_content"
+        android:layout_height="444dp"
+        android:layout_gravity="center" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/textViewInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="這裡是遊戲說明文字。這裡是遊戲說明文字。這裡是遊戲說明文字。這裡是遊戲說明文字。這裡是遊戲說明文字。這裡是遊戲說明文字。這裡是遊戲說明文字。這裡是遊戲說明文字。這裡是遊戲說明文字。這裡是遊戲說明文字。這裡是遊戲說明文字。"
+            android:textSize="24sp"
+            android:textAlignment="center" />
+
+    </ScrollView>
+
+</LinearLayout>

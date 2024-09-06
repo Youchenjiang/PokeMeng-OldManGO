@@ -1,0 +1,34 @@
+plantuml
+@startuml
+actor 使用者 as user
+
+user -> TaskAdd: 打開新增任務頁面
+activate TaskAdd
+
+user -> TaskAdd: 點擊"選擇日期"按鈕
+TaskAdd -> MultiCalendarView: 顯示日曆選擇器
+activate MultiCalendarView
+user -> MultiCalendarView: 選擇日期
+MultiCalendarView -> TaskAdd: 傳回已選日期
+deactivate MultiCalendarView
+TaskAdd -> TaskAdd: 更新日期顯示
+
+user -> TaskAdd: 點擊"儲存"按鈕
+TaskAdd -> TaskAdd: 檢查任務名稱和日期
+group if (任務名稱為空) then (是)
+  TaskAdd -> user: 顯示錯誤訊息 "記得填任務名稱！"
+else (否)
+  group if (日期為空) then (是)
+    TaskAdd -> user: 顯示錯誤訊息 "您忘了選日期"
+  else (否)
+    TaskAdd -> TinyDB: 儲存任務
+    activate TinyDB
+    deactivate TinyDB
+    TaskAdd -> user: 關閉新增任務頁面，返回結果
+    end
+end
+
+user -> TaskAdd: 點擊"返回"按鈕
+TaskAdd -> user: 關閉新增任務頁面
+deactivate TaskAdd
+@enduml

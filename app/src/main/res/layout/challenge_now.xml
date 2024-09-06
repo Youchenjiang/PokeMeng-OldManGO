@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foregroundTint="#853C3C"
+    tools:context=".Challenge.ChallengeNow">
+
+    <ImageButton
+        android:id="@+id/now_returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/task_all_effect_ripple"
+        android:contentDescription="@string/task_returnImageDescription"
+        android:scaleType="centerCrop"
+        android:src="@drawable/task_all_ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/now_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <com.example.myapplication0412.Challenge.ChallengeNowProgressBar
+        android:id="@+id/now_nowCircularProgressBar"
+        android:layout_width="370dp"
+        android:layout_height="370dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/now_guideline1"
+        app:maxProgress="100"
+        app:progress="10"
+        app:progressbarBackgroundColor="@color/light_blue"
+        app:progressbarColor="@color/orange"
+        app:radius="80dp"
+        app:strokeWidth="28dp"
+        app:text="10%"
+        app:textColor="@color/dark_gray"
+        app:textSize="28sp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/now_guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <TextView
+        android:id="@+id/now_titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:fontFamily="@font/edukai5"
+        android:text="夏日健走挑戰賽"
+        android:textSize="45sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/now_guideline2" />
+
+    <TextView
+        android:id="@+id/now_illustrateText"
+        android:layout_width="354dp"
+        android:layout_height="77dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/edukai5"
+        android:text="7/15~8/10達成目標\n即可獲得3點積分"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="@+id/now_titleText"
+        app:layout_constraintStart_toStartOf="@+id/now_titleText"
+        app:layout_constraintTop_toBottomOf="@+id/now_titleText" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/now_guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.82" />
+
+    <Button
+        android:id="@+id/now_checkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:backgroundTint="@color/bronze"
+        android:fontFamily="@font/edukai5"
+        android:text="查看挑戰數據"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/now_guideline3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

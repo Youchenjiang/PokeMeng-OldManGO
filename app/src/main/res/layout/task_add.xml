@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Task.TaskAdd">
+
+    <ImageButton
+        android:id="@+id/TaskAdd_returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/task_all_effect_ripple"
+        android:contentDescription="@string/task_returnImageDescription"
+        android:scaleType="centerCrop"
+        android:src="@drawable/task_all_ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskAdd_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <TextView
+        android:id="@+id/TaskAdd_nameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/edukai5"
+        android:text="任務名稱："
+        android:textSize="48sp"
+        app:layout_constraintStart_toStartOf="@+id/TaskAdd_guideline5"
+        app:layout_constraintTop_toTopOf="@+id/TaskAdd_guideline1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskAdd_guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.23" />
+
+    <EditText
+        android:id="@+id/TaskAdd_nameEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/TaskAdd_guideline5"
+        app:layout_constraintTop_toTopOf="@+id/TaskAdd_guideline2" />
+
+    <TextView
+        android:id="@+id/TaskAdd_dateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/edukai5"
+        android:text="日期："
+        android:textSize="48sp"
+        app:layout_constraintStart_toStartOf="@+id/TaskAdd_guideline5"
+        app:layout_constraintTop_toTopOf="@+id/TaskAdd_guideline6" />
+
+    <Button
+        android:id="@+id/TaskAdd_chooseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#CF9339"
+        android:fontFamily="@font/edukai5"
+        android:text="選擇日期"
+        android:textSize="27sp"
+        app:layout_constraintBottom_toBottomOf="@+id/TaskAdd_dateText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TaskAdd_dateText"
+        app:layout_constraintTop_toTopOf="@+id/TaskAdd_dateText" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskAdd_guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="570dp" />
+    <!--TextView不可編輯：https://stackoverflow.com/questions/9470171/edittext-non-editable-->
+
+    <EditText
+        android:id="@+id/TaskAdd_dateEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:cursorVisible="false"
+        android:ems="10"
+        android:enabled="false"
+        android:importantForAutofill="no"
+        android:inputType="none"
+        android:minHeight="48dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/TaskAdd_guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/TaskAdd_guideline5"
+        app:layout_constraintTop_toTopOf="@+id/TaskAdd_guideline3"
+        tools:ignore="TextFields" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskAdd_guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <Button
+        android:id="@+id/TaskAdd_saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#CF9339"
+        android:fontFamily="@font/edukai5"
+        android:text="儲存"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TaskAdd_guideline4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskAdd_guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskAdd_guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.49" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

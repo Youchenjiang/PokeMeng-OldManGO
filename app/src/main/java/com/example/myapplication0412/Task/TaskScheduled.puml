@@ -1,0 +1,33 @@
+plantuml
+@startuml
+actor 使用者 as user
+
+user -> TaskScheduled: 打開已排程任務頁面
+activate TaskScheduled
+TaskScheduled -> TinyDB: 載入已排程任務
+activate TinyDB
+TinyDB -> TaskScheduled: 傳回任務列表
+deactivate TinyDB
+TaskScheduled -> TaskAdapter: 顯示任務列表
+activate TaskAdapter
+deactivate TaskAdapter
+user -> TaskScheduled: 選擇任務並點擊"選擇日期"
+TaskScheduled -> MultiCalendarView: 顯示日曆選擇器
+activate MultiCalendarView
+user -> MultiCalendarView: 選擇日期
+MultiCalendarView -> TaskScheduled: 傳回已選日期
+deactivate MultiCalendarView
+TaskScheduled -> TinyDB: 更新任務日期
+activate TinyDB
+deactivate TinyDB
+user -> TaskScheduled: 選擇任務並點擊"刪除"
+TaskScheduled -> TinyDB: 刪除已選任務
+activate TinyDB
+deactivate TinyDB
+TaskScheduled -> TaskAdapter: 更新任務列表
+activate TaskAdapter
+deactivate TaskAdapter
+user -> TaskScheduled: 點擊"返回"
+TaskScheduled -> user: 關閉已排程任務頁面
+deactivate TaskScheduled
+@enduml

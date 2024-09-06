@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Task.TaskScheduled">
+
+    <ImageButton
+        android:id="@+id/TaskScheduled_returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/task_all_effect_ripple"
+        android:contentDescription="@string/task_returnImageDescription"
+        android:scaleType="centerCrop"
+        android:src="@drawable/task_all_ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TaskScheduled_titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/edukai5"
+        android:text="預定任務"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TaskScheduled_guideLine1" />
+
+    <ImageView
+        android:id="@+id/TaskScheduled_removeImage"
+        android:layout_width="75dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="32dp"
+        android:contentDescription="removeScheduled"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TaskScheduled_guideLine2"
+        app:srcCompat="@drawable/task_scheduled_ic_remove" />
+
+    <ListView
+        android:id="@+id/TaskScheduled_allList"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TaskScheduled_guideLine3">
+
+
+    </ListView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskScheduled_guideLine1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.09" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskScheduled_guideLine2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.21" />
+
+    <TextView
+        android:id="@+id/TaskScheduled_removeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/edukai5"
+        android:text="刪除"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="@+id/TaskScheduled_removeImage"
+        app:layout_constraintStart_toStartOf="@+id/TaskScheduled_removeImage"
+        app:layout_constraintTop_toBottomOf="@+id/TaskScheduled_removeImage" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskScheduled_guideLine3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.36" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

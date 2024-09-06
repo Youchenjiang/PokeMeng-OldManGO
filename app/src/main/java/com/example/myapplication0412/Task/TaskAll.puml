@@ -1,0 +1,56 @@
+plantuml
+@startuml
+actor 使用者 as user
+
+user -> TaskAll: 打開所有任務頁面
+activate TaskAll
+TaskAll -> TinyDB: 載入任務列表和任務狀態
+activate TinyDB
+TinyDB -> TaskAll: 傳回任務列表和任務狀態
+deactivate TinyDB
+TaskAll -> TaskAdapter: 顯示今日任務列表
+activate TaskAdapter
+deactivate TaskAdapter
+TaskAll -> CustomSpinnerAdapter: 顯示日期選擇器
+activate CustomSpinnerAdapter
+deactivate CustomSpinnerAdapter
+
+user -> TaskAll: 點擊"新增"按鈕
+TaskAll -> TaskAdd: 打開新增任務頁面
+activate TaskAdd
+deactivate TaskAdd
+
+user -> TaskAll: 點擊"已排程"按鈕
+TaskAll -> TaskScheduled: 打開已排程任務頁面
+activate TaskScheduled
+deactivate TaskScheduled
+
+user -> TaskAll: 在日期選擇器中選擇日期
+TaskAll -> TinyDB: 載入選定日期的任務狀態
+activate TinyDB
+TinyDB -> TaskAll: 傳回選定日期的任務狀態
+deactivate TinyDB
+TaskAll -> TaskAdapter: 更新任務列表和任務狀態
+activate TaskAdapter
+deactivate TaskAdapter
+
+user -> TaskAll: 點擊任務項目
+TaskAll -> TaskAdapter: 處理任務點擊事件
+
+activate TaskAdapter
+group if (點擊的是固定任務) then (是)
+  TaskAdapter -> user: 顯示提示訊息 "此為固定任務"
+else if (點擊的不是今日任務) then (是)
+  TaskAdapter -> user: 顯示提示訊息 "只能勾選當日完成的任務喔"
+else (否)
+  TaskAdapter -> TinyDB: 更新任務狀態
+  activate TinyDB
+  deactivate TinyDB
+  TaskAdapter -> TaskAdapter: 更新任務列表顯示
+end
+deactivate TaskAdapter
+
+user -> TaskAll: 點擊"返回"按鈕
+TaskAll -> user: 關閉所有任務頁面
+deactivate TaskAll
+@enduml

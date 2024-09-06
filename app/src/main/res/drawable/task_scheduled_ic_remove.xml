@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="58dp"
+    android:height="58dp"
+    android:viewportWidth="58"
+    android:viewportHeight="58">
+
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="2"
+        android:strokeMiterLimit="10"
+        android:pathData="M36.999,7 C36.999,7,37.155,1,32.999,1 L27.938,1 L28.06,1 L23,1 C18.844,1,19,7,19,7" />
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeMiterLimit="10"
+        android:strokeLineCap="round"
+        android:pathData="M6,7 L52,7" />
+    <path
+        android:fillColor="#000000"
+        android:pathData="M9.167,11 L10.956,54 C10.956,54,11.041,58,14.864,58 L28.481,58 L28.54,58 L43.136,58 C46.959,58,47.044,54,47.044,54 L48.833,11 L9.167,11 Z" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeMiterLimit="10"
+        android:strokeLineCap="round"
+        android:pathData="M17,53 L41,53" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeMiterLimit="10"
+        android:strokeLineCap="round"
+        android:pathData="M17,48 L41,48" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeMiterLimit="10"
+        android:strokeLineCap="round"
+        android:pathData="M17,43 L41,43" />
+</vector>
+<!--ic_trash.xml：https://github.com/fabredthunder/rss-tek/blob/master/app/src/main/res/drawable/ic_trash.xml-->

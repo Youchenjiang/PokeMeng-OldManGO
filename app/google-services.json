@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "485011129050",
+    "project_id": "pokemeng-oldmango",
+    "storage_bucket": "pokemeng-oldmango.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485011129050:android:2e677450b8ade351935be3",
+        "android_client_info": {
+          "package_name": "com.example.myapplication0412"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMsSOmhGQ1KQySMuA27iS2qE5_lG1tr9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

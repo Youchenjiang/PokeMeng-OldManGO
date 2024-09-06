@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Challenge.ChallengeAll">
+
+    <ImageButton
+        android:id="@+id/challenge_returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/task_all_effect_ripple"
+        android:contentDescription="@string/task_returnImageDescription"
+        android:scaleType="centerCrop"
+        android:src="@drawable/task_all_ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/challenge_myStepText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/edukai5"
+        android:text="目前步數：?步"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/challenge_nowLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.535" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/challenge_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/challenge_nowLayout"
+        android:layout_width="330dp"
+        android:layout_height="150dp"
+        android:background="@drawable/challenge_all_shape"
+        android:backgroundTint="@color/light_blue"
+        android:paddingStart="50dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/challenge_guideline1">
+
+        <TextView
+            android:id="@+id/challenge_nowTitleText"
+            android:layout_width="245dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/edukai5"
+            android:gravity="center"
+            android:text="夏日健走挑戰賽"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@+id/challenge_nowDateText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/challenge_nowDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
+            android:text="7/15~8/10"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/challenge_nowTitleText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/challenge_nowStateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/edukai5"
+        android:text="進行中"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="@+id/challenge_nowLayout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/challenge_nowLayout"
+        app:layout_constraintTop_toBottomOf="@+id/challenge_nowLayout" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/challenge_guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/challenge_nextLayout"
+        android:layout_width="330dp"
+        android:layout_height="150dp"
+        android:background="@drawable/challenge_all_shape"
+        android:backgroundTint="@color/light_yellow"
+        android:paddingStart="50dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/challenge_guideline2">
+
+        <TextView
+            android:id="@+id/challenge_nextTitleText"
+            android:layout_width="246dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/edukai5"
+            android:gravity="center"
+            android:text="秋日健走挑戰賽"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@+id/challenge_nextDateText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/challenge_nextDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
+            android:text="9/25~10/20"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/challenge_nextTitleText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/challenge_nextStateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/edukai5"
+        android:text="即將登場"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="@+id/challenge_nextLayout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/challenge_nextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/challenge_nextLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

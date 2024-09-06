@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Task.TaskAll">
+
+    <ImageButton
+        android:id="@+id/TaskAll_returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/task_all_effect_ripple"
+        android:contentDescription="@string/task_returnImageDescription"
+        android:scaleType="centerCrop"
+        android:src="@drawable/task_all_ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/TaskAll_titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/edukai5"
+        android:text="每日任務"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TaskAll_guideLine1" />
+
+    <ImageView
+        android:id="@+id/TaskAll_addImage"
+        android:layout_width="72dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="32dp"
+        android:contentDescription="addImage"
+        app:layout_constraintBottom_toTopOf="@+id/TaskAll_addText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TaskAll_descriptiveText"
+        app:layout_constraintTop_toTopOf="@+id/TaskAll_guideLine2"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <ListView
+        android:id="@+id/TaskAll_todayList"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TaskAll_guideLine3">
+
+
+    </ListView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskAll_guideLine1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.13" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskAll_guideLine2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.22" />
+
+    <TextView
+        android:id="@+id/TaskAll_addText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/edukai5"
+        android:text="新增"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/TaskAll_guideLine3"
+        app:layout_constraintEnd_toEndOf="@+id/TaskAll_addImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/TaskAll_addImage"
+        app:layout_constraintTop_toBottomOf="@+id/TaskAll_addImage" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskAll_guideLine3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.32" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/TaskAll_guideLine4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88" />
+
+    <Button
+        android:id="@+id/TaskAll_scheduledButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#CF9339"
+        android:fontFamily="@font/edukai5"
+        android:text="已排日程"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TaskAll_guideLine4" />
+
+    <TextView
+        android:id="@+id/TaskAll_descriptiveText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/edukai5"
+        android:text="任務:"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/TaskAll_guideLine3"
+        app:layout_constraintStart_toEndOf="@+id/TaskAll_dateSpinner"
+        app:layout_constraintTop_toTopOf="@+id/TaskAll_guideLine2" />
+
+    <Spinner
+        android:id="@+id/TaskAll_dateSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/TaskAll_descriptiveText"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TaskAll_descriptiveText" />
+
+    <TextView
+        android:id="@+id/TaskAll_scoreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/edukai5"
+        android:text="我的積分："
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/TaskAll_guideLine1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
