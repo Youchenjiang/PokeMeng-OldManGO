@@ -1,6 +1,5 @@
 package com.example.myapplication0412;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -107,12 +106,9 @@ public class reward_details extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("兌換成功")
                 .setMessage("恭喜！您已成功兌換獎勳。")
-                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        // 可在這裡處理其他邏輯，如返回主頁面或更新積分顯示等
-                    }
+                .setPositiveButton("確定", (dialog, which) -> {
+                    dialog.dismiss();
+                    // 可在這裡處理其他邏輯，如返回主頁面或更新積分顯示等
                 })
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .show();
