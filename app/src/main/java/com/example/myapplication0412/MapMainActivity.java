@@ -3,10 +3,9 @@ package com.example.myapplication0412;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,10 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.myapplication0412.Personal.Personal;
-import com.example.myapplication0412.Personal.SetPersonalData;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,19 +26,16 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MapMainActivity extends AppCompatActivity {
 
-    private MaterialButton pinLocationBtn;
-    private MaterialButton directionOneBtn;
-    private MaterialButton directionTwoBtn;
     private String destinationAddress; // 儲存Firebase中取得的地址
 
     private FusedLocationProviderClient fusedLocationClient;
 
-    private String latitudeOne = "22.6581";  // 指定的緯度
-    private String longititudeOne = "120.5115";  // 指定的經度
-    private String latitudeTwo = "22.6581";  // 另一個位置的緯度
-    private String longititudeTwo = "120.5115";  // 另一個位置的經度
-    private double currentLatitude;
-    private double currentLongitude;
+    String latitudeOne = "22.6581";  // 指定的緯度
+    String longititudeOne = "120.5115";  // 指定的經度
+    String latitudeTwo = "22.6581";  // 另一個位置的緯度
+    String longititudeTwo = "120.5115";  // 另一個位置的經度
+    double currentLatitude;
+    double currentLongitude;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -50,9 +45,9 @@ public class MapMainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_mapmain);
 
-        pinLocationBtn = findViewById(R.id.pinLocationBtn);
-        directionOneBtn = findViewById(R.id.directionOneBtn);
-        directionTwoBtn = findViewById(R.id.directionTwoBtn);
+        MaterialButton pinLocationBtn = findViewById(R.id.pinLocationBtn);
+        MaterialButton directionOneBtn = findViewById(R.id.directionOneBtn);
+        MaterialButton directionTwoBtn = findViewById(R.id.directionTwoBtn);
 
         // 初始化 FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -63,11 +58,7 @@ public class MapMainActivity extends AppCompatActivity {
         // 請求位置權限並取得當前位置
         requestLocationPermission();
 
-        pinLocationBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                pinLocationMap(latitudeOne, longititudeOne);
-            }
-        });
+        pinLocationBtn.setOnClickListener(v -> pinLocationMap(latitudeOne, longititudeOne));
 
         directionOneBtn.setOnClickListener(v -> {
             if (currentLatitude != 0 && currentLongitude != 0) {
@@ -77,9 +68,7 @@ public class MapMainActivity extends AppCompatActivity {
             }
         });
 
-        directionTwoBtn.setOnClickListener(v -> {
-            directionBetweenTwoMap(latitudeOne, longititudeOne, latitudeTwo, longititudeTwo);
-        });
+        directionTwoBtn.setOnClickListener(v -> directionBetweenTwoMap(latitudeOne, longititudeOne, latitudeTwo, longititudeTwo));
     }
 
     private void fetchUserAddressFromFirebase() {
@@ -111,16 +100,13 @@ public class MapMainActivity extends AppCompatActivity {
             return;
         }
 
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    currentLatitude = location.getLatitude();
-                    currentLongitude = location.getLongitude();
-                    Toast.makeText(MapMainActivity.this, "當前位置：" + currentLatitude + ", " + currentLongitude, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MapMainActivity.this, "無法取得當前位置", Toast.LENGTH_SHORT).show();
-                }
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                currentLatitude = location.getLatitude();
+                currentLongitude = location.getLongitude();
+                Toast.makeText(MapMainActivity.this, "當前位置：" + currentLatitude + ", " + currentLongitude, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MapMainActivity.this, "無法取得當前位置", Toast.LENGTH_SHORT).show();
             }
         });
     }
