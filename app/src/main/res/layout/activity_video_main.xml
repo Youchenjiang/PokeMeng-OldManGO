@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/view2"
-    tools:context=".video_main">
+    tools:context=".Video.video_main">
 
     <Button
         android:id="@+id/button"
@@ -154,7 +154,7 @@
                 android:background="@color/cardview_shadow_end_color"
                 android:onClick="playVideo1"
                 android:scaleType="centerInside"
-                android:src="@drawable/sport01img" />
+                android:src="@drawable/video_sport01img" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -177,7 +177,7 @@
                 android:background="@color/cardview_shadow_end_color"
                 android:onClick="playVideo2"
                 android:scaleType="centerInside"
-                android:src="@drawable/sport02img" />
+                android:src="@drawable/video_sport02img" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -200,7 +200,7 @@
                 android:background="@color/cardview_shadow_end_color"
                 android:onClick="playVideo3"
                 android:scaleType="centerInside"
-                android:src="@drawable/sport03img" />
+                android:src="@drawable/video_sport03img" />
 
             <TextView
                 android:id="@+id/textView5"

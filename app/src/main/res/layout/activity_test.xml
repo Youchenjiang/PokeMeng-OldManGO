@@ -14,7 +14,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/heart1" />
+        app:srcCompat="@drawable/game_heart1" />
 
     <Button
         android:id="@+id/btn"
@@ -47,5 +47,5 @@
         android:layout_marginTop="116dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/doll1" />
+        app:srcCompat="@drawable/game_doll1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

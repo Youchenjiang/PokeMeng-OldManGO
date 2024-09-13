@@ -44,33 +44,33 @@
             android:name=".reward_details"
             android:exported="true" />
         <activity
-            android:name=".video_main"
+            android:name=".Video.video_main"
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:screenOrientation="unspecified" />
         <activity
-            android:name=".cardgame"
+            android:name=".Game.cardgame"
             android:exported="true" />
         <activity
-            android:name=".GameView"
+            android:name=".Game.GameView"
             android:exported="true" />
         <activity
             android:name=".dialog_instructions"
             android:exported="true" />
         <activity
-            android:name=".washgames"
+            android:name=".Game.washgames"
             android:exported="true" />
         <activity
-            android:name=".GameCanvasView"
+            android:name=".Game.GameCanvasView"
             android:exported="true" />
         <activity
             android:name=".TEST"
             android:exported="true" />
         <activity
-            android:name=".Colorgame"
+            android:name=".Game.Colorgame"
             android:exported="true" />
         <activity
-            android:name=".Main2GamemainActivity_gamemain"
+            android:name=".Game.Main2GamemainActivity_gamemain"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

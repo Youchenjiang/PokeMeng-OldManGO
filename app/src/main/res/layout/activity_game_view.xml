@@ -5,9 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameView">
+    tools:context=".Game.GameView">
 
-    <com.example.myapplication0412.GameCanvasView
+    <com.example.myapplication0412.Game.GameCanvasView
         android:id="@+id/gameCanvasView"
         android:layout_width="0dp"
         android:layout_height="0dp"

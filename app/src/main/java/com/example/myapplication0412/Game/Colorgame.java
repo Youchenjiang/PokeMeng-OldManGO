@@ -1,4 +1,4 @@
-package com.example.myapplication0412;
+package com.example.myapplication0412.Game;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import com.example.myapplication0412.R;
 
 import java.util.Random;
 
@@ -230,24 +232,24 @@ public class Colorgame extends AppCompatActivity {
         // 根據生命值更新ImageView顯示
         switch (lives) {
             case 3:
-                heart1.setImageResource(R.drawable.heart1);
-                heart2.setImageResource(R.drawable.heart1);
-                heart3.setImageResource(R.drawable.heart1);
+                heart1.setImageResource(R.drawable.game_heart1);
+                heart2.setImageResource(R.drawable.game_heart1);
+                heart3.setImageResource(R.drawable.game_heart1);
                 break;
             case 2:
-                heart1.setImageResource(R.drawable.heart1);
-                heart2.setImageResource(R.drawable.heart1);
-                heart3.setImageResource(R.drawable.heart0);
+                heart1.setImageResource(R.drawable.game_heart1);
+                heart2.setImageResource(R.drawable.game_heart1);
+                heart3.setImageResource(R.drawable.game_heart0);
                 break;
             case 1:
-                heart1.setImageResource(R.drawable.heart1);
-                heart2.setImageResource(R.drawable.heart0);
-                heart3.setImageResource(R.drawable.heart0);
+                heart1.setImageResource(R.drawable.game_heart1);
+                heart2.setImageResource(R.drawable.game_heart0);
+                heart3.setImageResource(R.drawable.game_heart0);
                 break;
             case 0:
-                heart1.setImageResource(R.drawable.heart0);
-                heart2.setImageResource(R.drawable.heart0);
-                heart3.setImageResource(R.drawable.heart0);
+                heart1.setImageResource(R.drawable.game_heart0);
+                heart2.setImageResource(R.drawable.game_heart0);
+                heart3.setImageResource(R.drawable.game_heart0);
                 break;
         }
     }
@@ -268,7 +270,7 @@ public class Colorgame extends AppCompatActivity {
     }
 
     public void gotomain (View v){
-        Intent it=new Intent(this,Main2GamemainActivity_gamemain.class);
+        Intent it=new Intent(this, Main2GamemainActivity_gamemain.class);
         startActivity(it);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.myapplication0412;
+package com.example.myapplication0412.Game;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.widget.VideoView;
+
+import com.example.myapplication0412.R;
 
 public class washgames extends AppCompatActivity {
 
@@ -210,7 +212,7 @@ public class washgames extends AppCompatActivity {
                 .show();
     }
     public void gotomain (View v){
-        Intent it=new Intent(this,Main2GamemainActivity_gamemain.class);
+        Intent it=new Intent(this, Main2GamemainActivity_gamemain.class);
         startActivity(it);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.myapplication0412;
+package com.example.myapplication0412.Game;
 
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
@@ -14,6 +14,9 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.myapplication0412.R;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,8 +24,8 @@ import java.util.List;
 public class cardgame extends AppCompatActivity {
     private GridLayout gridLayout;
     private ImageButton[] buttons;
-    private int[] images = {R.drawable.card_image1, R.drawable.card_image2, R.drawable.card_image3, R.drawable.card_image4,
-            R.drawable.card_image5, R.drawable.card_image6, R.drawable.card_image7, R.drawable.card_image8};
+    private int[] images = {R.drawable.game_card_image1, R.drawable.game_card_image2, R.drawable.game_card_image3, R.drawable.game_card_image4,
+            R.drawable.game_card_image5, R.drawable.game_card_image6, R.drawable.game_card_image7, R.drawable.game_card_image8};
     private int[] cardImages;
     private boolean[] cardFlipped;
     private int firstCard = -1, secondCard = -1;
@@ -136,7 +139,7 @@ public class cardgame extends AppCompatActivity {
                 buttons[i].setLayoutParams(params);
                 gridLayout.addView(buttons[i]);
             }
-            buttons[i].setImageResource(R.drawable.card_back);
+            buttons[i].setImageResource(R.drawable.game_card_back);
             buttons[i].setOnClickListener(new CardClickListener(i));
         }
     }
@@ -157,7 +160,7 @@ public class cardgame extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             for (int i = 0; i < TOTAL_CARDS; i++) {
                 if (!cardFlipped[i]) {
-                    buttons[i].setImageResource(R.drawable.card_back);
+                    buttons[i].setImageResource(R.drawable.game_card_back);
                 }
             }
             hintActive = false;
@@ -199,8 +202,8 @@ public class cardgame extends AppCompatActivity {
                             showEndGameDialog();
                         }
                     } else {
-                        buttons[firstCard].setImageResource(R.drawable.card_back);
-                        buttons[secondCard].setImageResource(R.drawable.card_back);
+                        buttons[firstCard].setImageResource(R.drawable.game_card_back);
+                        buttons[secondCard].setImageResource(R.drawable.game_card_back);
                     }
                     firstCard = -1;
                     secondCard = -1;

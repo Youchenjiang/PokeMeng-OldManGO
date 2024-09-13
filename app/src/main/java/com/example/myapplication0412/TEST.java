@@ -50,11 +50,11 @@ public class TEST extends AppCompatActivity {
         heartImageView = findViewById(R.id.heartImageView);
         dollImageView = findViewById(R.id.dollImageView);
 
-        hearts[0] = BitmapFactory.decodeResource(getResources(), R.drawable.heart1);
-        hearts[1] = BitmapFactory.decodeResource(getResources(), R.drawable.heart2);
-        hearts[2] = BitmapFactory.decodeResource(getResources(), R.drawable.heart3);
-        dolls[0] = BitmapFactory.decodeResource(getResources(), R.drawable.doll1);
-        dolls[1] = BitmapFactory.decodeResource(getResources(), R.drawable.doll2);
+        hearts[0] = BitmapFactory.decodeResource(getResources(), R.drawable.game_heart1);
+        hearts[1] = BitmapFactory.decodeResource(getResources(), R.drawable.game_heart2);
+        hearts[2] = BitmapFactory.decodeResource(getResources(), R.drawable.game_heart3);
+        dolls[0] = BitmapFactory.decodeResource(getResources(), R.drawable.game_doll1);
+        dolls[1] = BitmapFactory.decodeResource(getResources(), R.drawable.game_doll2);
 
         handler.post(heartRunnable); // 開始心形動畫
         handler.post(dollRunnable); // 開始玩偶動畫

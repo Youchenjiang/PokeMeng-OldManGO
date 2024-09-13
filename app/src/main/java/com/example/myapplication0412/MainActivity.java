@@ -7,6 +7,7 @@ import android.widget.TextClock;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication0412.Challenge.ChallengeAll;
+import com.example.myapplication0412.Game.Main2GamemainActivity_gamemain;
 import com.example.myapplication0412.Task.TaskAll;
 
 import java.text.SimpleDateFormat;

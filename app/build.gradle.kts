@@ -37,6 +37,8 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.material)
     implementation(libs.appcompat)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     implementation(libs.calendarview)  //自定義日歷元件：https://blog.csdn.net/coffee_shop/article/details/130709029
     implementation(libs.constraintlayout)

@@ -1,4 +1,4 @@
-package com.example.myapplication0412;
+package com.example.myapplication0412.Game;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,7 +14,8 @@ import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+
+import com.example.myapplication0412.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,25 +55,25 @@ public class GameCanvasView extends View {
 
         BitmapFactory.Options fruitOptions = new BitmapFactory.Options();
         fruitOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(getResources(), R.drawable.apple, fruitOptions);
+        BitmapFactory.decodeResource(getResources(), R.drawable.game_apple, fruitOptions);
 
         int fruitScaleFactor = Math.min(fruitOptions.outWidth / 50, fruitOptions.outHeight / 50);
 
         fruitOptions.inJustDecodeBounds = false;
         fruitOptions.inSampleSize = fruitScaleFactor;
 
-        fruitBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.apple, fruitOptions);
+        fruitBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.game_apple, fruitOptions);
 
         BitmapFactory.Options playerOptions = new BitmapFactory.Options();
         playerOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(getResources(), R.drawable.bag, playerOptions);
+        BitmapFactory.decodeResource(getResources(), R.drawable.game_bag, playerOptions);
 
         int playerScaleFactor = Math.min(playerOptions.outWidth / 100, playerOptions.outHeight / 100);
 
         playerOptions.inJustDecodeBounds = false;
         playerOptions.inSampleSize = playerScaleFactor;
 
-        playerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bag, playerOptions);
+        playerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.game_bag, playerOptions);
 
         player.width = playerBitmap.getWidth();
         player.height = playerBitmap.getHeight();

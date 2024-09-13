@@ -1,4 +1,4 @@
-package com.example.myapplication0412;
+package com.example.myapplication0412.Video;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -13,6 +13,10 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.myapplication0412.Game.Main2GamemainActivity_gamemain;
+import com.example.myapplication0412.MainActivity;
+import com.example.myapplication0412.R;
 
 public class video_main extends AppCompatActivity {
 
@@ -216,11 +220,11 @@ public class video_main extends AppCompatActivity {
         }
     }
     public void gotogame (View v){
-        Intent it=new Intent(this,Main2GamemainActivity_gamemain.class);
+        Intent it=new Intent(this, Main2GamemainActivity_gamemain.class);
         startActivity(it);
     }
     public void gotomain (View v){
-        Intent it=new Intent(this,MainActivity.class);
+        Intent it=new Intent(this, MainActivity.class);
         startActivity(it);
     }
 }

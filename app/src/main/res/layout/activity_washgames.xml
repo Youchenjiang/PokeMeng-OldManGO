@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".washgames">
+    tools:context=".Game.washgames">
 
     <ImageView
         android:id="@+id/sink_scene"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitXY"
-        android:src="@drawable/sink_scene"
+        android:src="@drawable/game_sink_scene"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,19 +32,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/plate" />
+            android:src="@drawable/game_plate" />
 
         <ImageView
             android:id="@+id/plate_dirt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/plate_dirt" />
+            android:src="@drawable/game_plate_dirt" />
 
         <ImageView
             android:id="@+id/bubbles"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/bubbles"
+            android:src="@drawable/game_bubbles"
             android:visibility="gone" />
 
     </FrameLayout>
@@ -83,7 +83,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="220dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/scrub_sponge"
+        android:src="@drawable/game_scrub_sponge"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
