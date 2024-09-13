@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +22,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication0412"
         tools:targetApi="31">
+        <activity
+            android:name=".login"
+            android:exported="true" />
+        <activity
+            android:name=".MapMainActivity"
+            android:exported="true" />
         <activity
             android:name=".Task.TaskScheduled"
             android:exported="false" />
