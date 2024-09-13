@@ -47,5 +47,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.imageButton4).setOnClickListener(v -> startActivity(new Intent(this, ChallengeAll.class)));
         findViewById(R.id.button13).setOnClickListener(v -> startActivity(new Intent(this, ChallengeAll.class)));
         findViewById(R.id.imageButton6).setOnClickListener(v -> startActivity(new Intent(this, prize.class)));
+        findViewById(R.id.imageButton5).setOnClickListener(v -> startActivity(new Intent(this, login.class)));
     }
 }

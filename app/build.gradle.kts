@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     alias(libs.plugins.google.gms.google.services)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -47,4 +48,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     implementation(platform(libs.firebase.bom)) //Firebase BOM
     androidTestImplementation(libs.espresso.core)
+    implementation(libs.play.services.location)
 }

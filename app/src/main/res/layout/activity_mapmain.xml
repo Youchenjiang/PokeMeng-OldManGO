@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".MapMainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pin specific location" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pinLocationBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btnstyle"
+        android:text="Pin Location"
+        app:backgroundTint="@color/design_default_color_secondary" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Open Direction from current" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/directionOneBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btnstyle"
+        android:text="Direction from current"
+        app:backgroundTint="@color/design_default_color_secondary" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Open Direction between two specific location" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/directionTwoBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btnstyle"
+        android:text="Direction between specific"
+        app:backgroundTint="@color/design_default_color_secondary" />
+
+</LinearLayout>
