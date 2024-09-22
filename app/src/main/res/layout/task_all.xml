@@ -19,6 +19,7 @@
         android:src="@drawable/task_all_ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/TaskAll_titleText"
         android:layout_width="wrap_content"
@@ -131,7 +132,7 @@
         app:layout_constraintTop_toTopOf="@+id/TaskAll_descriptiveText" />
 
     <TextView
-        android:id="@+id/TaskAll_scoreText"
+        android:id="@+id/TaskAll_pointsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/edukai5"
@@ -145,10 +146,22 @@
 
     <Button
         android:id="@+id/TaskAll_cheatButton"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="作弊模式"
+        android:layout_marginEnd="32dp"
+        android:text="作弊：全選"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TaskAll_hintText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="可領取獎勵！"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

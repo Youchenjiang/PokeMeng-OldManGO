@@ -28,11 +28,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication0412.R;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.PropertyName;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.hdev.calendar.bean.DateInfo;
 
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class TaskAll extends AppCompatActivity {
     private ArrayList<String> stringList;
     private ArrayList<DateInfo> dateList;
     TaskAdapter adapter;
+    private boolean hasClaimedReward = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +58,11 @@ public class TaskAll extends AppCompatActivity {
         setContentView(R.layout.task_all);
         initFields();
         setupWindowInsets();
-        setupButtons();
         loadTodaySchedule();
+        setupButtons();
         setupDateSpinner();
+        checkIfRewardClaimed(); // 檢查是否已經領取過獎勵
+        fetchAndDisplayUserPoints(); // 查詢用戶積分並顯示
         //tryConnectFirebase();
     }
     private void initFields() {
@@ -79,27 +84,17 @@ public class TaskAll extends AppCompatActivity {
         findViewById(R.id.TaskAll_cheatButton).setOnClickListener(v -> {
             for (int i = 0; i < stringList.size(); i++) {
                 setTaskStatusTrue(i);
-                adapter.updateTaskStatus(i);
+                adapter.saveTaskStatus();
             }
             adapter.notifyDataSetChanged();
         });
     }
     private void setTaskStatusTrue(int position) {
-        //確認日期狀態為今日
-        if (!adapter.taskStatus.getDateInfo().equals(nowChooseDate))
-            adapter.taskStatus = new TaskStatus(nowChooseDate, new ArrayList<>(), new ArrayList<>());
-        String taskName = stringList.get(position);
-        int taskIndex = adapter.taskStatus.getTaskName().indexOf(taskName);
-        if (taskIndex == -1) {
-            List<String> taskNames = new ArrayList<>(adapter.taskStatus.getTaskName());
-            taskNames.add(taskName);
-            List<Boolean> newTaskStatuses = new ArrayList<>(adapter.taskStatus.getTaskStatus());
-            newTaskStatuses.add(true);
-            adapter.taskStatus.setTaskName(taskNames);
-            adapter.taskStatus.setTaskStatus(newTaskStatuses);
-        } else {
+        if (adapter.taskStatus == null) return;
+        int index = adapter.taskStatus.getTaskName().indexOf(stringList.get(position));
+        if (index != -1) {
             List<Boolean> taskStatuses = new ArrayList<>(adapter.taskStatus.getTaskStatus());
-            taskStatuses.set(taskIndex, true);
+            taskStatuses.set(index, true);
             adapter.taskStatus.setTaskStatus(taskStatuses);
         }
     }
@@ -193,7 +188,7 @@ public class TaskAll extends AppCompatActivity {
         List<Boolean> defaultStatus = new ArrayList<>(Collections.nCopies(stringList.size(), false));
         adapter.taskStatus = new TaskStatus(nowChooseDate, taskNames, defaultStatus);
     }
-    //載入今日任務
+    //載入今日任務，初始化adapter並顯示在ListView上
     private void loadTodaySchedule() {
         DateInfo today = new DateInfo(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         ListView listView = findViewById(R.id.TaskAll_todayList);
@@ -247,6 +242,23 @@ public class TaskAll extends AppCompatActivity {
                 return true;
         return false;
     }
+    //確認是否已經領取過獎勵
+    private void checkIfRewardClaimed() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = "your_user_id"; // 替換為實際的用戶ID
+        DocumentReference userRef = db.collection("Users").document(userId);
+        userRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot document = task.getResult();
+                Boolean hasClaimed = document.getBoolean("hasClaimedFullCompletionReward");
+                hasClaimedReward = hasClaimed != null && hasClaimed;
+                if (hasClaimedReward)
+                    ((TextView)findViewById(R.id.TaskAll_hintText)).setText("今日任務已全部完成，獎勵已領取");
+            } else {
+                Log.w("FireStore", "Error getting user document", task.getException());
+            }
+        });
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -291,10 +303,13 @@ public class TaskAll extends AppCompatActivity {
         }
         private void updateTaskStatus(int position) {
             Log.d("TaskAdapter", "Updating task status for position: " + position);
+            //如果當前任務狀態不是今天的，則初始化
             if (!taskStatus.getDateInfo().equals(nowChooseDate))
                 taskStatus = new TaskStatus(nowChooseDate, new ArrayList<>(), new ArrayList<>());
             String taskName = tasksList.get(position);
+            //查找任務名稱在taskStatus中的位置
             int taskIndex = taskStatus.getTaskName().indexOf(taskName);
+            //如果找不到，則新增任務名稱並設置狀態為true
             if (taskIndex == -1) {
                 List<String> taskNames = new ArrayList<>(taskStatus.getTaskName());
                 taskNames.add(taskName);
@@ -302,17 +317,84 @@ public class TaskAll extends AppCompatActivity {
                 newTaskStatuses.add(true);
                 taskStatus.setTaskName(taskNames);
                 taskStatus.setTaskStatus(newTaskStatuses);
-            } else {
+            }
+            //如果找到，則切換任務狀態
+            else {
                 List<Boolean> taskStatuses = new ArrayList<>(taskStatus.getTaskStatus());
                 taskStatuses.set(taskIndex, !taskStatuses.get(taskIndex));
                 taskStatus.setTaskStatus(taskStatuses);
             }
+            saveTaskStatus();
+        }
+        private void saveTaskStatus() {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("TaskStatus").document("TaskStatus_" + nowChooseDate.toString())
                     .set(taskStatus)
                     .addOnSuccessListener(aVoid -> Log.d("FireStore", "TaskStatus successfully updated!"))
                     .addOnFailureListener(e -> Log.w("FireStore", "Error updating TaskStatus", e));
+            checkAndAddPointsIfAllTasksCompleted();
         }
+    }
+    private void checkAndAddPointsIfAllTasksCompleted() {
+        Log.d("TaskAll", "Checking if all tasks are completed");
+        if (adapter.taskStatus == null || hasClaimedReward) return;
+        boolean allTasksCompleted = true;
+        for (Boolean status : adapter.taskStatus.getTaskStatus())
+            if (!status) {
+                allTasksCompleted = false;
+                break;
+            }
+        if (allTasksCompleted) {
+            addPoints();
+            markRewardAsClaimed();
+        }
+    }
+
+    private void addPoints() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = "your_user_id"; // 替換為實際的用戶ID
+        DocumentReference userRef = db.collection("Users").document(userId);
+        userRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot document = task.getResult();
+                Long currentPoints = document.getLong("points");
+                if (currentPoints == null) currentPoints = 0L;
+                userRef.set(Collections.singletonMap("points", currentPoints + 5), SetOptions.merge())
+                        .addOnSuccessListener(aVoid -> Log.d("FireStore", "Points successfully updated!"))
+                        .addOnFailureListener(e -> Log.w("FireStore", "Error updating points", e));
+            } else {
+                Log.w("FireStore", "Error getting user document", task.getException());
+                // 如果用戶文檔不存在，則創建一個新文檔
+                userRef.set(Collections.singletonMap("points", 5))
+                        .addOnSuccessListener(aVoid -> Log.d("FireStore", "Document successfully created with initial points!"))
+                        .addOnFailureListener(e -> Log.w("FireStore", "Error creating document", e));
+            }
+        });
+    }
+    private void markRewardAsClaimed() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = "your_user_id"; // 替換為實際的用戶ID
+        DocumentReference userRef = db.collection("Users").document(userId);
+        userRef.update("hasClaimedFullCompletionReward", true)
+                .addOnSuccessListener(aVoid -> Log.d("FireStore", "Reward claim status updated!"))
+                .addOnFailureListener(e -> Log.w("FireStore", "Error updating reward claim status", e));
+        checkIfRewardClaimed();
+    }
+    private void fetchAndDisplayUserPoints() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = "your_user_id"; // 替換為實際的用戶ID
+        DocumentReference userRef = db.collection("Users").document(userId);
+        userRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot document = task.getResult();
+                Long currentPoints = document.getLong("points");
+                if (currentPoints == null) currentPoints = 0L;
+                TextView pointsTextView = findViewById(R.id.TaskAll_pointsText);
+                pointsTextView.setText(getResources().getString(R.string.all_points, currentPoints));
+            } else {
+                Log.w("FireStore", "Error getting user document", task.getException());
+            }
+        });
     }
     //下列黃色的是序列化的屬性，加了之後Firebase才知道包含哪些屬性
     @IgnoreExtraProperties
