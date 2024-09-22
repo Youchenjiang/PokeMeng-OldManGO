@@ -20,7 +20,7 @@ import com.example.myapplication0412.R;
 
 import java.util.Random;
 
-public class Colorgame extends AppCompatActivity {
+public class ColorGame extends AppCompatActivity {
     private int correctButtonIndex;
     private int currentLevel;
     private int lives = 3; // 追蹤失誤次數
@@ -270,7 +270,7 @@ public class Colorgame extends AppCompatActivity {
     }
 
     public void gotomain (View v){
-        Intent it=new Intent(this, Main2GamemainActivity_gamemain.class);
+        Intent it=new Intent(this, GameMain.class);
         startActivity(it);
     }
 }

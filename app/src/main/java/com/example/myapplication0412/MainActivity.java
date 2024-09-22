@@ -7,7 +7,7 @@ import android.widget.TextClock;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication0412.Challenge.ChallengeAll;
-import com.example.myapplication0412.Game.Main2GamemainActivity_gamemain;
+import com.example.myapplication0412.Game.GameMain;
 import com.example.myapplication0412.Task.TaskAll;
 
 import java.text.SimpleDateFormat;
@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.imageButton).setOnClickListener(v -> startActivity(new Intent(this, TaskAll.class)));
         findViewById(R.id.button).setOnClickListener(v -> startActivity(new Intent(this, TaskAll.class)));
-        findViewById(R.id.imageButton3).setOnClickListener(v -> startActivity(new Intent(this, Main2GamemainActivity_gamemain.class)));
-        findViewById(R.id.button12).setOnClickListener(v -> startActivity(new Intent(this, Main2GamemainActivity_gamemain.class)));
+        findViewById(R.id.imageButton3).setOnClickListener(v -> startActivity(new Intent(this, GameMain.class)));
+        findViewById(R.id.button12).setOnClickListener(v -> startActivity(new Intent(this, GameMain.class)));
         findViewById(R.id.imageButton4).setOnClickListener(v -> startActivity(new Intent(this, ChallengeAll.class)));
         findViewById(R.id.button13).setOnClickListener(v -> startActivity(new Intent(this, ChallengeAll.class)));
         findViewById(R.id.imageButton6).setOnClickListener(v -> startActivity(new Intent(this, prize.class)));

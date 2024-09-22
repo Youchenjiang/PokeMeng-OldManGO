@@ -1,6 +1,6 @@
 # PokeMeng-OldManGO
 
-目前每日任務部份已成功連接FireStore，請其他模組盡快整合進來總專案並連接Firebase！
+可在「build.gradle.kts(Module :app)」檔案查詢與設定版本號
 
 資料庫請統一使用「PokeMeng OldManGO」資料庫，不同模組請使用此資料庫下的不同集合。
 
@@ -15,3 +15,7 @@ v4 - 2024/09/13 加入個人資料部分，並整理所有檔案
 v5 - 2024/09/13 加入定位、確認用戶為老人端 or 家長端 (MapMainActivity、login)，並連接到個人資料FireStore地址
 
 v6 - 2024/09/13 測試
+
+v7 - 2024/09/13 將運動挑戰部分連接FireStore，小修每日任務與運動挑戰
+
+v8 - 2024/09/13 加入每日任務完成後積分獎勵，連結用戶積分

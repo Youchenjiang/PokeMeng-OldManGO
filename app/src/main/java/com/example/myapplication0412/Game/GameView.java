@@ -71,7 +71,7 @@ public class GameView extends AppCompatActivity {
     }
 
     public void gotomain(View v) {
-        Intent it = new Intent(this, Main2GamemainActivity_gamemain.class);
+        Intent it = new Intent(this, GameMain.class);
         startActivity(it);
     }
 }

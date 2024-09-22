@@ -18,7 +18,7 @@ import android.widget.VideoView;
 
 import com.example.myapplication0412.R;
 
-public class washgames extends AppCompatActivity {
+public class WashGames extends AppCompatActivity {
 
     private ImageView plateDirt, bubbles, scrubSponge;
     private TextView scoreText, highScoreText, timeText;
@@ -189,7 +189,7 @@ public class washgames extends AppCompatActivity {
     }
 
     private void showTimeUpDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(washgames.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(WashGames.this);
         builder.setTitle("時間到!!!")
                 .setMessage("你刷乾淨了 " + score + " 個盤子!")
                 .setPositiveButton("重玩一次", new DialogInterface.OnClickListener() {
@@ -212,7 +212,7 @@ public class washgames extends AppCompatActivity {
                 .show();
     }
     public void gotomain (View v){
-        Intent it=new Intent(this, Main2GamemainActivity_gamemain.class);
+        Intent it=new Intent(this, GameMain.class);
         startActivity(it);
     }
 }

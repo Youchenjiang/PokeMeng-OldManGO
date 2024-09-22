@@ -14,7 +14,7 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication0412.Game.Main2GamemainActivity_gamemain;
+import com.example.myapplication0412.Game.GameMain;
 import com.example.myapplication0412.MainActivity;
 import com.example.myapplication0412.R;
 
@@ -220,7 +220,7 @@ public class video_main extends AppCompatActivity {
         }
     }
     public void gotogame (View v){
-        Intent it=new Intent(this, Main2GamemainActivity_gamemain.class);
+        Intent it=new Intent(this, GameMain.class);
         startActivity(it);
     }
     public void gotomain (View v){
