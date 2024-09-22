@@ -28,6 +28,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication0412.R;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.PropertyName;
@@ -75,6 +76,32 @@ public class TaskAll extends AppCompatActivity {
         findViewById(R.id.TaskAll_returnButton).setOnClickListener(v -> finish());
         findViewById(R.id.TaskAll_addImage).setOnClickListener(v -> createTask.launch(new Intent(this, TaskAdd.class)));
         findViewById(R.id.TaskAll_scheduledButton).setOnClickListener(v -> startActivity(new Intent(this, TaskScheduled.class)));
+        findViewById(R.id.TaskAll_cheatButton).setOnClickListener(v -> {
+            for (int i = 0; i < stringList.size(); i++) {
+                setTaskStatusTrue(i);
+                adapter.updateTaskStatus(i);
+            }
+            adapter.notifyDataSetChanged();
+        });
+    }
+    private void setTaskStatusTrue(int position) {
+        //確認日期狀態為今日
+        if (!adapter.taskStatus.getDateInfo().equals(nowChooseDate))
+            adapter.taskStatus = new TaskStatus(nowChooseDate, new ArrayList<>(), new ArrayList<>());
+        String taskName = stringList.get(position);
+        int taskIndex = adapter.taskStatus.getTaskName().indexOf(taskName);
+        if (taskIndex == -1) {
+            List<String> taskNames = new ArrayList<>(adapter.taskStatus.getTaskName());
+            taskNames.add(taskName);
+            List<Boolean> newTaskStatuses = new ArrayList<>(adapter.taskStatus.getTaskStatus());
+            newTaskStatuses.add(true);
+            adapter.taskStatus.setTaskName(taskNames);
+            adapter.taskStatus.setTaskStatus(newTaskStatuses);
+        } else {
+            List<Boolean> taskStatuses = new ArrayList<>(adapter.taskStatus.getTaskStatus());
+            taskStatuses.set(taskIndex, true);
+            adapter.taskStatus.setTaskStatus(taskStatuses);
+        }
     }
     private void setupDateSpinner() {
         loadDateSpinner();
@@ -90,29 +117,46 @@ public class TaskAll extends AppCompatActivity {
             public void onNothingSelected(android.widget.AdapterView<?> parent) {}
         });
     }
-    /*private void tryConnectFirebase() {
-        try {
-            //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-            Map<String,String> data = new HashMap<>();
-            data.put()
-        } catch (Exception e) {
-            Toast.makeText(this, "無法連接Firebase", Toast.LENGTH_SHORT).show();
-        }
-    }*/
-    /*private void loadDateSpinner() {
+    private void loadDateSpinner() {
         dateList = new ArrayList<>();
-        ArrayList<Object> tasksSet = new TinyDB(this).getListObject("TaskList", TaskClass.class);
-        if (tasksSet == null) tasksSet = new ArrayList<>();
-        ArrayList<TaskClass> tasks = new ArrayList<>();
-        for (Object taskObject : tasksSet)
-            if (taskObject instanceof TaskClass) // Ensure safe casting
-                tasks.add((TaskClass) taskObject);
-        for (TaskClass task : tasks)
-            for (DateInfo dateInfo : task.getTaskDate())
-                if (!dateList.contains(dateInfo))
-                    dateList.add(dateInfo);
-        if (!dateList.contains(nowChooseDate))
+        FirebaseFirestore.getInstance().collection("Tasks").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                processTaskDocuments(task.getResult().getDocuments());
+                addCurrentDateIfMissing();
+                sortAndSetDateSpinner();
+            } else
+                Log.w("TaskRead", "Error getting documents.", task.getException());
+        });
+    }
+
+    private void processTaskDocuments(List<DocumentSnapshot> documents) {
+        for (DocumentSnapshot document : documents) {
+            Object taskDatesObj = document.get("任務日期");
+            if (taskDatesObj instanceof List<?>) {
+                List<?> taskDates = (List<?>) taskDatesObj;
+                for (Object timestampObj : taskDates)
+                    if (timestampObj instanceof Timestamp)
+                        addDateInfoFromTimestamp((Timestamp) timestampObj);
+            }
+        }
+    }
+
+    private void addDateInfoFromTimestamp(Timestamp timestamp) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(timestamp.toDate());
+        DateInfo dateInfo = new DateInfo(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+        if (!dateList.contains(dateInfo)) {
+            dateList.add(dateInfo);
+        }
+    }
+
+    private void addCurrentDateIfMissing() {
+        if (!dateList.contains(nowChooseDate)) {
             dateList.add(nowChooseDate);
+        }
+    }
+
+    private void sortAndSetDateSpinner() {
         dateList.sort(this::compareDates);
         ArrayList<String> dateListString = new ArrayList<>();
         for (DateInfo dateInfo : dateList)
@@ -120,56 +164,13 @@ public class TaskAll extends AppCompatActivity {
         Spinner dateSpinner = findViewById(R.id.TaskAll_dateSpinner);
         dateSpinner.setAdapter(new CustomSpinnerAdapter(this, dateListString, dateList.indexOf(nowChooseDate), Color.WHITE));
         dateSpinner.setSelection(dateList.indexOf(nowChooseDate));
-    }*/
-    private void loadDateSpinner() {
-        dateList = new ArrayList<>();
-        FirebaseFirestore.getInstance().collection("Tasks").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    List<Timestamp> taskDates = (List<Timestamp>) document.get("任務日期");
-                    if (taskDates != null) {
-                        for (Timestamp timestamp : taskDates) {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(timestamp.toDate());
-                            DateInfo dateInfo = new DateInfo(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
-                            if (!dateList.contains(dateInfo)) {
-                                dateList.add(dateInfo);
-                            }
-                        }
-                    }
-                }
-                if (!dateList.contains(nowChooseDate)) {
-                    dateList.add(nowChooseDate);
-                }
-                dateList.sort(this::compareDates);
-                ArrayList<String> dateListString = new ArrayList<>();
-                for (DateInfo dateInfo : dateList) {
-                    dateListString.add(dateInfo.getYear() + "/" + dateInfo.getMonth() + "/" + dateInfo.getDay());
-                }
-                Spinner dateSpinner = findViewById(R.id.TaskAll_dateSpinner);
-                dateSpinner.setAdapter(new CustomSpinnerAdapter(this, dateListString, dateList.indexOf(nowChooseDate), Color.WHITE));
-                dateSpinner.setSelection(dateList.indexOf(nowChooseDate));
-            } else {
-                Log.w("TaskRead", "Error getting documents.", task.getException());
-            }
-        });
     }
     private int compareDates(DateInfo d1, DateInfo d2) {
         if (d1.getYear() != d2.getYear()) return d1.getYear() - d2.getYear();
         if (d1.getMonth() != d2.getMonth()) return d1.getMonth() - d2.getMonth();
         return d1.getDay() - d2.getDay();
     }
-    /*private void checkAndLoadTaskStatus() {
-        TaskStatus savedStatus = new TinyDB(this).getObject("TaskStatus_" + nowChooseDate.toString(), TaskStatus.class);
-        if (savedStatus != null)
-            adapter.taskStatus = savedStatus;
-        else {
-            boolean[] defaultStatus = new boolean[stringList.size()];
-            Arrays.fill(defaultStatus, false);
-            adapter.taskStatus = new TaskStatus(nowChooseDate, stringList.toArray(new String[0]), defaultStatus);
-        }
-        adapter.notifyDataSetChanged();
-    }*/
+    //檢查並載入任務狀態
     private void checkAndLoadTaskStatus() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("TaskStatus").document("TaskStatus_" + nowChooseDate.toString()).get().addOnCompleteListener(task -> {
@@ -186,12 +187,13 @@ public class TaskAll extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         });
     }
-
+    //當沒有任務狀態時，初始化為預設狀態
     private void initializeDefaultTaskStatus() {
         List<String> taskNames = new ArrayList<>(Arrays.asList(stringList.toArray(new String[0])));
         List<Boolean> defaultStatus = new ArrayList<>(Collections.nCopies(stringList.size(), false));
         adapter.taskStatus = new TaskStatus(nowChooseDate, taskNames, defaultStatus);
     }
+    //載入今日任務
     private void loadTodaySchedule() {
         DateInfo today = new DateInfo(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         ListView listView = findViewById(R.id.TaskAll_todayList);
@@ -200,44 +202,44 @@ public class TaskAll extends AppCompatActivity {
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         loadScheduledTasks(today);
     }
-    /*private void loadScheduledTasks(DateInfo compareDate) {
-        stringList.addAll(Arrays.asList("每日健走150步","每日簽到","用藥提醒查看","今日已完成用藥","觀看運動影片","玩遊戲(防失智)","查看運動挑戰")); //固定任務
-        ArrayList<Object> tasksSet = new TinyDB(this).getListObject("TaskList", TaskClass.class);
-        if (tasksSet == null) tasksSet = new ArrayList<>();
-        ArrayList<TaskClass> tasks = new ArrayList<>();
-        for (Object taskObject : tasksSet)
-            if (taskObject instanceof TaskClass) // Ensure safe casting
-                tasks.add((TaskClass) taskObject);
-        for (TaskClass task : tasks)
-            if (compareDateInfo(new ArrayList<>(task.getTaskDate()), compareDate))
-                stringList.add(task.getTaskName() != null ? task.getTaskName() : "null task name");
-        adapter.notifyDataSetChanged();
-    }*/
+    //載入已排定任務
     private void loadScheduledTasks(DateInfo compareDate) {
-        stringList.addAll(Arrays.asList("每日健走150步", "每日簽到", "用藥提醒查看", "今日已完成用藥", "觀看運動影片", "玩遊戲(防失智)", "查看運動挑戰")); // 固定任務
-
+        //載入固定任務
+        stringList.addAll(Arrays.asList("每日健走150步", "每日簽到", "用藥提醒查看", "今日已完成用藥", "觀看運動影片", "玩遊戲(防失智)", "查看運動挑戰"));
+        //載入自訂任務
         FirebaseFirestore.getInstance().collection("Tasks").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    String taskName = document.getString("任務名稱");
-                    List<Timestamp> taskDates = (List<Timestamp>) document.get("任務日期");
-                    if (taskDates != null) {
-                        for (Timestamp timestamp : taskDates) {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(timestamp.toDate());
-                            DateInfo dateInfo = new DateInfo(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
-                            if (compareDateInfo(Collections.singletonList(dateInfo), compareDate)) {
-                                stringList.add(taskName != null ? taskName : "null task name");
-                                break;
-                            }
-                        }
-                    }
+                    processDocument(document, compareDate);
                 }
                 adapter.notifyDataSetChanged();
             } else {
                 Log.w("TaskRead", "Error getting documents.", task.getException());
             }
         });
+    }
+
+    private void processDocument(QueryDocumentSnapshot document, DateInfo compareDate) {
+        String taskName = document.getString("任務名稱");
+        Object taskDatesObj = document.get("任務日期");
+        if (taskDatesObj instanceof List<?>) {
+            List<?> taskDates = (List<?>) taskDatesObj;
+            for (Object timestampObj : taskDates) {
+                if (timestampObj instanceof Timestamp) {
+                    DateInfo dateInfo = getDateInfoFromTimestamp((Timestamp) timestampObj);
+                    if (compareDateInfo(Collections.singletonList(dateInfo), compareDate)) {
+                        stringList.add(taskName != null ? taskName : "null task name");
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private DateInfo getDateInfoFromTimestamp(Timestamp timestamp) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(timestamp.toDate());
+        return new DateInfo(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
     }
     public boolean compareDateInfo(List<DateInfo> dateInfoList, DateInfo compareDate) {
         for (DateInfo dateInfo : dateInfoList)  //日期格式化：http://www.cftea.com/c/2017/03/6865.asp
@@ -271,12 +273,6 @@ public class TaskAll extends AppCompatActivity {
             convertView.setOnClickListener(v -> handleItemClick(position));
             return convertView;
         }
-
-        /*private boolean isTaskChecked(String taskName) {
-            if (taskStatus == null) return false;
-            int index = Arrays.asList(taskStatus.getTaskName()).indexOf(taskName);
-            return index != -1 && taskStatus.getTaskStatus().get(index);
-        }*/
         private boolean isTaskChecked(String taskName) {
             if (taskStatus == null) return false;
             int index = taskStatus.getTaskName().indexOf(taskName);
@@ -293,23 +289,6 @@ public class TaskAll extends AppCompatActivity {
                 notifyDataSetChanged();
             }
         }
-
-        /*private void updateTaskStatus(int position) {
-            if (!taskStatus.getDateInfo().equals(nowChooseDate))
-                taskStatus = new TaskStatus(nowChooseDate, new String[0], new boolean[0]);
-            String taskName = tasksList.get(position);
-            int taskIndex = Arrays.asList(taskStatus.getTaskName()).indexOf(taskName);
-            if (taskIndex == -1) {
-                List<String> taskNames = new ArrayList<>(Arrays.asList(taskStatus.getTaskName()));
-                taskNames.add(taskName);
-                boolean[] newTaskStatuses = Arrays.copyOf(taskStatus.getTaskStatus(), taskStatus.getTaskStatus().length + 1);
-                newTaskStatuses[newTaskStatuses.length - 1] = true;
-                taskStatus.setTaskName(taskNames.toArray(new String[0]));
-                taskStatus.setTaskStatus(newTaskStatuses);
-            } else
-                taskStatus.getTaskStatus()[taskIndex] = !taskStatus.getTaskStatus()[taskIndex];
-            new TinyDB(getContext()).putObject("TaskStatus_" + nowChooseDate.toString(), taskStatus);
-        }*/
         private void updateTaskStatus(int position) {
             Log.d("TaskAdapter", "Updating task status for position: " + position);
             if (!taskStatus.getDateInfo().equals(nowChooseDate))
@@ -335,7 +314,7 @@ public class TaskAll extends AppCompatActivity {
                     .addOnFailureListener(e -> Log.w("FireStore", "Error updating TaskStatus", e));
         }
     }
-    //加的這些黃色的鬼東西是序列化的屬性，加了之後Firebase才知道包含哪些屬性
+    //下列黃色的是序列化的屬性，加了之後Firebase才知道包含哪些屬性
     @IgnoreExtraProperties
     public static class TaskStatus {
         @PropertyName("date_info")

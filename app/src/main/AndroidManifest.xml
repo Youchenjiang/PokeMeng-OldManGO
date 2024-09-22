@@ -55,10 +55,9 @@
         <activity
             android:name=".Video.video_main"
             android:configChanges="orientation|screenSize"
-            android:exported="true"
-            android:screenOrientation="unspecified" />
+            android:exported="true"/>
         <activity
-            android:name=".Game.cardgame"
+            android:name=".Game.CardGame"
             android:exported="true" />
         <activity
             android:name=".Game.GameView"
@@ -67,7 +66,7 @@
             android:name=".dialog_instructions"
             android:exported="true" />
         <activity
-            android:name=".Game.washgames"
+            android:name=".Game.WashGames"
             android:exported="true" />
         <activity
             android:name=".Game.GameCanvasView"
@@ -76,10 +75,10 @@
             android:name=".TEST"
             android:exported="true" />
         <activity
-            android:name=".Game.Colorgame"
+            android:name=".Game.ColorGame"
             android:exported="true" />
         <activity
-            android:name=".Game.Main2GamemainActivity_gamemain"
+            android:name=".Game.GameMain"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

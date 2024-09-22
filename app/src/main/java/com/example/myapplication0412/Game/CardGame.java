@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class cardgame extends AppCompatActivity {
+public class CardGame extends AppCompatActivity {
     private GridLayout gridLayout;
     private ImageButton[] buttons;
     private int[] images = {R.drawable.game_card_image1, R.drawable.game_card_image2, R.drawable.game_card_image3, R.drawable.game_card_image4,

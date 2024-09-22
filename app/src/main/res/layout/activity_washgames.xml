@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Game.washgames">
+    tools:context=".Game.WashGames">
 
     <ImageView
         android:id="@+id/sink_scene"

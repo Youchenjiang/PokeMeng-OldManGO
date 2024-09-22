@@ -23,10 +23,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication0412.R;
-import com.example.myapplication0412.hey337973.TinyDB;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -34,6 +35,7 @@ import java.util.Objects;
 public class ChallengeNow extends AppCompatActivity {
 
     private StepUpdateReceiver stepUpdateReceiver;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,7 @@ public class ChallengeNow extends AppCompatActivity {
         findViewById(R.id.now_returnButton).setOnClickListener(v -> finish());
         setNowStep(getIntent().getIntExtra("steps", 0), 2000);
         stepUpdateReceiver = new StepUpdateReceiver();
-        registerReceiver(stepUpdateReceiver, new IntentFilter("com.example.sportnew.STEP_UPDATE"), Context.RECEIVER_NOT_EXPORTED); // 註冊廣播接收器
+        registerReceiver(stepUpdateReceiver, new IntentFilter("com.example.myapplication0412.STEP_UPDATE"), Context.RECEIVER_NOT_EXPORTED); // 註冊廣播接收器
     }
     private void setNowStep(int step_now, int duration){
         int step_goal = 500;
@@ -57,38 +59,54 @@ public class ChallengeNow extends AppCompatActivity {
         challengeNowProgressBar.setProgress((float) step_now / step_goal * 100);
         challengeNowProgressBar.setDuration(duration);
     }
-    private List<ChallengeHistoryStep> getStepList() { //自定義SharedPreferences元件：https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo/tree/master
-        ArrayList<Object> taskListObject = new TinyDB(this).getListObject("StepList", ChallengeHistoryStep.class);   //TinyDB取得方法：https://stackoverflow.com/questions/35101437/android-shared-preference-tinydb-putlistobject-function
-        List<ChallengeHistoryStep> taskList = new ArrayList<>();
-        if (taskListObject != null) for (Object object : taskListObject) taskList.add((ChallengeHistoryStep) object);
-        return taskList;
+    private void getStepList(FireStoreCallback callback) {
+        Calendar nowCalendar = Calendar.getInstance();
+        nowCalendar.setTimeInMillis(System.currentTimeMillis());
+        String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(nowCalendar.getTime());
+        String userName = "UserName"; // Replace with actual user name
+        String documentId = "Step_" + userName + "(" + formattedDate + ")";
+
+        db.collection("StepList").document(documentId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+                ChallengeHistoryStep challengeHistoryStep = task.getResult().toObject(ChallengeHistoryStep.class);
+                List<ChallengeHistoryStep> taskList = new ArrayList<>();
+                if (challengeHistoryStep != null) {
+                    taskList.add(challengeHistoryStep);
+                }
+                callback.onCallback(taskList);
+            } else {
+                Log.w("FireStore", "Error getting document or document does not exist.", task.getException());
+            }
+        });
     }
     private void showHistory() {
         View dialogView = getLayoutInflater().inflate(R.layout.challenge_now_history, null);
         setHistory(dialogView);
         new AlertDialog.Builder(this).setTitle("歷史紀錄").setView(dialogView).setPositiveButton("確定", null).create().show();
     }
-    public static long convertToTimestamp(String dateString) {
+    /*public static long convertToTimestamp(String dateString) {
         try { //取得某個月有多少天：https://www.it72.com/7740.htm, https://stackoverflow.com/questions/58762347/how-to-get-number-of-days-of-all-month, https://blog.csdn.net/sp_wei/article/details/84654440
             return Objects.requireNonNull(new SimpleDateFormat("yyyy/MM/dd", Locale.TAIWAN).parse(dateString)).getTime();
         } catch (Exception e) { //取得該月第一天星期：https://blog.51cto.com/u_16175474/10332589
             Log.e("convertDateStringToTimestamp", Objects.requireNonNull(e.getMessage()));
             return 0;
         }
-    }
+    }*/
     private void setHistory(View dialogView) {
-        List<ChallengeHistoryStep> messages = getStepList();
-        ArrayAdapter<ChallengeHistoryStep> adapter = new ArrayAdapter<ChallengeHistoryStep>(this, R.layout.challenge_now_history_setview, messages) {
-            @NonNull @Override
-            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                convertView = convertView == null ? LayoutInflater.from(getContext()).inflate(R.layout.challenge_now_history_setview, parent, false): convertView;
-                ChallengeHistoryStep currentMessage = getItem(position);    // Get the current message
-                ((TextView)convertView.findViewById(R.id.Listview_timeText)).setText(DateFormat.format("yyyy-MM-dd", Objects.requireNonNull(currentMessage).getStepDate()));  // Format the date before showing it
-                ((TextView)convertView.findViewById(R.id.Listview_numberText)).setText(getString(R.string.challenge_DateStep, currentMessage.getStepNumber()));  // Set their text
-                return convertView;
-            }
-        };
-        ((ListView)dialogView.findViewById(R.id.history_listview)).setAdapter(adapter);
+        getStepList(messages -> {
+            ArrayAdapter<ChallengeHistoryStep> adapter = new ArrayAdapter<ChallengeHistoryStep>(this, R.layout.challenge_now_history_setview, messages) {
+                @NonNull
+                @Override
+                public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                    convertView = convertView == null ? LayoutInflater.from(getContext()).inflate(R.layout.challenge_now_history_setview, parent, false) : convertView;
+                    ChallengeHistoryStep currentMessage = getItem(position);    // Get the current message
+                    ((TextView) convertView.findViewById(R.id.Listview_timeText)).setText(DateFormat.format("yyyy-MM-dd", Objects.requireNonNull(currentMessage).getStepDate()));  // Format the date before showing it
+                    ((TextView) convertView.findViewById(R.id.Listview_numberText)).setText(getString(R.string.challenge_DateStep, currentMessage.getStepNumber()));  // Set their text
+                    return convertView;
+                }
+            };
+            ((ListView) dialogView.findViewById(R.id.history_listview)).setAdapter(adapter);
+        });
     }
     @Override
     protected void onDestroy() {
@@ -98,8 +116,11 @@ public class ChallengeNow extends AppCompatActivity {
     private class StepUpdateReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null && "com.example.sportnew.STEP_UPDATE".equals(intent.getAction()))
+            if (intent != null && "com.example.myapplication0412.STEP_UPDATE".equals(intent.getAction()))
                 setNowStep(intent.getIntExtra("steps", 0), 1);
         }
+    }
+    private interface FireStoreCallback {
+        void onCallback(List<ChallengeHistoryStep> list);
     }
 }

@@ -10,7 +10,7 @@ import com.example.myapplication0412.MainActivity;
 import com.example.myapplication0412.R;
 import com.example.myapplication0412.Video.video_main;
 
-public class Main2GamemainActivity_gamemain extends AppCompatActivity {
+public class GameMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class Main2GamemainActivity_gamemain extends AppCompatActivity {
         startActivity(it);
     }
     public void gotoeye (View v){
-        Intent it=new Intent(this, Colorgame.class);
+        Intent it=new Intent(this, ColorGame.class);
         startActivity(it);
     }
     public void gotofruit (View v){
@@ -30,11 +30,11 @@ public class Main2GamemainActivity_gamemain extends AppCompatActivity {
         startActivity(it);
     }
     public void gotowash (View v){
-        Intent it=new Intent(this, washgames.class);
+        Intent it=new Intent(this, WashGames.class);
         startActivity(it);
     }
     public void gotocard (View v){
-        Intent it=new Intent(this, cardgame.class);
+        Intent it=new Intent(this, CardGame.class);
         startActivity(it);
     }
     public void gotovideo (View v){

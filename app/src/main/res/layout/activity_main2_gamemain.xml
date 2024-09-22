@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/view"
-    tools:context=".Game.Main2GamemainActivity_gamemain">
+    tools:context=".Game.GameMain">
 
     <Button
         android:id="@+id/button"
