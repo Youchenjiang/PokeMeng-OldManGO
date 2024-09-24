@@ -11,6 +11,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -22,6 +25,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication0412"
         tools:targetApi="31">
+        <activity
+            android:name=".Firstlogin.FacebookGoogle"
+            android:exported="true" />
+        <activity
+            android:name=".Dailycheckin.Ca"
+            android:exported="true" />
+
+        <activity
+        android:name=".Firstlogin.Logout"
+        android:exported="true" />
         <activity
             android:name=".login"
             android:exported="true" />
@@ -83,6 +96,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

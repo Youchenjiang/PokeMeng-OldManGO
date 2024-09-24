@@ -2,5 +2,6 @@
 <resources>
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textSize">10sp</item> <!-- 設置字體大小，這裡以20sp為例 -->
+
     </style>
 </resources>

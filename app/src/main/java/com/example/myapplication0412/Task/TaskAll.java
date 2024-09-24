@@ -202,7 +202,8 @@ public class TaskAll extends AppCompatActivity {
         //載入固定任務
         stringList.addAll(Arrays.asList("每日健走150步", "每日簽到", "用藥提醒查看", "今日已完成用藥", "觀看運動影片", "玩遊戲(防失智)", "查看運動挑戰"));
         //載入自訂任務
-        FirebaseFirestore.getInstance().collection("Tasks").get().addOnCompleteListener(task -> {
+        String userID = "your_user_id"; // Replace with actual user ID
+        FirebaseFirestore.getInstance().collection("Users").document(userID).collection("TaskDetails").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     processDocument(document, compareDate);
