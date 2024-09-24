@@ -3,16 +3,5 @@
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textSize">10sp</item> <!-- 設置字體大小，這裡以20sp為例 -->
 
-        <!-- 自定義日期文字樣式 -->
-        <style name="CustomDateTextAppearance" parent="android:TextAppearance.Material.Widget.CalendarView.Date">
-            <item name="android:textColor">#00FF00</item> <!-- 日期文字顏色 -->
-            <item name="android:textSize">16sp</item> <!-- 日期文字大小 -->
-        </style>
-
-        <!-- 自定義星期文字樣式 -->
-        <style name="CustomWeekDayTextAppearance" parent="android:TextAppearance.Material.Widget.CalendarView.WeekDay">
-            <item name="android:textColor">#FF00FF</item> <!-- 星期文字顏色 -->
-            <item name="android:textSize">16sp</item> <!-- 星期文字大小 -->
-        </style>
     </style>
 </resources>
