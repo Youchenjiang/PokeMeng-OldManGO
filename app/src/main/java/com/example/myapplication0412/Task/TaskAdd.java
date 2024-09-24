@@ -89,11 +89,18 @@ public class TaskAdd extends AppCompatActivity {
         Map<String, Object> taskData = new HashMap<>();
         taskData.put("任務名稱", taskName);
         taskData.put("任務日期", dateTimestamps);
-        FirebaseFirestore.getInstance().collection("Tasks")
-                .add(taskData).addOnSuccessListener(documentReference -> {
-                    Toast.makeText(this, "Task saved successfully!", Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK, getIntent());
-                    finish();
-                }).addOnFailureListener(e -> Toast.makeText(this, "Error saving task: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userID = "your_user_id"; // Replace with actual user name
+        db.collection("Users").document(userID).set(new HashMap<>()) // 創建具有 ID 的文件
+                .addOnSuccessListener(aVoid -> {
+                    // 生成唯一 ID
+                    String taskDetailId = db.collection("Users").document(userID).collection("TaskDetails").document().getId();
+                    db.collection("Users").document(userID).collection("TaskDetails").document(taskDetailId)
+                            .set(taskData)
+                            .addOnSuccessListener(documentReference -> {
+                                setResult(RESULT_OK, getIntent());
+                                finish();
+                            }).addOnFailureListener(e -> Toast.makeText(this, "Error saving task: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                }).addOnFailureListener(e -> Toast.makeText(this, "Error creating task document: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }

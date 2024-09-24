@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication0412.R;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -20,7 +19,6 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Map;
 
 import java.util.Calendar;
@@ -43,7 +41,7 @@ public class Ca extends AppCompatActivity {
     private TextView dateDisplay;
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
-    private CollectionReference checkinCollection;
+    private CollectionReference checkInCollection;
 
 
     @Override
@@ -63,17 +61,17 @@ public class Ca extends AppCompatActivity {
         button = findViewById(R.id.button);
         dateDisplay = findViewById(R.id.dateDisplay);
 
-        // 初始化 Firebase 和 Firestore
+        // 初始化 Firebase 和 FireStore
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        // 指定 Firestore 集合名稱
-        checkinCollection = firestore.collection("DailyCheckin");
+        // 指定 FireStore 集合名稱
+        checkInCollection = firestore.collection("DailyCheckIn");
 
         // 獲取當前用戶
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
             // 初始化簽到集合引用
-            checkinCollection = firestore.collection("DailyCheckin")
+            checkInCollection = firestore.collection("DailyCheckIn")
                     .document(currentUser.getUid())
                     .collection("Checkins");
         } else {
@@ -129,9 +127,9 @@ public class Ca extends AppCompatActivity {
 
     }
     private void checkIfAlreadyCheckedIn(String date) {
-        // 檢查 Firestore 中是否已有該日期的簽到紀錄
-        if (checkinCollection != null) {
-            checkinCollection.document(date).get().addOnSuccessListener(documentSnapshot -> {
+        // 檢查 FireStore 中是否已有該日期的簽到紀錄
+        if (checkInCollection != null) {
+            checkInCollection.document(date).get().addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
                     // 如果該日期的紀錄已存在，提示已經簽到過
                     Toast.makeText(Ca.this, "今天已經簽到過", Toast.LENGTH_SHORT).show();
@@ -251,7 +249,7 @@ public class Ca extends AppCompatActivity {
     // 標記為已簽到
     private void markAsCheckedIn(String date) {
         // 以傳入的日期參數進行簽到邏輯
-        if (checkinCollection != null) {
+        if (checkInCollection != null) {
             // 獲取當前時間
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -260,14 +258,14 @@ public class Ca extends AppCompatActivity {
             String checkTime = String.format("%02d:%02d:%02d", hour, minute, second); // 轉換成 "HH:mm:ss" 格式
 
             // 建立簽到資料
-            Map<String, Object> checkinData = new HashMap<>();
-            checkinData.put("date", date); // 簽到日期
-            checkinData.put("timestamp", FieldValue.serverTimestamp()); // 伺服器時間戳記
-            checkinData.put("status", "已簽到"); // 簽到狀態
-            checkinData.put("check_time", checkTime); // 簽到時間
+            Map<String, Object> checkInData = new HashMap<>();
+            checkInData.put("date", date); // 簽到日期
+            checkInData.put("timestamp", FieldValue.serverTimestamp()); // 伺服器時間戳記
+            checkInData.put("status", "已簽到"); // 簽到狀態
+            checkInData.put("check_time", checkTime); // 簽到時間
 
-            // 將資料寫入 Firestore
-            checkinCollection.document(date).set(checkinData)
+            // 將資料寫入 FireStore
+            checkInCollection.document(date).set(checkInData)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(Ca.this, "簽到成功", Toast.LENGTH_SHORT).show();
                     })

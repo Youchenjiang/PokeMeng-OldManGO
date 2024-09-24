@@ -2,6 +2,7 @@ package com.example.myapplication0412.Task;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,27 +77,52 @@ public class TaskScheduled extends AppCompatActivity {
     }
 
     private void loadScheduledTasks() {
-        FirebaseFirestore.getInstance().collection("Tasks").get()
+        String userID = "your_user_id"; // Replace with actual user ID
+        FirebaseFirestore.getInstance().collection("Users").document(userID).collection("TaskDetails").get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String taskName = document.getString("任務名稱");
-                            List<Timestamp> timestamps = (List<Timestamp>) document.get("任務日期");
-                            List<DateInfo> dateInfoList = new ArrayList<>();
-                            for (Timestamp timestamp : Objects.requireNonNull(timestamps)) {
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.setTimeInMillis(timestamp.toDate().getTime());
-                                dateInfoList.add(new DateInfo(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH)));
-                            }
-                            stringList.add(taskName != null ? taskName : "null task name");
-                            dateList.add(new ArrayList<>(dateInfoList));
-                            documentIds.add(document.getId());
-                        }
-                        adapter.notifyDataSetChanged();
+                        processTaskDocuments(task.getResult());
                     } else {
-                        Toast.makeText(this, "Error getting tasks: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "取得任務失敗" + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void processTaskDocuments(Iterable<QueryDocumentSnapshot> documents) {
+        for (QueryDocumentSnapshot document : documents) {
+            String taskName = document.getString("任務名稱");
+            Object timestampsObj = document.get("任務日期");
+            if (timestampsObj instanceof List<?>) {
+                List<Timestamp> timestamps = extractTimestamps((List<?>) timestampsObj);
+                List<DateInfo> dateInfoList = convertTimestampsToDateInfo(timestamps);
+                stringList.add(taskName != null ? taskName : "任務名稱null");
+                dateList.add(new ArrayList<>(dateInfoList));
+                documentIds.add(document.getId());
+            } else {
+                Log.w("TaskScheduled", "任務日期 is not a List<Timestamp>");
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private List<Timestamp> extractTimestamps(List<?> timestampsList) {
+        List<Timestamp> timestamps = new ArrayList<>();
+        for (Object obj : timestampsList) {
+            if (obj instanceof Timestamp) {
+                timestamps.add((Timestamp) obj);
+            }
+        }
+        return timestamps;
+    }
+
+    private List<DateInfo> convertTimestampsToDateInfo(List<Timestamp> timestamps) {
+        List<DateInfo> dateInfoList = new ArrayList<>();
+        for (Timestamp timestamp : timestamps) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timestamp.toDate().getTime());
+            dateInfoList.add(new DateInfo(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH)));
+        }
+        return dateInfoList;
     }
 
     private void showChooseDate(int position) {
@@ -139,10 +165,10 @@ public class TaskScheduled extends AppCompatActivity {
             long millis = calendar.getTimeInMillis();
             dateTimestamps.add(new Timestamp(millis / 1000, (int) (millis % 1000) * 1000000));
         }
-        FirebaseFirestore.getInstance().collection("Tasks").document(documentId)
+        FirebaseFirestore.getInstance().collection("Users").document("your_user_id").collection("TaskDetails").document(documentId)
                 .update("任務日期", dateTimestamps)
-                .addOnSuccessListener(aVoid -> Toast.makeText(this, "Task updated successfully!", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(this, "Error updating task: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(aVoid -> Toast.makeText(this, "任務上傳成功!", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(this, "任務上傳失敗" + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void deleteTask() {
