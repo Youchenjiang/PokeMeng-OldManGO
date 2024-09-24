@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication0412.Challenge.ChallengeAll;
 import com.example.myapplication0412.Game.GameMain;
 import com.example.myapplication0412.Task.TaskAll;
+import com.example.myapplication0412.location.login;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

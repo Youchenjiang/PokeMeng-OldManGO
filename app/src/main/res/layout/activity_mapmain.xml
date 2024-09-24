@@ -9,47 +9,46 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".MapMainActivity">
+    tools:context=".location.MapMainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pin specific location" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/pinLocationBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btnstyle"
-        android:text="Pin Location"
-        app:backgroundTint="@color/design_default_color_secondary" />
+        android:fontFamily="@font/edukai5"
+        android:text="定位系統"
+        android:textSize="70sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Open Direction from current" />
+        android:fontFamily="@font/edukai5"
+        android:text="點選即可馬上回家"
+        android:textSize="34sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/directionOneBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btnstyle"
-        android:text="Direction from current"
+        android:fontFamily="@font/edukai5"
+        android:text="一鍵回家!!!"
+        android:textSize="48sp"
         app:backgroundTint="@color/design_default_color_secondary" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Open Direction between two specific location" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/directionTwoBtn"
+    <Button
+        android:id="@+id/historybutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btnstyle"
-        android:text="Direction between specific"
-        app:backgroundTint="@color/design_default_color_secondary" />
+        android:fontFamily="@font/edukai5"
+        android:text="歷史位置紀錄"
+        android:textSize="48sp" />
+    <ListView
+        android:id="@+id/locationHistoryListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
 
 </LinearLayout>

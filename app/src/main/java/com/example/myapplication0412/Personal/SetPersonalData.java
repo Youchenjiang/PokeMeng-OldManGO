@@ -3,6 +3,7 @@ package com.example.myapplication0412.Personal;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication0412.MainActivity;
 import com.example.myapplication0412.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -168,5 +170,8 @@ public class SetPersonalData extends AppCompatActivity implements View.OnClickLi
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
+    public void gotoCa (View v){
+        Intent it=new Intent(this, Calendar.class);
+        startActivity(it);
+    }
 }

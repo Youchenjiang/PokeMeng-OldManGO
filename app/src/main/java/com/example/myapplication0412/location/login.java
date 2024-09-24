@@ -1,8 +1,10 @@
-package com.example.myapplication0412;
+package com.example.myapplication0412.location;
 
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.myapplication0412.R;
 import com.google.android.material.button.MaterialButton;
 
 public class login extends AppCompatActivity {
