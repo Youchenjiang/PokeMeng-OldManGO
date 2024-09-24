@@ -31,9 +31,7 @@
         <activity
             android:name=".Dailycheckin.Ca"
             android:exported="true" />
-        <activity
-            android:name=".Firstlogin.next"
-            android:exported="false" />
+
         <activity
         android:name=".Firstlogin.Logout"
         android:exported="true" />

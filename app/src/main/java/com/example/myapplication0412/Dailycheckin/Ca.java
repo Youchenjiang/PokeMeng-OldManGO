@@ -13,7 +13,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication0412.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map;
 
 import java.util.Calendar;
 import com.nlf.calendar.Lunar;
@@ -33,6 +41,9 @@ public class Ca extends AppCompatActivity {
     private String selectedDate;
     private DatabaseReference databaseReference;
     private TextView dateDisplay;
+    private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
+    private CollectionReference checkinCollection;
 
 
     @Override
@@ -51,6 +62,23 @@ public class Ca extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         button = findViewById(R.id.button);
         dateDisplay = findViewById(R.id.dateDisplay);
+
+        // 初始化 Firebase 和 Firestore
+        auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+        // 指定 Firestore 集合名稱
+        checkinCollection = firestore.collection("DailyCheckin");
+
+        // 獲取當前用戶
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            // 初始化簽到集合引用
+            checkinCollection = firestore.collection("DailyCheckin")
+                    .document(currentUser.getUid())
+                    .collection("Checkins");
+        } else {
+            Toast.makeText(this, "請先登入", Toast.LENGTH_SHORT).show();
+        }
 
         Calendar currentCalendar = Calendar.getInstance();
         int year = currentCalendar.get(Calendar.YEAR);
@@ -84,17 +112,41 @@ public class Ca extends AppCompatActivity {
                 updateDateDisplay(year, month , dayOfMonth);
             }
         });
-
-        databaseReference= FirebaseDatabase.getInstance().getReference("CalendarView");
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                markAsCheckedIn();
+                if (selectedDate != null) {
+                    checkIfAlreadyCheckedIn(selectedDate); // 檢查是否已簽到
+                } else {
+                    Toast.makeText(Ca.this, "請先選擇日期", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
+        //databaseReference= FirebaseDatabase.getInstance().getReference("CalendarView");
+
+
+
     }
+    private void checkIfAlreadyCheckedIn(String date) {
+        // 檢查 Firestore 中是否已有該日期的簽到紀錄
+        if (checkinCollection != null) {
+            checkinCollection.document(date).get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    // 如果該日期的紀錄已存在，提示已經簽到過
+                    Toast.makeText(Ca.this, "今天已經簽到過", Toast.LENGTH_SHORT).show();
+                } else {
+                    // 如果該日期的紀錄不存在，進行簽到
+                    markAsCheckedIn(date);
+                }
+            }).addOnFailureListener(e -> {
+                Toast.makeText(Ca.this, "檢查失敗: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            Toast.makeText(this, "請先登入", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void updateDateDisplay(int year, int month, int dayOfMonth) {
         selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
 
@@ -196,15 +248,36 @@ public class Ca extends AppCompatActivity {
     }
 
 
-    private void markAsCheckedIn() {
-        if (selectedDate != null) {
-            databaseReference.child(selectedDate).setValue("今日已簽到")
+    // 標記為已簽到
+    private void markAsCheckedIn(String date) {
+        // 以傳入的日期參數進行簽到邏輯
+        if (checkinCollection != null) {
+            // 獲取當前時間
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            int second = calendar.get(Calendar.SECOND);
+            String checkTime = String.format("%02d:%02d:%02d", hour, minute, second); // 轉換成 "HH:mm:ss" 格式
+
+            // 建立簽到資料
+            Map<String, Object> checkinData = new HashMap<>();
+            checkinData.put("date", date); // 簽到日期
+            checkinData.put("timestamp", FieldValue.serverTimestamp()); // 伺服器時間戳記
+            checkinData.put("status", "已簽到"); // 簽到狀態
+            checkinData.put("check_time", checkTime); // 簽到時間
+
+            // 將資料寫入 Firestore
+            checkinCollection.document(date).set(checkinData)
                     .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(Ca.this, "签到成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Ca.this, "簽到成功", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(Ca.this, "签到失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Ca.this, "簽到失敗: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         }
     }
+
+
+
+
 }

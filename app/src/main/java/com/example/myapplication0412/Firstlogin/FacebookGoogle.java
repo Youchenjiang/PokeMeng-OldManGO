@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.myapplication0412.MainActivity;
 import com.example.myapplication0412.R;
 import com.example.myapplication0412.login;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
@@ -41,6 +43,8 @@ public class FacebookGoogle extends AppCompatActivity {
     //CallbackManager callbackManager;
 
     int RC_SIGN_IN=30;
+
+    FirebaseFirestore firestore;
 
     // Facebook 登入用的 ActivityResultLauncher
     /*private final ActivityResultLauncher<Intent> facebookLoginLauncher = registerForActivityResult(
@@ -86,6 +90,8 @@ public class FacebookGoogle extends AppCompatActivity {
         google=findViewById(R.id.google);
         auth=FirebaseAuth.getInstance();
         database=FirebaseDatabase.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+
 
         //fb=findViewById(R.id.fb);
         /*fb.setOnClickListener(new View.OnClickListener() {
@@ -133,31 +139,45 @@ public class FacebookGoogle extends AppCompatActivity {
     }
 
     private void firebaseAuth(String idToken) {
-
-        AuthCredential credential= GoogleAuthProvider.getCredential(idToken,null);
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(FacebookGoogle.this, "歡迎你! 登入成功", Toast.LENGTH_SHORT).show();
+                            FirebaseUser user = auth.getCurrentUser();
 
-                        Toast.makeText(FacebookGoogle.this,"歡迎你! 登入成功",Toast.LENGTH_SHORT).show();
-                        FirebaseUser user=auth.getCurrentUser();
+                            // 創建一個 HashMap 來儲存使用者資料
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("name", user.getDisplayName());
+                            map.put("Gmail", user.getEmail());
 
-                        HashMap<String, Object> map=new HashMap<>();
-                        map.put("name",user.getDisplayName());
-                        map.put("Gmail",user.getEmail());
-
-                        database.getReference().child(user.getUid())
-                                .setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        Intent intent= new Intent(FacebookGoogle.this, Logout.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                });
+                            // 將資料儲存到 Firestore 的 Users 集合中
+                            firestore.collection("Users")
+                                    .document(user.getUid()) // 使用者的 UID 作為文件 ID
+                                    .set(map) // 使用 map 來儲存資料
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                // 資料儲存成功，跳轉到主頁面
+                                                Intent intent = new Intent(FacebookGoogle.this, MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                // 資料儲存失敗，顯示錯誤訊息
+                                                Toast.makeText(FacebookGoogle.this, "資料儲存失敗: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                        } else {
+                            // 登入失敗，顯示錯誤訊息
+                            Toast.makeText(FacebookGoogle.this, "登入失敗: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }
+
 
 }
