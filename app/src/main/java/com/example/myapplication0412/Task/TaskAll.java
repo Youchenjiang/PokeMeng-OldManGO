@@ -37,11 +37,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.hdev.calendar.bean.DateInfo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class TaskAll extends AppCompatActivity {
@@ -62,7 +64,6 @@ public class TaskAll extends AppCompatActivity {
         setupButtons();
         setupDateSpinner();
         checkIfRewardClaimed(); // 檢查是否已經領取過獎勵
-        fetchAndDisplayUserPoints(); // 查詢用戶積分並顯示
         //tryConnectFirebase();
     }
     private void initFields() {
@@ -168,17 +169,17 @@ public class TaskAll extends AppCompatActivity {
     //檢查並載入任務狀態
     private void checkAndLoadTaskStatus() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("TaskStatus").document("TaskStatus_" + nowChooseDate.toString()).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
-                TaskStatus savedStatus = task.getResult().toObject(TaskStatus.class);
-                if (savedStatus != null) {
-                    adapter.taskStatus = savedStatus;
-                } else {
-                    initializeDefaultTaskStatus();
-                }
-            } else {
-                initializeDefaultTaskStatus();
-            }
+        String userId = "your_user_id";
+        long currentDate = System.currentTimeMillis();
+        String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
+        db.collection("Users").document(userId)
+                .collection("TaskStatus").document(formattedDate)
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+                        TaskStatus savedStatus = task.getResult().toObject(TaskStatus.class);
+                        if (savedStatus != null) adapter.taskStatus = savedStatus;
+                        else initializeDefaultTaskStatus();
+                    } else initializeDefaultTaskStatus();
             adapter.notifyDataSetChanged();
         });
     }
@@ -186,7 +187,7 @@ public class TaskAll extends AppCompatActivity {
     private void initializeDefaultTaskStatus() {
         List<String> taskNames = new ArrayList<>(Arrays.asList(stringList.toArray(new String[0])));
         List<Boolean> defaultStatus = new ArrayList<>(Collections.nCopies(stringList.size(), false));
-        adapter.taskStatus = new TaskStatus(nowChooseDate, taskNames, defaultStatus);
+        adapter.taskStatus = new TaskStatus(taskNames, defaultStatus);
     }
     //載入今日任務，初始化adapter並顯示在ListView上
     private void loadTodaySchedule() {
@@ -246,19 +247,23 @@ public class TaskAll extends AppCompatActivity {
     //確認是否已經領取過獎勵
     private void checkIfRewardClaimed() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = "your_user_id"; // 替換為實際的用戶ID
-        DocumentReference userRef = db.collection("Users").document(userId);
-        userRef.get().addOnCompleteListener(task -> {
+        String userId = "your_user_id"; // Replace with actual user ID
+        long currentDate = System.currentTimeMillis();
+        String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
+        DocumentReference rewardRef = db.collection("Users").document(userId)
+                .collection("hasClaimedFullCompletionReward").document(formattedDate);
+        rewardRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 DocumentSnapshot document = task.getResult();
-                Boolean hasClaimed = document.getBoolean("hasClaimedFullCompletionReward");
-                hasClaimedReward = hasClaimed != null && hasClaimed;
-                if (hasClaimedReward)
+                hasClaimedReward = document.exists();
+                if (hasClaimedReward) {
                     ((TextView)findViewById(R.id.TaskAll_hintText)).setText("今日任務已全部完成，獎勵已領取");
+                }
             } else {
-                Log.w("FireStore", "Error getting user document", task.getException());
+                Log.w("FireStore", "Error getting reward document", task.getException());
             }
         });
+        fetchAndDisplayUserPoints(); // 查詢用戶積分並顯示
     }
     @Override
     protected void onResume() {
@@ -304,9 +309,6 @@ public class TaskAll extends AppCompatActivity {
         }
         private void updateTaskStatus(int position) {
             Log.d("TaskAdapter", "Updating task status for position: " + position);
-            //如果當前任務狀態不是今天的，則初始化
-            if (!taskStatus.getDateInfo().equals(nowChooseDate))
-                taskStatus = new TaskStatus(nowChooseDate, new ArrayList<>(), new ArrayList<>());
             String taskName = tasksList.get(position);
             //查找任務名稱在taskStatus中的位置
             int taskIndex = taskStatus.getTaskName().indexOf(taskName);
@@ -329,10 +331,14 @@ public class TaskAll extends AppCompatActivity {
         }
         private void saveTaskStatus() {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("TaskStatus").document("TaskStatus_" + nowChooseDate.toString())
+            String userId = "your_user_id"; // Replace with actual user ID
+            long currentDate = System.currentTimeMillis();
+            String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
+            db.collection("Users").document(userId)
+                    .collection("TaskStatus").document(formattedDate)
                     .set(taskStatus)
-                    .addOnSuccessListener(aVoid -> Log.d("FireStore", "TaskStatus successfully updated!"))
-                    .addOnFailureListener(e -> Log.w("FireStore", "Error updating TaskStatus", e));
+                    .addOnSuccessListener(aVoid -> Log.d("FireStore", "日期狀態成功上傳!"))
+                    .addOnFailureListener(e -> Log.w("FireStore", "上船日期狀態失敗", e));
             checkAndAddPointsIfAllTasksCompleted();
         }
     }
@@ -372,11 +378,15 @@ public class TaskAll extends AppCompatActivity {
             }
         });
     }
+    //標記獎勵已領取並上傳
     private void markRewardAsClaimed() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = "your_user_id"; // 替換為實際的用戶ID
-        DocumentReference userRef = db.collection("Users").document(userId);
-        userRef.update("hasClaimedFullCompletionReward", true)
+        String userId = "your_user_id"; // Replace with actual user ID
+        long currentDate = System.currentTimeMillis();
+        String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
+        DocumentReference rewardRef = db.collection("Users").document(userId)
+                .collection("hasClaimedFullCompletionReward").document(formattedDate);
+        rewardRef.set(Collections.singletonMap("claimed", true))
                 .addOnSuccessListener(aVoid -> Log.d("FireStore", "Reward claim status updated!"))
                 .addOnFailureListener(e -> Log.w("FireStore", "Error updating reward claim status", e));
         checkIfRewardClaimed();
@@ -400,8 +410,6 @@ public class TaskAll extends AppCompatActivity {
     //下列黃色的是序列化的屬性，加了之後Firebase才知道包含哪些屬性
     @IgnoreExtraProperties
     public static class TaskStatus {
-        @PropertyName("date_info")
-        private DateInfo dateInfo;
         @PropertyName("task_name")
         private List<String> taskName;
         @PropertyName("is_done")
@@ -411,15 +419,9 @@ public class TaskAll extends AppCompatActivity {
         // 呼叫 DataSnapshot.getValue(TaskStatus.class) 所需的預設建構子(簡單說就是刪了會壞掉)
         public TaskStatus() {}
 
-        public TaskStatus(DateInfo dateInfo, List<String> taskName, List<Boolean> isDone) {
-            this.dateInfo = dateInfo;
+        public TaskStatus(List<String> taskName, List<Boolean> isDone) {
             this.taskName = taskName;
             this.isDone = isDone;
-        }
-
-        @PropertyName("date_info")
-        public DateInfo getDateInfo() {
-            return dateInfo;
         }
 
         @PropertyName("task_name")
