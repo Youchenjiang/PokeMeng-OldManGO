@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Game.GameView">
 
-    <com.example.myapplication0412.Game.GameCanvasView
+    <com.PokeMeng.OldManGO.Game.GameCanvasView
         android:id="@+id/gameCanvasView"
         android:layout_width="0dp"
         android:layout_height="0dp"

@@ -6,15 +6,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapplication0412"
+    namespace = "com.PokeMeng.OldManGO"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.myapplication0412"
+        applicationId = "com.PokeMeng.OldManGO"
         minSdk = 26
         targetSdk = 34
-        versionCode = 8
-        versionName = "8"
+        versionCode = 15
+        versionName = "15"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,18 +50,8 @@ dependencies {
     implementation(platform(libs.firebase.bom)) //Firebase BOM
     androidTestImplementation(libs.espresso.core)
     implementation(libs.play.services.location)
-
-    implementation("com.google.android.gms:play-services-auth:21.2.0")//晴
-    implementation(platform("com.google.firebase:firebase-bom:33.3.0"))//晴
-    implementation("com.google.firebase:firebase-auth")//晴
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-messaging")
-    implementation("cn.6tail:lunar:1.6.3")
-    implementation("com.hankcs:hanlp:portable-1.7.8")
-
-
-
-
-
-
+    implementation(libs.play.services.auth) //未知用途
+    implementation(libs.firebase.messaging) //未知用途
+    implementation(libs.lunar) //未知用途
+    implementation(libs.hanlp) //未知用途
 }

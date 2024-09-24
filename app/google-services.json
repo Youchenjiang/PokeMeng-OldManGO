@@ -1,18 +1,24 @@
 {
   "project_info": {
     "project_number": "485011129050",
+    "firebase_url": "https://pokemeng-oldmango-default-rtdb.firebaseio.com",
     "project_id": "pokemeng-oldmango",
     "storage_bucket": "pokemeng-oldmango.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:485011129050:android:2e677450b8ade351935be3",
+        "mobilesdk_app_id": "1:485011129050:android:91b183afd187a311935be3",
         "android_client_info": {
-          "package_name": "com.example.myapplication0412"
+          "package_name": "com.PokeMeng.OldManGO"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "485011129050-hq7o32c78m9jg2shtu3pv0uea3udm5ua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAMsSOmhGQ1KQySMuA27iS2qE5_lG1tr9E"
@@ -20,7 +26,49 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485011129050-hq7o32c78m9jg2shtu3pv0uea3udm5ua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485011129050:android:2e677450b8ade351935be3",
+        "android_client_info": {
+          "package_name": "com.example.myapplication0412"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485011129050-cf7k4mf97qa1gc16i0af5idt77rr6jnm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication0412",
+            "certificate_hash": "f98ac280fdb69784f4c968955e86c52a9f456642"
+          }
+        },
+        {
+          "client_id": "485011129050-hq7o32c78m9jg2shtu3pv0uea3udm5ua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMsSOmhGQ1KQySMuA27iS2qE5_lG1tr9E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485011129050-hq7o32c78m9jg2shtu3pv0uea3udm5ua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

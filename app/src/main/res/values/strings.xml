@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application0412</string>
+    <string name="app_name">PokeMeng OldManGO</string>
     <string name="challenge_DateStep">%1$d步</string>
     <string name="challenge_myStepText">目前步數%1$d步</string>
     <string name="task_show_choose_date">ShowChooseDate</string>
