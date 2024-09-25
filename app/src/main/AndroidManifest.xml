@@ -46,7 +46,7 @@
             android:name=".Firstlogin.FacebookGoogle"
             android:exported="true" />
         <activity
-            android:name=".Dailycheckin.Ca"
+            android:name=".DailyCheckIn.Ca"
             android:exported="true" />
 
         <activity

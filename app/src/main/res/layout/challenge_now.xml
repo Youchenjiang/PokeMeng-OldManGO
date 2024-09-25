@@ -28,7 +28,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.1" />
 
-    <com.example.myapplication0412.Challenge.ChallengeNowProgressBar
+    <com.PokeMeng.OldManGO.Challenge.ChallengeNowProgressBar
         android:id="@+id/now_nowCircularProgressBar"
         android:layout_width="370dp"
         android:layout_height="370dp"
