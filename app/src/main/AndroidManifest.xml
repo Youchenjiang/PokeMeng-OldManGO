@@ -48,7 +48,6 @@
         <activity
             android:name=".DailyCheckIn.Ca"
             android:exported="true" />
-
         <activity
             android:name=".Firstlogin.Logout"
             android:exported="true" />
