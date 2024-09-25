@@ -1,21 +1,17 @@
 plugins {
     id("com.android.application")
     alias(libs.plugins.google.gms.google.services)
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-
 }
 
 android {
-    namespace = "com.example.myapplication0412"
+    namespace = "com.PokeMeng.OldManGO"
     compileSdk = 34
-
     defaultConfig {
-        applicationId = "com.example.myapplication0412"
+        applicationId = "com.PokeMeng.OldManGO"
         minSdk = 26
         targetSdk = 34
-        versionCode = 8
-        versionName = "8"
-
+        versionCode = 20
+        versionName = "20"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -50,18 +46,8 @@ dependencies {
     implementation(platform(libs.firebase.bom)) //Firebase BOM
     androidTestImplementation(libs.espresso.core)
     implementation(libs.play.services.location)
-
-    implementation("com.google.android.gms:play-services-auth:21.2.0")//晴
-    implementation(platform("com.google.firebase:firebase-bom:33.3.0"))//晴
-    implementation("com.google.firebase:firebase-auth")//晴
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-messaging")
-    implementation("cn.6tail:lunar:1.6.3")
-    implementation("com.hankcs:hanlp:portable-1.7.8")
-
-
-
-
-
-
+    implementation(libs.play.services.auth) //Google登陸
+    implementation(libs.firebase.messaging) //回傳到Firebase跳出資料
+    implementation(libs.lunar) //Ca的農民節日還有公曆節日
+    implementation(libs.hanlp) //將Ca的簡體中文改成繁體
 }
