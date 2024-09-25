@@ -50,8 +50,8 @@ dependencies {
     implementation(platform(libs.firebase.bom)) //Firebase BOM
     androidTestImplementation(libs.espresso.core)
     implementation(libs.play.services.location)
-    implementation(libs.play.services.auth) //未知用途
-    implementation(libs.firebase.messaging) //未知用途
-    implementation(libs.lunar) //未知用途
-    implementation(libs.hanlp) //未知用途
+    implementation(libs.play.services.auth) //Google登陸
+    implementation(libs.firebase.messaging) //回傳到Firebase跳出資料
+    implementation(libs.lunar) //Ca的農民節日還有公曆節日
+    implementation(libs.hanlp) //將Ca的簡體中文改成繁體
 }
