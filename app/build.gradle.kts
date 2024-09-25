@@ -1,21 +1,17 @@
 plugins {
     id("com.android.application")
     alias(libs.plugins.google.gms.google.services)
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-
 }
 
 android {
     namespace = "com.PokeMeng.OldManGO"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "com.PokeMeng.OldManGO"
         minSdk = 26
         targetSdk = 34
-        versionCode = 15
-        versionName = "15"
-
+        versionCode = 20
+        versionName = "20"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
