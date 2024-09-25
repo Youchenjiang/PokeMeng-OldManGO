@@ -20,6 +20,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My Application0412"
+rootProject.name = "PokeMeng OldManGO"
 include(":app")
  
