@@ -1,8 +1,10 @@
-package com.PokeMeng.OldManGO;
+package com.PokeMeng.OldManGO.location;
 
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.PokeMeng.OldManGO.R;
 import com.google.android.material.button.MaterialButton;
 
 public class login extends AppCompatActivity {

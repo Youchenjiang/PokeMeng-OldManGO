@@ -12,27 +12,28 @@
         android:id="@+id/textView6"
         android:layout_width="240dp"
         android:layout_height="57dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
         android:fontFamily="@font/edukai5"
         android:text="個人資料填寫"
+        android:textAlignment="center"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.643"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.047" />
+        app:layout_constraintBottom_toTopOf="@+id/imageView9"
+        app:layout_constraintEnd_toStartOf="@+id/save"
+        app:layout_constraintStart_toEndOf="@+id/close"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="123dp"
         android:layout_height="44dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginStart="10dp"
         android:fontFamily="@font/edukai5"
         android:text="生日："
         android:textAllCaps="false"
-        android:textSize="34sp"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
@@ -40,7 +41,7 @@
         android:id="@+id/editTextText"
         android:layout_width="259dp"
         android:layout_height="59dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:fontFamily="@font/edukai5"
         android:hint="請輸入姓名"
@@ -56,10 +57,9 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:fontFamily="@font/edukai5"
         android:text="性別："
-        android:textSize="34sp"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -67,10 +67,10 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/edukai5"
         android:text="年齡："
-        android:textSize="34sp"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -78,10 +78,11 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/edukai5"
         android:text="緊急連絡人："
         android:textSize="30sp"
+        app:layout_constraintEnd_toStartOf="@+id/editTextText3"
         app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -89,7 +90,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/edukai5"
         android:text="緊急連絡人電話："
         android:textSize="30sp"
@@ -98,10 +99,13 @@
 
     <ImageView
         android:id="@+id/father"
-        android:layout_width="261dp"
-        android:layout_height="230dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="90dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:srcCompat="@drawable/set_personal_father" />
@@ -129,7 +133,7 @@
         android:layout_marginEnd="35dp"
         android:fontFamily="@font/edukai5"
         android:text="歲"
-        android:textSize="34sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/editTextNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editTextNumber"
@@ -156,25 +160,25 @@
         android:layout_marginStart="16dp"
         android:fontFamily="@font/edukai5"
         android:text="請輸入生日"
-        android:textSize="40sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="@+id/textView"
         app:layout_constraintVertical_bias="0.25" />
 
     <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="275dp"
+        android:layout_height="55dp"
         android:layout_marginStart="120dp"
-        android:layout_marginTop="480dp"
+        android:layout_marginTop="390dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
+            android:layout_width="45dp"
+            android:layout_height="55dp"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="35dp"
             android:layout_marginEnd="0dp"
@@ -189,7 +193,7 @@
             android:layout_marginStart="0dp"
             android:fontFamily="@font/edukai5"
             android:text="男"
-            android:textSize="34sp" />
+            android:textSize="30sp" />
 
         <ImageView
             android:id="@+id/imageView6"
@@ -206,7 +210,7 @@
             android:layout_marginEnd="35dp"
             android:fontFamily="@font/edukai5"
             android:text="女"
-            android:textSize="34sp" />
+            android:textSize="30sp" />
 
     </RadioGroup>
 
@@ -214,22 +218,22 @@
         android:id="@+id/editTextNumber2"
         android:layout_width="150dp"
         android:layout_height="47dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="-5dp"
         android:ems="10"
         android:fontFamily="@font/edukai5"
         android:hint="請輸入電話"
         android:inputType="number"
         android:textAlignment="center"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/editTextText3"
         tools:text="請輸入電話" />
 
     <ImageButton
         android:id="@+id/close"
-        android:layout_width="116dp"
-        android:layout_height="98dp"
+        android:layout_width="85dp"
+        android:layout_height="67dp"
         android:layout_marginTop="1dp"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
@@ -240,12 +244,13 @@
 
     <ImageButton
         android:id="@+id/save"
-        android:layout_width="91dp"
-        android:layout_height="100dp"
+        android:layout_width="85dp"
+        android:layout_height="67dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="3dp"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
+        android:onClick="gotoCa"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -253,33 +258,24 @@
 
     <ImageView
         android:id="@+id/mother"
-        android:layout_width="240dp"
-        android:layout_height="224dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="90dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
+        app:layout_constraintHorizontal_bias="0.341"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.858"
+        app:layout_constraintVertical_bias="0.843"
         app:srcCompat="@drawable/set_personal_mother" />
-
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="270dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="95dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/set_personal_home" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/edukai5"
         android:text="地址："
         android:textSize="30sp"
@@ -290,16 +286,26 @@
         android:id="@+id/editTextText2"
         android:layout_width="299dp"
         android:layout_height="49dp"
-        android:layout_marginStart="2dp"
         android:ems="10"
         android:fontFamily="@font/edukai5"
         android:hint="請輸入地址"
         android:inputType="text"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView8"
         app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="230dp"
+        android:layout_height="219dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/set_personal_home" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

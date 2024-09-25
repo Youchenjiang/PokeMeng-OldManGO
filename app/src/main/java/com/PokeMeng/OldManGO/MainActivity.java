@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.PokeMeng.OldManGO.Challenge.ChallengeAll;
 import com.PokeMeng.OldManGO.Game.GameMain;
 import com.PokeMeng.OldManGO.Task.TaskAll;
+import com.PokeMeng.OldManGO.location.login;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

@@ -35,10 +35,10 @@
             android:name=".Firstlogin.Logout"
             android:exported="true" />
         <activity
-            android:name=".login"
+            android:name=".location.login"
             android:exported="true" />
         <activity
-            android:name=".MapMainActivity"
+            android:name=".location.MapMainActivity"
             android:exported="true" />
         <activity
             android:name=".Task.TaskScheduled"
