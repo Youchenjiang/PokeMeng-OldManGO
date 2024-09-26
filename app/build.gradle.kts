@@ -10,8 +10,8 @@ android {
         applicationId = "com.PokeMeng.OldManGO"
         minSdk = 26
         targetSdk = 34
-        versionCode = 20
-        versionName = "20"
+        versionCode = 23
+        versionName = "23"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,23 +31,23 @@ android {
 }
 
 dependencies {
-    implementation(libs.gson)  //自定義SharedPreferences元件：https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo/tree/master
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.ext.junit)
     implementation(libs.activity)
-    implementation(libs.material)
     implementation(libs.appcompat)
+    implementation(libs.calendarview)       //自定義日歷元件：https://blog.csdn.net/coffee_shop/article/details/130709029
+    implementation(libs.constraintlayout)
+    implementation(libs.firebase.analytics) //Firebase分析
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
-    testImplementation(libs.junit)
-    implementation(libs.calendarview)  //自定義日歷元件：https://blog.csdn.net/coffee_shop/article/details/130709029
-    implementation(libs.constraintlayout)
     implementation(libs.firebase.firestore) //Firebase資料庫
-    implementation(libs.firebase.analytics) //Firebase分析
-    androidTestImplementation(libs.ext.junit)
-    implementation(platform(libs.firebase.bom)) //Firebase BOM
-    androidTestImplementation(libs.espresso.core)
-    implementation(libs.play.services.location)
-    implementation(libs.play.services.auth) //Google登陸
     implementation(libs.firebase.messaging) //回傳到Firebase跳出資料
-    implementation(libs.lunar) //Ca的農民節日還有公曆節日
-    implementation(libs.hanlp) //將Ca的簡體中文改成繁體
+    implementation(libs.gson)               //自定義SharedPreferences元件：https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo/tree/master
+    implementation(libs.hanlp)              //將Ca的簡體中文改成繁體
+    implementation(libs.lunar)              //Ca的農民節日還有公曆節日
+    implementation(libs.material)
+    implementation(libs.play.services.auth) //Google登陸
+    implementation(libs.play.services.location)
+    implementation(platform(libs.firebase.bom)) //Firebase BOM
+    testImplementation(libs.junit)
 }

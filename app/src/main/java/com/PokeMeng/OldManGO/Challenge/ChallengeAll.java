@@ -89,11 +89,13 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
                 ChallengeHistoryStep challengeHistoryStep = task.getResult().toObject(ChallengeHistoryStep.class);
                 if (challengeHistoryStep != null) {
                     mSteps = challengeHistoryStep.getStepNumber();
+                    updateStepText();
                 }
             } else {
+                if(mSteps == -1) ((TextView)findViewById(R.id.challenge_myStepText)).setText("沒有步數傳感器可用！");
+                else updateStepText();
                 Log.w(TAG, "Error getting document or document does not exist.", task.getException());
             }
-            updateStepText();
         });
     }
     private void updateStepText() {
@@ -131,7 +133,10 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
     private void registerSensor(SensorManager sensorManager, int sensorType) {
         Sensor sensor = sensorManager.getDefaultSensor(sensorType); // 獲取計步器sensor
         if (sensor != null) sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-        else Log.e(TAG, "No sensor found for type: " + sensorType);
+        else {
+            mSteps = -1;
+            Log.e(TAG, "No sensor found for type: " + sensorType);
+        }
     }
     private void updateStepList() {
         db.collection("StepList").get().addOnCompleteListener(task -> {

@@ -47,3 +47,5 @@ v20 - 2024/09/25 整理Build.gradle.kts
 v21 - 2024/09/25 個人資料資料庫已連結firestore
 
 v22 - 2024/09/26 主介面六大功能按鍵新增語音
+
+v23 - 2024/09/26 Manifest修正、新增運動挑戰錯誤提示、整理Build.gradle.kts
