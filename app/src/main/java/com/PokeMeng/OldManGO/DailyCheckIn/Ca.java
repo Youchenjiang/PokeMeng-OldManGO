@@ -2,6 +2,7 @@ package com.PokeMeng.OldManGO.DailyCheckIn;
 
 //import static android.os.Build.VERSION_CODES.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.PokeMeng.OldManGO.MainActivity;
 import com.PokeMeng.OldManGO.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.auth.FirebaseAuth;
@@ -270,10 +272,30 @@ public class Ca extends AppCompatActivity {
             // 將資料寫入 FireStore
             checkInCollection.document(date).set(checkInData)
                     .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(Ca.this, "簽到成功", Toast.LENGTH_SHORT).show();
+                        // 成功簽到後顯示對話框
+                        new androidx.appcompat.app.AlertDialog.Builder(Ca.this)
+                                .setTitle("簽到成功")
+                                .setMessage("您已成功簽到！")
+                                .setPositiveButton("確定", (dialog, which) -> {
+                                    // 簽到成功後的動作，比如返回主頁或其他操作
+                                    Intent intent = new Intent(Ca.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();  // 結束當前活動
+                                })
+                                .setCancelable(false)  // 禁止點擊對話框外部關閉
+                                .show();
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(Ca.this, "簽到失敗: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // 簽到失敗時顯示對話框
+                        new androidx.appcompat.app.AlertDialog.Builder(Ca.this)
+                                .setTitle("簽到失敗")
+                                .setMessage("簽到失敗: " + e.getMessage())
+                                .setPositiveButton("確定", (dialog, which) -> {
+                                    // 確定後關閉對話框，無其他操作
+                                    dialog.dismiss();
+                                })
+                                .setCancelable(true)  // 允許點擊對話框外部關閉
+                                .show();
                     });
         }
     }

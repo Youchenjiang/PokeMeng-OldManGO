@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/view2"
     tools:context=".MainActivity">
 
     <CalendarView
@@ -24,23 +25,35 @@
         android:id="@+id/dateDisplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="128dp"
+        android:fontFamily="@font/jfopenhuninn"
         android:gravity="center"
         android:padding="20dp"
         android:text=""
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
-        android:layout_marginBottom="24dp"
+        android:layout_width="160dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/btnstyle"
+        android:fontFamily="@font/jfopenhuninn"
         android:onClick="buttonsign"
         android:text="今日簽到"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateDisplay"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,12 +28,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 初始化 AudioManager
+        // 初始化 AudioManager 並將音量設置為最大音量的 70%
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-        // 設置最大音量
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+        int seventyPercentVolume = (int) (maxVolume * 0.7);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, seventyPercentVolume, 0);
 
         // 初始化 TextToSpeech
         tts = new TextToSpeech(this, status -> {
@@ -51,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         tts.setSpeechRate(0.7f); // 調整語速，1.0 為正常速度
         tts.setPitch(1.2f); // 調整音調，1.0 為正常音調
+
         // 設定按鈕點擊語音
         findViewById(R.id.imageButton).setOnClickListener(v -> {
             speak("每日任務");

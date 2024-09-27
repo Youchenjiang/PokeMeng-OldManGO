@@ -77,7 +77,7 @@
         android:layout_width="180sp"
         android:layout_height="150sp"
         android:layout_marginStart="20sp"
-        android:layout_marginTop="16sp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="11sp"
         android:background="@color/cardview_shadow_end_color"
         android:scaleType="centerInside"
@@ -91,7 +91,7 @@
         android:layout_width="180sp"
         android:layout_height="150sp"
         android:layout_marginStart="11sp"
-        android:layout_marginTop="16sp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="20sp"
         android:background="@color/cardview_shadow_end_color"
         android:scaleType="centerInside"
@@ -134,6 +134,61 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton12"
+        android:layout_width="196dp"
+        android:layout_height="253dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="-40dp"
+        android:background="?android:attr/windowSplashScreenIconBackgroundColor"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button7"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toEndOf="@+id/button8"
+        app:srcCompat="@drawable/penn" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
+        android:layout_marginBottom="12dp"
+        android:background="@color/white"
+        android:fontFamily="@font/jfopenhuninn"
+        android:text="編輯個人資料"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="103dp"
+        android:layout_height="53dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/btnstyle"
+        android:fontFamily="@font/jfopenhuninn"
+        android:text="登出"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="103dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/btnstyle"
+        android:fontFamily="@font/jfopenhuninn"
+        android:text="每日簽到"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,19 +5,19 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/wlecomeuse"
     tools:context=".Firstlogin.FacebookGoogle">
 
     <ImageButton
         android:id="@+id/google"
-        android:layout_width="285dp"
-        android:layout_height="225dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="252dp"
-        android:background="?android:attr/windowSplashScreenBackground"
+        android:layout_width="279dp"
+        android:layout_height="229dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="280dp"
+        android:background="@drawable/google"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/google" />
+        app:layout_constraintEnd_toEndOf="parent" />
     <!--        app:layout_constraintStart_toStartOf="@+id/fb"-->
 
 
