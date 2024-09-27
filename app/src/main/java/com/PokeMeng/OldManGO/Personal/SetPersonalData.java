@@ -27,13 +27,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 
 public class SetPersonalData extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
-    // Inside SetPersonalData class
-    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
     Calendar c = Calendar.getInstance();
     TextView txDate;
     EditText editTextAge, editTextText, editTextText3, editTextNumber2, editTextText2;
@@ -158,12 +156,7 @@ public class SetPersonalData extends AppCompatActivity implements View.OnClickLi
 
         Personal personal = new Personal(text1, date, selectedGender, age, text2, number2, text3);
 
-        // Save to Firestore under the current user
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        firestore.collection("Users")
-                .document(uid) // Store data under user's UID
-                .set(personal)
+        mDatabase.child("users").push().setValue(personal)
                 .addOnSuccessListener(aVoid -> Toast.makeText(SetPersonalData.this, "儲存成功", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(SetPersonalData.this, "Data save failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }

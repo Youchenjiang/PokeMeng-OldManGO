@@ -271,9 +271,9 @@ public class TaskAll extends AppCompatActivity {
         loadDateSpinner();
         checkAndLoadTaskStatus();
     }
-    class TaskAdapter extends ArrayAdapter<String> {
+    public class TaskAdapter extends ArrayAdapter<String> {
         List<String> tasksList;
-        TaskStatus taskStatus;
+        public TaskStatus taskStatus;
         public TaskAdapter(@NonNull Context context, List<String> list) {
             super(context, R.layout.task_all_listview, list);
             tasksList = list;
@@ -442,6 +442,9 @@ public class TaskAll extends AppCompatActivity {
         @PropertyName("is_done")
         public void setTaskStatus(List<Boolean> done) {
             isDone = done;
+        }
+
+        public void setCheckedIn(boolean b) {
         }
     }
     static class CustomSpinnerAdapter extends ArrayAdapter<String> {

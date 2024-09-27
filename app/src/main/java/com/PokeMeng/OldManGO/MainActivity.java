@@ -10,6 +10,8 @@ import android.widget.TextClock;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.PokeMeng.OldManGO.Challenge.ChallengeAll;
+import com.PokeMeng.OldManGO.DailyCheckIn.Ca;
+import com.PokeMeng.OldManGO.Firstlogin.FacebookGoogle;
 import com.PokeMeng.OldManGO.Game.GameMain;
 import com.PokeMeng.OldManGO.Task.TaskAll;
 import com.PokeMeng.OldManGO.location.login;
@@ -75,6 +77,16 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.imageButton5).setOnClickListener(v -> {
             speak("定位系統");
             startActivity(new Intent(this, login.class));
+        });
+
+        findViewById(R.id.button7).setOnClickListener(v -> {
+            speak("登出");
+            startActivity(new Intent(this, FacebookGoogle.class));
+        });
+
+        findViewById(R.id.button8).setOnClickListener(v -> {
+            speak("每日簽到");
+            startActivity(new Intent(this, Ca.class));
         });
 
         // 設定台灣時區
