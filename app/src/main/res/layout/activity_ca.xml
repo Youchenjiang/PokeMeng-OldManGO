@@ -8,6 +8,26 @@
     android:background="@drawable/view2"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="160dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/btnstyle"
+        android:fontFamily="@font/jfopenhuninn"
+        android:onClick="buttonsign"
+        android:text="今日簽到"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.099"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateDisplay"
+        app:layout_constraintVertical_bias="1.0" />
+
     <CalendarView
         android:id="@+id/calendarView"
         style="@style/CustomCalendarView"
@@ -37,21 +57,21 @@
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/back"
         android:layout_width="160dp"
         android:layout_height="62dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/btnstyle"
         android:fontFamily="@font/jfopenhuninn"
         android:onClick="buttonsign"
-        android:text="今日簽到"
+        android:text="主頁面"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.876"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dateDisplay"
         app:layout_constraintVertical_bias="1.0" />

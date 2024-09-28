@@ -1,5 +1,6 @@
 package com.PokeMeng.OldManGO.DailyCheckIn;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,29 +13,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.PokeMeng.OldManGO.MainActivity;
 import com.PokeMeng.OldManGO.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import java.util.Calendar;
 
-import com.google.firebase.firestore.SetOptions;
 import com.nlf.calendar.Lunar;
 import com.nlf.calendar.Solar;
 
@@ -55,6 +52,7 @@ public class Ca extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
     private CollectionReference checkInCollection;
+    private Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +77,8 @@ public class Ca extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         button = findViewById(R.id.button);
         dateDisplay = findViewById(R.id.dateDisplay);
+        back=findViewById(R.id.button);
+
 
         // 初始化 Firebase 和 FireStore
         auth = FirebaseAuth.getInstance();
@@ -87,6 +87,16 @@ public class Ca extends AppCompatActivity {
         checkInCollection = firestore.collection("DailyCheckIn");
 
         button.setOnClickListener(v -> markDailyCheckIn());
+
+        // 設置返回主頁面的按鈕點擊事件
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Ca.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         // 獲取當前用戶
         FirebaseUser currentUser = auth.getCurrentUser();
@@ -128,6 +138,7 @@ public class Ca extends AppCompatActivity {
                 updateDateDisplay(year, month , dayOfMonth);
             }
         });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,8 +150,19 @@ public class Ca extends AppCompatActivity {
                 }
             }
         });
+
+
         //databaseReference= FirebaseDatabase.getInstance().getReference("CalendarView");
     }
+
+    // 應用啟動時檢查今天的簽到狀態
+    //  @Override
+//    protected void onStart() {
+//        super.onStart();
+//        Calendar today = Calendar.getInstance();
+//        selectedDate = today.get(Calendar.YEAR) + "-" + (today.get(Calendar.MONTH) + 1) + "-" + today.get(Calendar.DAY_OF_MONTH);
+//        checkIfAlreadyCheckedIn(selectedDate); // 檢查今天的簽到狀態
+//    }
 
     private void updateDateDisplay(int year, int month, int dayOfMonth) {
         selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
@@ -294,25 +316,26 @@ public class Ca extends AppCompatActivity {
     }
     //  檢查是否已簽到
     private void checkIfAlreadyCheckedIn(String date) {
-
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
             String documentId = userId + "_" + date;
-
+            Log.d("CheckIn", "Checking document: " + documentId);
             checkInCollection.document(documentId).get().addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
                     Toast.makeText(Ca.this, "今天已經簽到過", Toast.LENGTH_SHORT).show();
                     button.setEnabled(false);
                 } else {
                     markAsCheckedIn(date);
+                    button.setEnabled(true); // 如果沒有簽到過且是今天，按鈕啟用
                 }
             }).addOnFailureListener(e -> Toast.makeText(Ca.this, "檢查失敗: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         } else {
             Toast.makeText(this, "請先登入", Toast.LENGTH_SHORT).show();
         }
-    }
 
+
+    }
 
     private void markDailyCheckIn() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
