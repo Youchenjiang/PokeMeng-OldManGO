@@ -41,12 +41,13 @@
 
     <Button
         android:id="@+id/backButton"
-        android:layout_width="95dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="290dp"
+        android:layout_marginLeft="280dp"
         android:layout_marginTop="610dp"
         android:background="@drawable/btnstyle"
         android:fontFamily="@font/jfopenhuninn"
+        android:onClick="gotogamemain"
         android:text="返回"
         android:textAlignment="center"
         android:textSize="30sp"

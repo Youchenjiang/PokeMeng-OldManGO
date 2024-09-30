@@ -1,12 +1,17 @@
 package com.PokeMeng.OldManGO;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.PokeMeng.OldManGO.Firstlogin.FacebookGoogle;
+import com.PokeMeng.OldManGO.Game.ColorGame;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -20,5 +25,9 @@ public class MainActivity2 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+    public void gotologin (View v){
+        Intent it=new Intent(this, FacebookGoogle.class);
+        startActivity(it);
     }
 }

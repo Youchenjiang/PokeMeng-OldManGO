@@ -1,6 +1,7 @@
 package com.PokeMeng.OldManGO.Game;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.VideoView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.PokeMeng.OldManGO.Personal.SetPersonalData;
 import com.PokeMeng.OldManGO.R;
 
 import java.util.ArrayList;
@@ -66,12 +68,12 @@ public class CardGame extends AppCompatActivity {
             }
         });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        backButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
 
         setupGame();
         showInstructionsDialog();
@@ -180,7 +182,13 @@ public class CardGame extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            if (isProcessing || cardFlipped[index]) return;
+            // 如果正在处理翻牌，或者已经翻开的牌被点击，且当前是提示状态，则返回
+            if (isProcessing || (cardFlipped[index] && hintActive)) return;
+
+            // 如果当前牌已经翻开，且提示未激活，直接返回
+            if (cardFlipped[index]) {
+                return; // 直接返回，不执行后续逻辑
+            }
 
             buttons[index].setImageResource(cardImages[index]);
 
@@ -265,5 +273,9 @@ public class CardGame extends AppCompatActivity {
                 button.setClickable(true);
             }
         }
+    }
+    public void gotogamemain(View v) {
+        Intent it = new Intent(this, GameMain.class);
+        startActivity(it);
     }
 }

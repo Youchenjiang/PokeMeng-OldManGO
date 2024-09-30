@@ -172,7 +172,6 @@
         android:id="@+id/button3"
         android:layout_width="99dp"
         android:layout_height="54dp"
-        android:layout_marginStart="156dp"
         android:layout_marginBottom="76dp"
         android:background="@drawable/btnstyle"
         android:fontFamily="@font/jfopenhuninn"
@@ -181,6 +180,7 @@
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView

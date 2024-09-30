@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.PokeMeng.OldManGO.MainActivity;
+import com.PokeMeng.OldManGO.Personal.SetPersonalData;
 import com.PokeMeng.OldManGO.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -173,7 +174,7 @@ public class FacebookGoogle extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 // 資料儲存成功，跳轉到主頁面
-                                                Intent intent = new Intent(FacebookGoogle.this, MainActivity.class);
+                                                Intent intent = new Intent(FacebookGoogle.this, SetPersonalData.class);
                                                 startActivity(intent);
                                                 finish();
                                             } else {

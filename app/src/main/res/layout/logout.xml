@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="133dp"
         android:layout_marginBottom="86dp"
-        android:background="?android:attr/windowSplashScreenBackground"
+        android:background="@android:color/transparent"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

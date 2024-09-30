@@ -273,7 +273,7 @@ public class MapMainActivity extends AppCompatActivity {
     // 從 Firebase 獲取使用者地址
     private void fetchUserAddressFromFirebase() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users").orderByKey().limitToLast(1)  // 假設要取得最新填寫的地址
+        mDatabase.child("Users").orderByKey().limitToLast(1)  // 假設要取得最新填寫的地址
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

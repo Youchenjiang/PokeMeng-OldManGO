@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextClock;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import com.PokeMeng.OldManGO.Challenge.ChallengeAll;
 import com.PokeMeng.OldManGO.DailyCheckIn.Ca;
 import com.PokeMeng.OldManGO.Firstlogin.FacebookGoogle;
 import com.PokeMeng.OldManGO.Game.GameMain;
+import com.PokeMeng.OldManGO.Personal.SetPersonalData;
 import com.PokeMeng.OldManGO.Task.TaskAll;
 import com.PokeMeng.OldManGO.location.login;
 
@@ -121,5 +123,10 @@ public class MainActivity extends AppCompatActivity {
             tts.shutdown();
         }
         super.onDestroy();
+    }
+
+    public void gotosetpersonal(View v) {
+        Intent it = new Intent(this, SetPersonalData.class);
+        startActivity(it);
     }
 }
