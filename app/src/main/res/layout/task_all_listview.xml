@@ -26,6 +26,6 @@
         android:clickable="true"
         android:contentDescription="@string/task_show_choose_date"
         android:focusable="true"
-        android:src="@android:drawable/ic_menu_send" />
+        android:src="@drawable/task_go" />
 
 </RelativeLayout>

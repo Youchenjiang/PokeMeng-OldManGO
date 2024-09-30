@@ -24,7 +24,7 @@
             android:id="@+id/pointsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="當前积分: "
+            android:text="當前積分: "
             android:textColor="@android:color/white"
             android:textSize="24sp" />
 
@@ -88,6 +88,11 @@
                 android:text="所需積分: 21000分"
                 android:textSize="18sp" />
 
+            <Button
+                android:id="@+id/button10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="兌換" />
             <!-- 第二个奖品 -->
             <ImageView
                 android:id="@+id/rewardImageView2"
@@ -114,6 +119,12 @@
                 android:layout_marginTop="8dp"
                 android:text="所需積分: 15000分"
                 android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/button9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="兌換" />
 
             <!-- 这里可以继续添加其他商品信息 -->
         </LinearLayout>

@@ -57,11 +57,13 @@ public class ChallengeNow extends AppCompatActivity {
         registerReceiver(stepUpdateReceiver, new IntentFilter("com.PokeMeng.OldManGO.STEP_UPDATE"), Context.RECEIVER_NOT_EXPORTED); // 註冊廣播接收器
         isReceiverRegistered = true;
     }
-    private void setNowStep(int step_now, int duration){
+    private void setNowStep(int step_now, int duration) {
         int step_goal = 500;
         ChallengeNowProgressBar challengeNowProgressBar = findViewById(R.id.now_nowCircularProgressBar);
         challengeNowProgressBar.setText("目前步數：" + step_now + "步" + "\n" + "目標步數：" + step_goal + "步");
-        challengeNowProgressBar.setProgress((float) step_now / step_goal * 100);
+        float progress = (float) step_now / step_goal * 100;
+        progress = Math.max(0, Math.min(progress, 100)); // Ensure progress is between 0 and 100
+        challengeNowProgressBar.setProgress(progress);
         challengeNowProgressBar.setDuration(duration);
     }
     private void getStepList(FireStoreCallback callback) {
