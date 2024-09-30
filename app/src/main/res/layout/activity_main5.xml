@@ -13,15 +13,14 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#00FFFFFF"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="-5dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="400dp"
         android:layout_height="78dp"
-        android:background="?android:attr/windowBackground"
+        android:background="@drawable/btnstyle"
         app:itemIconSize="50dp"
         app:itemIconTint="@null"
         app:itemTextAppearanceActive="@style/CustomTextAppearance"

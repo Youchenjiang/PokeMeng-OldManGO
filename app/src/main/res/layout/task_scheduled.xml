@@ -5,43 +5,34 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/view2"
+    android:background="@drawable/wlecomeuse02"
     tools:context=".Task.TaskScheduled">
-
-    <ImageButton
-        android:id="@+id/TaskScheduled_returnButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/task_all_effect_ripple"
-        android:contentDescription="@string/task_returnImageDescription"
-        android:scaleType="centerCrop"
-        android:src="@drawable/task_all_ic_arrow_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/TaskScheduled_titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/edukai5"
+        android:layout_marginTop="43dp"
+        android:fontFamily="@font/jfopenhuninn"
         android:text="預定任務"
+        android:textColor="@color/white"
         android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/TaskScheduled_allList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/TaskScheduled_guideLine1" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/TaskScheduled_removeImage"
         android:layout_width="75dp"
         android:layout_height="70dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/remove"
         android:contentDescription="removeScheduled"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/TaskScheduled_guideLine2"
-        app:srcCompat="@drawable/task_scheduled_ic_remove" />
+        app:layout_constraintTop_toTopOf="@+id/TaskScheduled_guideLine2" />
 
     <ListView
         android:id="@+id/TaskScheduled_allList"
@@ -57,13 +48,6 @@
     </ListView>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/TaskScheduled_guideLine1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.09" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/TaskScheduled_guideLine2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,7 +58,7 @@
         android:id="@+id/TaskScheduled_removeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/edukai5"
+        android:fontFamily="@font/jfopenhuninn"
         android:text="刪除"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="@+id/TaskScheduled_removeImage"
@@ -87,5 +71,31 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.36" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="70dp"
+        android:fontFamily="@font/jfopenhuninn"
+        android:text="勾選即可刪除任務"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TaskScheduled_guideLine2" />
+
+    <Button
+        android:id="@+id/button15"
+        android:layout_width="95dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="660dp"
+        android:background="@drawable/btnstyle"
+        android:fontFamily="@font/jfopenhuninn"
+        android:text="返回"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

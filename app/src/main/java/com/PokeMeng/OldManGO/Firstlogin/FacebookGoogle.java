@@ -1,9 +1,14 @@
 package com.PokeMeng.OldManGO.Firstlogin;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.PokeMeng.OldManGO.MainActivity;
+import com.PokeMeng.OldManGO.Personal.SetPersonalData;
 import com.PokeMeng.OldManGO.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,7 +38,47 @@ import java.util.HashMap;
 
 
 public class FacebookGoogle extends AppCompatActivity {
+    ImageView grandmaa;
+    ImageView grandpaa;
+    Bitmap[] maa = new Bitmap[3];
+    Bitmap[] paa = new Bitmap[3];
+    int currentmaaIndex = 0;
+    int currentpaaIndex = 0;
+    Handler handler = new Handler();
 
+    Runnable maaRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // 切換心形圖片索引
+            currentmaaIndex = (currentmaaIndex + 1) % maa.length;
+
+            // 設置下一個圖片到 grandmaa
+            grandmaa.setImageBitmap(maa[currentmaaIndex]);
+
+            // 確保畫面更新
+            grandmaa.invalidate();
+
+            // 設置下一次的切換時間為 400 毫秒
+            handler.postDelayed(this, 400);
+        }
+    };
+
+    Runnable paaRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // 切換心形圖片索引
+            currentpaaIndex = (currentpaaIndex + 1) % paa.length;
+
+            // 設置下一個圖片到 grandpaa
+            grandpaa.setImageBitmap(paa[currentpaaIndex]);
+
+            // 確保畫面更新
+            grandpaa.invalidate();
+
+            // 設置下一次的切換時間為 400 毫秒
+            handler.postDelayed(this, 400);
+        }
+    };
     ImageButton google;
     //ImageButton fb;
     FirebaseAuth auth;
@@ -61,10 +107,23 @@ public class FacebookGoogle extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_facebook_google);
+        grandmaa = findViewById(R.id.grandmaa);
+        grandpaa = findViewById(R.id.grandpaa);
+
+        maa[0] = BitmapFactory.decodeResource(getResources(), R.drawable.grandma);
+        maa[1] = BitmapFactory.decodeResource(getResources(), R.drawable.grandma02);
+        maa[2] = BitmapFactory.decodeResource(getResources(), R.drawable.grandma03);
+        paa[0] = BitmapFactory.decodeResource(getResources(), R.drawable.grandpa);
+        paa[1] = BitmapFactory.decodeResource(getResources(), R.drawable.grandpa02);
+        paa[2] = BitmapFactory.decodeResource(getResources(), R.drawable.grandpa03);
+
+        handler.post(maaRunnable);
+        handler.post(paaRunnable);
 
         //FacebookSdk.sdkInitialize(getApplicationContext());
         //AppEventsLogger.activateApp(this.getApplication());
-        setContentView(R.layout.activity_facebook_google);
+
         //callbackManager = CallbackManager.Factory.create();
 
         /*LoginManager.getInstance().registerCallback(callbackManager,
@@ -148,7 +207,10 @@ public class FacebookGoogle extends AppCompatActivity {
         }
 
     }
-
+    public void onGet(View v) {
+        Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(it, 100);
+    }
     private void firebaseAuth(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         auth.signInWithCredential(credential)
@@ -173,7 +235,7 @@ public class FacebookGoogle extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 // 資料儲存成功，跳轉到主頁面
-                                                Intent intent = new Intent(FacebookGoogle.this, MainActivity.class);
+                                                Intent intent = new Intent(FacebookGoogle.this, SetPersonalData.class);
                                                 startActivity(intent);
                                                 finish();
                                             } else {

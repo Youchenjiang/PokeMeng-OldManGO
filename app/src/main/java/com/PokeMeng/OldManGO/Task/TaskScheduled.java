@@ -72,7 +72,7 @@ public class TaskScheduled extends AppCompatActivity {
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         findViewById(R.id.TaskScheduled_removeImage).setOnClickListener(v -> deleteTask());
-        findViewById(R.id.TaskScheduled_returnButton).setOnClickListener(v -> finish());
+        findViewById(R.id.button15).setOnClickListener(v -> finish());
         loadScheduledTasks();
     }
 

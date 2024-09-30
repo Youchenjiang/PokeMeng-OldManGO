@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextClock;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,8 +14,10 @@ import com.PokeMeng.OldManGO.Challenge.ChallengeAll;
 import com.PokeMeng.OldManGO.DailyCheckIn.Ca;
 import com.PokeMeng.OldManGO.Firstlogin.FacebookGoogle;
 import com.PokeMeng.OldManGO.Game.GameMain;
+import com.PokeMeng.OldManGO.Personal.SetPersonalData;
 import com.PokeMeng.OldManGO.Task.TaskAll;
 import com.PokeMeng.OldManGO.location.login;
+import com.PokeMeng.OldManGO.medicined.MainActivity5;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -78,7 +81,10 @@ public class MainActivity extends AppCompatActivity {
             speak("定位系統");
             startActivity(new Intent(this, login.class));
         });
-
+        findViewById(R.id.imageButton2).setOnClickListener(v -> {
+            speak("用藥提醒");
+            startActivity(new Intent(this, MainActivity5.class));
+        });
         findViewById(R.id.button7).setOnClickListener(v -> {
             speak("登出");
             startActivity(new Intent(this, FacebookGoogle.class));
@@ -121,5 +127,10 @@ public class MainActivity extends AppCompatActivity {
             tts.shutdown();
         }
         super.onDestroy();
+    }
+
+    public void gotosetpersonal(View v) {
+        Intent it = new Intent(this, SetPersonalData.class);
+        startActivity(it);
     }
 }

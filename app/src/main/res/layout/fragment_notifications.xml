@@ -5,33 +5,22 @@
     android:id="@+id/filterButton"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/wlecomeuse02"
     tools:context=".medicined.ui.notifications.NotificationsFragment">
-
-        <ImageButton
-            android:id="@+id/imageButton5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="7dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/game_m" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="55dp"
-            android:layout_marginEnd="56dp"
-            android:fontFamily="@font/edukai5"
+            android:layout_marginTop="60dp"
+            android:fontFamily="@font/jfopenhuninn"
             android:text="歷史紀錄"
-            android:textSize="75sp"
+            android:textColor="@color/white"
+            android:textSize="60sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton5" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerhistory"
@@ -58,12 +47,14 @@
 
         <TextView
             android:id="@+id/textView12"
-            android:layout_width="213dp"
+            android:layout_width="220dp"
             android:layout_height="49dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="53dp"
-            android:fontFamily="@font/edukai5"
-            android:textSize="34sp"
+            android:fontFamily="@font/jfopenhuninn"
+            android:hint="點選圖示可瀏覽紀錄"
+            android:textAlignment="center"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/textView4"
             app:layout_constraintStart_toEndOf="@+id/pickButton"

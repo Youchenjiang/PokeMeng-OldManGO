@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.PokeMeng.OldManGO.Firstlogin.FacebookGoogle;
 import com.PokeMeng.OldManGO.MainActivity;
 import com.PokeMeng.OldManGO.R;
 import com.google.firebase.database.DatabaseReference;
@@ -386,6 +387,10 @@ public class Ca extends AppCompatActivity {
         taskStatusRef.document(formattedDate).set(taskStatusData)
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Task status successfully added for date: " + formattedDate))
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding task status", e));
+    }
+    public void gotomain (View v){
+        Intent it=new Intent(this, MainActivity.class);
+        startActivity(it);
     }
     // 更新每日任務狀態
     /*private void updateTaskStatus(String userId, String date) {

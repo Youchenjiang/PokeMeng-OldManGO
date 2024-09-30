@@ -5,114 +5,21 @@
     android:id="@+id/taskConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/view">
+    android:background="@drawable/view022">
 
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="180sp"
-        android:layout_height="150sp"
-        android:layout_marginStart="20sp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="11sp"
-        android:layout_marginBottom="16sp"
-        android:background="@color/cardview_shadow_end_color"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton3"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/daily_task" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="180sp"
-        android:layout_height="150sp"
-        android:layout_marginStart="11sp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="20sp"
-        android:layout_marginBottom="16sp"
-        android:background="@color/cardview_shadow_end_color"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/main_medicate" />
-
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="180sp"
-        android:layout_height="150sp"
-        android:layout_marginStart="20sp"
-        android:layout_marginTop="16sp"
-        android:layout_marginEnd="11sp"
-        android:layout_marginBottom="16sp"
-        android:background="@color/cardview_shadow_end_color"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton5"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton"
-        app:srcCompat="@drawable/main_game" />
-
-    <ImageButton
-        android:id="@+id/imageButton4"
-        android:layout_width="180sp"
-        android:layout_height="150sp"
-        android:layout_marginStart="11sp"
-        android:layout_marginTop="16sp"
-        android:layout_marginEnd="20sp"
-        android:layout_marginBottom="16sp"
-        android:background="@color/cardview_shadow_end_color"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton3"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
-        app:srcCompat="@drawable/main_challenge" />
-
-    <ImageButton
-        android:id="@+id/imageButton5"
-        android:layout_width="180sp"
-        android:layout_height="150sp"
-        android:layout_marginStart="20sp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="11sp"
-        android:background="@color/cardview_shadow_end_color"
-        android:scaleType="centerInside"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton3"
-        app:srcCompat="@drawable/main_location" />
-
-    <ImageButton
-        android:id="@+id/imageButton6"
-        android:layout_width="180sp"
-        android:layout_height="150sp"
-        android:layout_marginStart="11sp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="20sp"
-        android:background="@color/cardview_shadow_end_color"
-        android:scaleType="centerInside"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton5"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton4"
-        app:srcCompat="@drawable/main_prize" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="458sp"
         android:layout_height="264sp"
-        android:layout_marginStart="-20sp"
+        android:layout_marginStart="-50dp"
         android:layout_marginTop="-80sp"
-        android:layout_marginEnd="-20sp"
+        android:layout_marginEnd="-50dp"
         android:layout_marginBottom="2sp"
         android:background="@color/cardview_shadow_end_color"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -140,34 +47,117 @@
         android:layout_width="196dp"
         android:layout_height="253dp"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="-40dp"
+        android:layout_marginBottom="-60dp"
         android:background="@android:color/transparent"
+        android:onClick="gotosetpersonal"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button7"
-        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toEndOf="@+id/button8"
         app:srcCompat="@drawable/penn" />
+
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="200sp"
+        android:layout_height="170sp"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="70dp"
+        android:background="@color/cardview_shadow_end_color"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageButton3"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+        app:srcCompat="@drawable/main_challenge" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="200sp"
+        android:layout_height="170sp"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="70dp"
+        android:background="@color/cardview_shadow_end_color"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/main_medicate" />
+
+    <ImageButton
+        android:id="@+id/imageButton6"
+        android:layout_width="200sp"
+        android:layout_height="170sp"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="70dp"
+        android:background="@color/cardview_shadow_end_color"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageButton5"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton4"
+        app:srcCompat="@drawable/main_prize" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="200sp"
+        android:layout_height="170sp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="-10dp"
+        android:background="@color/cardview_shadow_end_color"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton"
+        app:srcCompat="@drawable/main_game" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="200sp"
+        android:layout_height="170sp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="-10dp"
+        android:background="@color/cardview_shadow_end_color"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/daily_task" />
+
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="200sp"
+        android:layout_height="170sp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="-10dp"
+        android:background="@color/cardview_shadow_end_color"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton3"
+        app:srcCompat="@drawable/main_location" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginBottom="12dp"
         android:background="@color/white"
         android:fontFamily="@font/jfopenhuninn"
         android:text="編輯個人資料"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button7"
         android:layout_width="103dp"
         android:layout_height="53dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="35dp"
         android:background="@drawable/btnstyle"
         android:fontFamily="@font/jfopenhuninn"
@@ -181,7 +171,7 @@
         android:id="@+id/button8"
         android:layout_width="103dp"
         android:layout_height="53dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="35dp"
         android:background="@drawable/btnstyle"
         android:fontFamily="@font/jfopenhuninn"
@@ -189,6 +179,20 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="27dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="382dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

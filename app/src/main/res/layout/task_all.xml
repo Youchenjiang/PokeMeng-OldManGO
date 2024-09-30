@@ -5,19 +5,20 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/view2"
+    android:background="@drawable/wlecomeuse02"
     tools:context=".Task.TaskAll">
 
-    <ImageButton
-        android:id="@+id/TaskAll_returnButton"
+    <TextView
+        android:id="@+id/TaskAll_pointsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/task_all_effect_ripple"
-        android:contentDescription="@string/task_returnImageDescription"
-        android:scaleType="centerCrop"
-        android:src="@drawable/task_all_ic_arrow_back"
+        android:layout_marginTop="140dp"
+        android:fontFamily="@font/jfopenhuninn"
+        android:text="我的積分："
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,18 +26,21 @@
         android:id="@+id/TaskAll_titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/jfopenhuninn"
         android:text="每日任務"
+        android:textColor="@color/backgroundColor"
         android:textSize="60sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/TaskAll_guideLine1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/TaskAll_addImage"
         android:layout_width="72dp"
         android:layout_height="63dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="40dp"
         android:contentDescription="addImage"
         app:layout_constraintBottom_toTopOf="@+id/TaskAll_addText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="380dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,8 +79,9 @@
         android:id="@+id/TaskAll_addText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-5dp"
         android:fontFamily="@font/jfopenhuninn"
-        android:text="新增"
+        android:text="新增任務"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/TaskAll_guideLine3"
         app:layout_constraintEnd_toEndOf="@+id/TaskAll_addImage"
@@ -95,18 +101,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.88" />
+        app:layout_constraintGuide_percent="0.87" />
 
     <Button
         android:id="@+id/TaskAll_scheduledButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#CF9339"
+        android:layout_width="134dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="-5dp"
+        android:background="@drawable/btnstyle"
         android:fontFamily="@font/jfopenhuninn"
         android:text="已排日程"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/TaskAll_guideLine4" />
 
@@ -114,27 +120,17 @@
         android:id="@+id/TaskAll_dateSpinner"
         android:layout_width="176dp"
         android:layout_height="54dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="496dp"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/TaskAll_addImage"
-        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintHorizontal_bias="0.264"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TaskAll_titleText" />
-
-    <TextView
-        android:id="@+id/TaskAll_pointsText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/jfopenhuninn"
-        android:text="我的積分："
-        android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/TaskAll_guideLine1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/TaskAll_titleText"
+        app:layout_constraintVertical_bias="0.738" />
 
     <Button
         android:id="@+id/TaskAll_cheatButton"
@@ -149,12 +145,27 @@
         android:id="@+id/TaskAll_hintText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="120dp"
+        android:background="@color/black"
         android:fontFamily="@font/jfopenhuninn"
         android:text="可領取獎勵！"
+        android:textColor="@color/backgroundColor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/btnstyle"
+        android:fontFamily="@font/jfopenhuninn"
+        android:text="返回"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TaskAll_scheduledButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
