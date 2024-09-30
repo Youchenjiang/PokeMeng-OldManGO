@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <Button
+        android:id="@+id/weekdayButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="每天、星期幾" />
+
+    <Button
+        android:id="@+id/intervalButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="日間隔" />
+
+    <Button
+        android:id="@+id/asNeededButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="根據需要用藥" />
+
+</LinearLayout>

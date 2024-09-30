@@ -28,9 +28,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
 }
 
 dependencies {
+    implementation("androidx.navigation:navigation-fragment:2.8.1")
+    implementation("androidx.navigation:navigation-ui:2.8.1")
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
     implementation(libs.activity)
@@ -50,4 +56,19 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(platform(libs.firebase.bom)) //Firebase BOM
     testImplementation(libs.junit)
+
+
+    ///implementation("com.google.android:flexbox:3.0.0")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
+    implementation ("androidx.recyclerview:recyclerview:1.3.0") // 请使用最新版本
+    implementation ("androidx.core:core:1.10.0")
+    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-storage")
+
 }
