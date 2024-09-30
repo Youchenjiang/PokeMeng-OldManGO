@@ -25,7 +25,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/jfopenhuninn"
-        android:text="兑换有效期"
+        android:text="兌換期限"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rewardImageView" />
@@ -37,7 +37,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/jfopenhuninn"
-        android:text="产品信息"
+        android:text="獎品資訊"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rewardExpiryDateTextView" />
@@ -47,9 +47,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/btnstyle"
         android:enabled="false"
         android:fontFamily="@font/jfopenhuninn"
-        android:text="立即兑换"
+        android:lineSpacingExtra="20sp"
+        android:text="立即兌換"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" /> <!-- 初始不可用，根据积分设置状态 -->

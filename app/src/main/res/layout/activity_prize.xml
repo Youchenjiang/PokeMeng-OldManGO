@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/wlecomeuse03"
     tools:context=".prize">
 
     <!-- 固定显示用户积分的区域 -->
@@ -13,7 +14,7 @@
         android:id="@+id/fixed_points_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/design_default_color_error"
         android:elevation="4dp"
         android:orientation="vertical"
         android:padding="16dp"
@@ -24,25 +25,30 @@
             android:id="@+id/pointsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/jfopenhuninn"
             android:text="當前積分: "
             android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            android:textSize="34sp" />
 
         <TextView
             android:id="@+id/expiryDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/jfopenhuninn"
             android:text="積分有效日期至: 2024年12月31日"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 
         <Button
             android:id="@+id/viewHistoryButton"
-            android:layout_width="124dp"
+            android:layout_width="139dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/btnstyle"
+            android:fontFamily="@font/jfopenhuninn"
             android:text="查看兌換紀錄"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rewardImageView2" />
@@ -52,8 +58,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/fixed_points_container"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fixed_points_container">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,65 +72,85 @@
                 android:id="@+id/rewardImageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
-                android:src="@drawable/reward_image"
-                android:contentDescription="点击查看详细信息"
                 android:clickable="true"
+                android:contentDescription="点击查看详细信息"
                 android:focusable="true"
-                android:onClick="openRewardDetails1"/>
+                android:onClick="openRewardDetails1"
+                android:src="@drawable/reward_image" />
 
             <TextView
                 android:id="@+id/rewardDescriptionTextView1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="2024年6月-7月積分獎品 | 有蓋不黏湯鍋"
-                android:textSize="18sp" />
+                android:fontFamily="@font/jfopenhuninn"
+                android:text="2024年10月 | 有蓋不黏湯鍋"
+                android:textAlignment="center"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/requiredPointsTextView1"
-                android:layout_width="wrap_content"
+                android:layout_width="365dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="所需積分: 21000分"
+                android:fontFamily="@font/jfopenhuninn"
+                android:text="所需積分: 1000分"
+                android:textAlignment="center"
                 android:textSize="18sp" />
 
             <Button
                 android:id="@+id/button10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="兌換" />
+                android:background="@drawable/challenge_all_shape"
+                android:backgroundTint="?attr/colorControlActivated"
+                android:fontFamily="@font/jfopenhuninn"
+                android:text="兌換"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
             <!-- 第二个奖品 -->
             <ImageView
                 android:id="@+id/rewardImageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
-                android:src="@drawable/reward_image02"
-                android:contentDescription="点击查看详细信息"
                 android:clickable="true"
+                android:contentDescription="点击查看详细信息"
                 android:focusable="true"
-                android:onClick="openRewardDetails2"/>
+                android:onClick="openRewardDetails2"
+                android:src="@drawable/reward_image02" />
 
             <TextView
                 android:id="@+id/rewardDescriptionTextView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="380dp"
+                android:layout_height="33dp"
                 android:layout_marginTop="16dp"
-                android:text="2024年6月-7月積分獎賞 | 高級掃地機器人"
-                android:textSize="18sp" />
+                android:fontFamily="@font/jfopenhuninn"
+                android:text="2024年10月 | 掃地機器人"
+                android:textAlignment="center"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/requiredPointsTextView2"
-                android:layout_width="wrap_content"
+                android:layout_width="366dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="所需積分: 15000分"
+                android:fontFamily="@font/jfopenhuninn"
+                android:text="所需積分: 5000分"
+                android:textAlignment="center"
                 android:textSize="18sp" />
 
             <Button
                 android:id="@+id/button9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="兌換" />
+                android:background="@drawable/challenge_all_shape"
+                android:backgroundTint="?attr/colorAccent"
+                android:fontFamily="@font/jfopenhuninn"
+                android:text="兌換"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <!-- 这里可以继续添加其他商品信息 -->
         </LinearLayout>

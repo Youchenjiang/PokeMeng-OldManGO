@@ -265,7 +265,7 @@ public class MapMainActivity extends AppCompatActivity {
                 // 如果權限授予，取得位置
                 getCurrentLocation();
             } else {
-                Toast.makeText(this, "位置權限被拒絕", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "需要位置權限才能繼續", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -273,7 +273,7 @@ public class MapMainActivity extends AppCompatActivity {
     // 從 Firebase 獲取使用者地址
     private void fetchUserAddressFromFirebase() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Users").orderByKey().limitToLast(1)  // 假設要取得最新填寫的地址
+        mDatabase.child("users").orderByKey().limitToLast(1)  // 假設要取得最新填寫的地址
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

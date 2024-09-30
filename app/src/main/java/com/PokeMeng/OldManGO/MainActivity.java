@@ -16,6 +16,7 @@ import com.PokeMeng.OldManGO.Firstlogin.FacebookGoogle;
 import com.PokeMeng.OldManGO.Game.GameMain;
 import com.PokeMeng.OldManGO.Personal.SetPersonalData;
 import com.PokeMeng.OldManGO.Task.TaskAll;
+import com.PokeMeng.OldManGO.location.MapMainActivity;
 import com.PokeMeng.OldManGO.location.login;
 import com.PokeMeng.OldManGO.medicined.MainActivity5;
 
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.imageButton5).setOnClickListener(v -> {
             speak("定位系統");
-            startActivity(new Intent(this, login.class));
+            startActivity(new Intent(this, MapMainActivity.class));
         });
         findViewById(R.id.imageButton2).setOnClickListener(v -> {
             speak("用藥提醒");

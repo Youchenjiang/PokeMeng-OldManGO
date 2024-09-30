@@ -1,10 +1,15 @@
 package com.PokeMeng.OldManGO;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.PokeMeng.OldManGO.Firstlogin.FacebookGoogle;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,5 +40,10 @@ public class exchange_history extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, exchangeHistoryList);
         exchangeHistoryListView.setAdapter(adapter);
+    }
+
+    public void gotoprize (View v){
+        Intent it=new Intent(this, prize.class);
+        startActivity(it);
     }
 }
