@@ -138,8 +138,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:text="作弊：全選"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/TaskAll_hintText"
