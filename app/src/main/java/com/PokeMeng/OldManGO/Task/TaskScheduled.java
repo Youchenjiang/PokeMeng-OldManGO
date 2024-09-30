@@ -175,19 +175,19 @@ public class TaskScheduled extends AppCompatActivity {
         ListView listView = findViewById(R.id.TaskScheduled_allList);
         SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
         final int[] removedCount = {0};
+        String userId = "your_user_id"; // Replace with actual user ID
         for (int i = listView.getCount() - 1; i >= 0; i--) {
             if (checkedItemPositions.get(i)) {
                 String documentId = documentIds.get(i);
                 int finalI = i;
-                FirebaseFirestore.getInstance().collection("Tasks").document(documentId)
-                        .delete()
-                        .addOnSuccessListener(aVoid -> {
+                FirebaseFirestore.getInstance().collection("Users").document(userId).collection("TaskDetails").document(documentId)
+                        .delete().addOnSuccessListener(aVoid -> {
                             stringList.remove(finalI);
                             dateList.remove(finalI);
                             documentIds.remove(finalI);
                             removedCount[0]++;
                             adapter.notifyDataSetChanged();
-                            Toast.makeText(this, removedCount[0] + " tasks removed.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this,"已移除"+ removedCount[0] + "個任務", Toast.LENGTH_LONG).show();
                         })
                         .addOnFailureListener(e -> Toast.makeText(this, "Error deleting task: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
