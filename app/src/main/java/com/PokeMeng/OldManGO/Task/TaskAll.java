@@ -29,7 +29,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.PokeMeng.OldManGO.Challenge.ChallengeAll;
 import com.PokeMeng.OldManGO.DailyCheckIn.Ca;
 import com.PokeMeng.OldManGO.Game.GameMain;
-import com.PokeMeng.OldManGO.MainActivity;
 import com.PokeMeng.OldManGO.R;
 import com.PokeMeng.OldManGO.Video.video_main;
 import com.PokeMeng.OldManGO.medicined.MainActivity5;
@@ -317,14 +316,13 @@ public class TaskAll extends AppCompatActivity {
         private void changeActivity(int position) {
             switch (position){
                 case 0:
+                case 6:
                     startActivity(new Intent(getContext(), ChallengeAll.class));
                     break;
                 case 1:
                     startActivity(new Intent(getContext(), Ca.class));
                     break;
                 case 2:
-                    startActivity(new Intent(getContext(), MainActivity5.class));
-                    break;
                 case 3:
                     startActivity(new Intent(getContext(), MainActivity5.class));
                     break;
@@ -333,9 +331,6 @@ public class TaskAll extends AppCompatActivity {
                     break;
                 case 5:
                     startActivity(new Intent(getContext(), GameMain.class));
-                    break;
-                case 6:
-                    startActivity(new Intent(getContext(), ChallengeAll.class));
                     break;
             }
         }
@@ -476,8 +471,6 @@ public class TaskAll extends AppCompatActivity {
             isDone = done;
         }
 
-        public void setCheckedIn(boolean b) {
-        }
     }
     static class CustomSpinnerAdapter extends ArrayAdapter<String> {
         Context context;
