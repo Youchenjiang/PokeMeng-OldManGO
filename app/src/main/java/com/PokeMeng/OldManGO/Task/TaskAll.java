@@ -120,7 +120,8 @@ public class TaskAll extends AppCompatActivity {
     }
     private void loadDateSpinner() {
         dateList = new ArrayList<>();
-        FirebaseFirestore.getInstance().collection("Tasks").get().addOnCompleteListener(task -> {
+        String userId = "your_user_id"; // Replace with actual user ID
+        FirebaseFirestore.getInstance().collection("Users").document(userId).collection("Tasks").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 processTaskDocuments(task.getResult().getDocuments());
                 addCurrentDateIfMissing();
