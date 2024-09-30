@@ -8,4 +8,31 @@
 
     <string name="web_id">485011129050-hq7o32c78m9jg2shtu3pv0uea3udm5ua.apps.googleusercontent.com</string>
 
+    <string-array name="用藥頻率">
+        <item>一天一次</item>
+        <item>一天兩次</item>
+        <item>一天三次</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="單位">
+        <item>錠</item>
+        <item>包</item>
+        <item>毫升(CC)</item>
+        <item>毫克(mg)</item>
+        <item>其他</item>
+    </string-array>
+    <string-array name="interval_types">
+        <item>天</item>
+        <item>週</item>
+        <item>個月</item>
+    </string-array>
+    <string name="title_activity_main5">MainActivity5</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="photo_description">藥品照片</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

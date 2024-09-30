@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/three"
+        android:title="新增藥品" />
+
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="今日用藥" />
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/history"
+        android:title="歷史紀錄" />
+
+</menu>

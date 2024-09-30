@@ -7,21 +7,25 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/parentLoginBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="224dp"
+        android:layout_height="110dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
+        android:fontFamily="@font/jfopenhuninn"
         android:text="家長登入"
+        android:textSize="34sp"
         app:backgroundTint="@color/design_default_color_secondary" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/elderlyLoginBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="224dp"
+        android:layout_height="110dp"
         android:layout_below="@id/parentLoginBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/jfopenhuninn"
         android:text="老人登入"
+        android:textSize="34sp"
         app:backgroundTint="@color/design_default_color_secondary" />
 
 </RelativeLayout>

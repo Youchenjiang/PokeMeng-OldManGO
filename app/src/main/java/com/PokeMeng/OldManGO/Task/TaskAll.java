@@ -26,7 +26,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.PokeMeng.OldManGO.Challenge.ChallengeAll;
+import com.PokeMeng.OldManGO.DailyCheckIn.Ca;
+import com.PokeMeng.OldManGO.Game.GameMain;
+import com.PokeMeng.OldManGO.MainActivity;
 import com.PokeMeng.OldManGO.R;
+import com.PokeMeng.OldManGO.Video.video_main;
+import com.PokeMeng.OldManGO.medicined.MainActivity5;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -271,9 +277,9 @@ public class TaskAll extends AppCompatActivity {
         loadDateSpinner();
         checkAndLoadTaskStatus();
     }
-    class TaskAdapter extends ArrayAdapter<String> {
+    public class TaskAdapter extends ArrayAdapter<String> {
         List<String> tasksList;
-        TaskStatus taskStatus;
+        public TaskStatus taskStatus;
         public TaskAdapter(@NonNull Context context, List<String> list) {
             super(context, R.layout.task_all_listview, list);
             tasksList = list;
@@ -288,6 +294,7 @@ public class TaskAll extends AppCompatActivity {
             checkedTextView.setChecked(isChecked);
             checkedTextView.setBackgroundResource(isChecked ? R.drawable.task_all_listview_background_strikethrough : 0);
             convertView.findViewById(R.id.AllList_chooseImage).setVisibility(position >= 7 ? View.GONE : View.VISIBLE);
+            convertView.findViewById(R.id.AllList_chooseImage).setOnClickListener(v -> changeActivity(position));
             convertView.setOnClickListener(v -> handleItemClick(position));
             return convertView;
         }
@@ -305,6 +312,31 @@ public class TaskAll extends AppCompatActivity {
             else{
                 updateTaskStatus(position);
                 notifyDataSetChanged();
+            }
+        }
+        private void changeActivity(int position) {
+            switch (position){
+                case 0:
+                    startActivity(new Intent(getContext(), ChallengeAll.class));
+                    break;
+                case 1:
+                    startActivity(new Intent(getContext(), Ca.class));
+                    break;
+                case 2:
+                    startActivity(new Intent(getContext(), MainActivity5.class));
+                    break;
+                case 3:
+                    startActivity(new Intent(getContext(), MainActivity5.class));
+                    break;
+                case 4:
+                    startActivity(new Intent(getContext(), video_main.class));
+                    break;
+                case 5:
+                    startActivity(new Intent(getContext(), GameMain.class));
+                    break;
+                case 6:
+                    startActivity(new Intent(getContext(), ChallengeAll.class));
+                    break;
             }
         }
         private void updateTaskStatus(int position) {
@@ -442,6 +474,9 @@ public class TaskAll extends AppCompatActivity {
         @PropertyName("is_done")
         public void setTaskStatus(List<Boolean> done) {
             isDone = done;
+        }
+
+        public void setCheckedIn(boolean b) {
         }
     }
     static class CustomSpinnerAdapter extends ArrayAdapter<String> {

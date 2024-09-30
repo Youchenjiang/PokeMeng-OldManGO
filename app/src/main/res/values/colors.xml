@@ -11,4 +11,10 @@
     <color name="medium_gray">#707070</color>
     <color name="dark_gray">#FF404040</color>
     <color name="black">#FF000000</color>
+
+    <color name="button_default_color">#FFEBEE</color>
+    <color name="button_pressed_color">#000000</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="textColor">#000000</color>
+    <color name="backgroundColor">#FFFFFF</color>
 </resources>

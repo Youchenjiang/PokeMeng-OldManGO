@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
+
     <TextView
+        android:id="@+id/Listview_timeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/Listview_timeText"
-        android:textStyle="normal|bold"
-        android:textSize="18sp"/>
+        android:layout_alignParentTop="true"
+        android:fontFamily="@font/edukai5"
+        android:textSize="18sp"
+        android:textStyle="normal|bold" />
+
     <TextView
+        android:id="@+id/Listview_numberText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/Listview_timeText"
         android:layout_alignParentEnd="true"
-        android:id="@+id/Listview_numberText"
-        android:textSize="18sp"/>
+        android:fontFamily="@font/jfopenhuninn"
+        android:textSize="18sp" />
 </RelativeLayout>
 <!--聊天訊息內容清單布局檔：https://code.tutsplus.com/zh-hant/how-to-create-an-android-chat-app-using-firebase- -cms-27397t-->

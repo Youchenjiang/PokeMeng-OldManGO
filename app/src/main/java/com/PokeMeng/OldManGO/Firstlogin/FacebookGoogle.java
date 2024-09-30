@@ -107,6 +107,18 @@ public class FacebookGoogle extends AppCompatActivity {
                 .build();
 
         googleSignInClient=GoogleSignIn.getClient(this,gso);
+        // 確保每次進入這個頁面時登出 Google 帳戶
+        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                googleSignInClient.revokeAccess().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // 確保完全登出
+                    }
+                });
+            }
+        });
 
         google.setOnClickListener(new View.OnClickListener() {
             @Override

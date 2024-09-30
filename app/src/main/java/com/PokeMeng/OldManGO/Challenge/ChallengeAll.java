@@ -29,17 +29,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.PokeMeng.OldManGO.R;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 public class ChallengeAll extends AppCompatActivity implements SensorEventListener{
     String TAG = "計步器";
-    int mSteps = 0;
+    int mSteps;
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> { });
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
@@ -77,17 +73,16 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         });
         findViewById(R.id.challenge_nowLayout).setOnClickListener(v ->startActivity(new Intent(this, ChallengeNow.class).putExtra("steps", mSteps)));
         findViewById(R.id.challenge_returnButton).setOnClickListener(v ->finish());
-    }private void getNowStep() {
-        Calendar nowCalendar = Calendar.getInstance();
-        nowCalendar.setTimeInMillis(System.currentTimeMillis());
-        String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(nowCalendar.getTime());
-        String userName = "UserName"; // Replace with actual user name
-        String documentId = "Step_" + userName + "(" + formattedDate + ")";
+    }
+    private void getNowStep() {
+        String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(System.currentTimeMillis());
+        String userId = "your_user_id"; // Replace with actual user ID
 
-        db.collection("StepList").document(documentId).get().addOnCompleteListener(task -> {
+        db.collection("Users").document(userId).collection("StepList").document(formattedDate).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
                 ChallengeHistoryStep challengeHistoryStep = task.getResult().toObject(ChallengeHistoryStep.class);
                 if (challengeHistoryStep != null) {
+                    Log.d(TAG, "Step number: " + challengeHistoryStep.getStepNumber());
                     mSteps = challengeHistoryStep.getStepNumber();
                 }
             } else {
@@ -131,52 +126,62 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
     private void registerSensor(SensorManager sensorManager, int sensorType) {
         Sensor sensor = sensorManager.getDefaultSensor(sensorType); // 獲取計步器sensor
         if (sensor != null) sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-        else Log.e(TAG, "No sensor found for type: " + sensorType);
+        else {
+            mSteps = -1;
+            Log.e(TAG, "No sensor found for type: " + sensorType);
+        }
     }
     private void updateStepList() {
-        db.collection("StepList").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                List<ChallengeHistoryStep> taskList = new ArrayList<>();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    taskList.add(document.toObject(ChallengeHistoryStep.class));
-                }
-                long currentDate = System.currentTimeMillis();
-                Calendar nowCalendar = Calendar.getInstance();
-                nowCalendar.setTimeInMillis(currentDate);
-                int currentDay = nowCalendar.get(Calendar.DAY_OF_YEAR), currentYear = nowCalendar.get(Calendar.YEAR);
-                taskList.removeIf(step -> {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(step.getStepDate());
-                    return calendar.get(Calendar.DAY_OF_YEAR) == currentDay && calendar.get(Calendar.YEAR) == currentYear;
-                });
-                taskList.add(new ChallengeHistoryStep(currentDate, mSteps));
-
-                // Generate document ID in the format Step_UserName(YYYY MM DD)
-                String userName = "UserName"; // Replace with actual user name
-                String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
-                String documentId = "Step_" + userName + "(" + formattedDate + ")";
-
-                // Store each ChallengeHistoryStep individually
-                for (ChallengeHistoryStep step : taskList) {
-                    db.collection("StepList").document(documentId).set(step)
-                            .addOnSuccessListener(aVoid -> Log.d(TAG, "Step successfully updated!"))
-                            .addOnFailureListener(e -> Log.w(TAG, "Error updating step", e));
-                }
-            } else {
-                Log.w(TAG, "Error getting documents.", task.getException());
-            }
-        });
+        String userId = "your_user_id"; // Replace with actual user ID
+        String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(System.currentTimeMillis());
+        ChallengeHistoryStep newStep = new ChallengeHistoryStep(mSteps);
+        db.collection("Users").document(userId).collection("StepList").document(formattedDate).set(newStep)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Step successfully updated!"))
+                .addOnFailureListener(e -> Log.w(TAG, "Error updating step", e));
     }
     @Override
     public void onSensorChanged(SensorEvent event) { // 實現SensorEventListener回檔介面，在sensor改變時，會回檔該介面
         if (event.values[0] == 1.0f) mSteps++; // 並將結果通過event回傳給app處理
         updateStepText();
-        updateStepList();
-        sendBroadcast(new Intent("com.example.myapplication0412.STEP_UPDATE").putExtra("steps", mSteps));
+        if(mSteps != 0) updateStepList();
+        sendBroadcast(new Intent("com.PokeMeng.OldManGO.STEP_UPDATE").putExtra("steps", mSteps));
         Log.i(TAG,"Detected step changes:"+event.values[0]);
     }
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.i(TAG,"onAccuracyChanged");
+    }
+
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart called");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume called");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause called");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop called");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy called");
     }
 }

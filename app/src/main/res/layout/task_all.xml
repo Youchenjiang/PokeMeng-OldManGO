@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/view2"
     tools:context=".Task.TaskAll">
 
     <ImageButton
@@ -24,7 +25,7 @@
         android:id="@+id/TaskAll_titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/edukai5"
+        android:fontFamily="@font/jfopenhuninn"
         android:text="每日任務"
         android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,11 +36,10 @@
         android:id="@+id/TaskAll_addImage"
         android:layout_width="72dp"
         android:layout_height="63dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="addImage"
         app:layout_constraintBottom_toTopOf="@+id/TaskAll_addText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/TaskAll_descriptiveText"
         app:layout_constraintTop_toTopOf="@+id/TaskAll_guideLine2"
         app:srcCompat="@android:drawable/ic_input_add" />
 
@@ -74,7 +74,7 @@
         android:id="@+id/TaskAll_addText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/edukai5"
+        android:fontFamily="@font/jfopenhuninn"
         android:text="新增"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/TaskAll_guideLine3"
@@ -102,7 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#CF9339"
-        android:fontFamily="@font/edukai5"
+        android:fontFamily="@font/jfopenhuninn"
         android:text="已排日程"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,32 +110,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/TaskAll_guideLine4" />
 
-    <TextView
-        android:id="@+id/TaskAll_descriptiveText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/edukai5"
-        android:text="任務:"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/TaskAll_guideLine3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/TaskAll_guideLine2" />
-
     <Spinner
         android:id="@+id/TaskAll_dateSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="176dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="496dp"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/TaskAll_descriptiveText"
-        app:layout_constraintEnd_toStartOf="@+id/TaskAll_descriptiveText"
-        app:layout_constraintTop_toTopOf="@+id/TaskAll_descriptiveText" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/TaskAll_addImage"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TaskAll_titleText" />
 
     <TextView
         android:id="@+id/TaskAll_pointsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/edukai5"
+        android:fontFamily="@font/jfopenhuninn"
         android:text="我的積分："
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/TaskAll_guideLine1"
@@ -158,6 +150,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/jfopenhuninn"
         android:text="可領取獎勵！"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:state_pressed="true">
+    <shape android:shape="rectangle">
+        <stroke
+            android:width="5dp"
+            android:color="#000000"/>
+        <solid android:color="#ff0000"/> <!-- 按下时的颜色 -->
+    </shape>
+</item>
+<item>
+    <shape android:shape="rectangle">
+        <stroke
+            android:width="5dp"
+            android:color="#000000"/>
+        <solid android:color="#FFFFFF"/> <!-- 默认颜色 -->
+    </shape>
+</item>
+</selector>
