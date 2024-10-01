@@ -18,6 +18,7 @@ public class exchange_history extends AppCompatActivity {
     private ListView exchangeHistoryListView;
     private List<String> exchangeHistoryList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

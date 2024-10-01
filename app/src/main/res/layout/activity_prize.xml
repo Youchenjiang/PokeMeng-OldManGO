@@ -90,11 +90,11 @@
 
             <TextView
                 android:id="@+id/requiredPointsTextView1"
-                android:layout_width="365dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/jfopenhuninn"
-                android:text="所需積分: 1000分"
+                android:text="所需積分: 21000分"
                 android:textAlignment="center"
                 android:textSize="18sp" />
 
@@ -132,11 +132,11 @@
 
             <TextView
                 android:id="@+id/requiredPointsTextView2"
-                android:layout_width="366dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/jfopenhuninn"
-                android:text="所需積分: 5000分"
+                android:text="所需積分: 15000分"
                 android:textAlignment="center"
                 android:textSize="18sp" />
 

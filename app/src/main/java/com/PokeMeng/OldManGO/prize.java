@@ -26,6 +26,8 @@ public class prize extends AppCompatActivity {
         TextView expiryDateTextView = findViewById(R.id.expiryDateTextView);
         expiryDateTextView.setText("積分有效期至: " + pointsExpiryDate);
 
+
+
         // 設置第一個獎品的點擊事件
         ImageView rewardImageView1 = findViewById(R.id.rewardImageView1);
         rewardImageView1.setOnClickListener(v -> {
@@ -45,7 +47,35 @@ public class prize extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // 设置button10和button9的点击事件
+        Button button10 = findViewById(R.id.button10);
+        Button button9 = findViewById(R.id.button9);
+
+        button10.setOnClickListener(v -> {
+            // 示例功能: 进行相应操作
+            handleRedeem(21000); // 假设button10对应21000积分的兑换
+        });
+
+        button9.setOnClickListener(v -> {
+            // 示例功能: 进行相应操作
+            handleRedeem(15000); // 假设button9对应15000积分的兑换
+        });
     }
+
+    private void handleRedeem(int requiredPoints) {
+        if (currentPoints >= requiredPoints) {
+            openRewardDetails(1, requiredPoints); // 调用打开奖励详情的方法
+        } else {
+            // 显示提示用户积分不足
+            // 您可以使用Toast或AlertDialog来提示
+        }
+    }
+
+    // 跳转到详细页面的方法
+
+
+
+
 
     // 跳轉到詳細頁面的方法
     private void openRewardDetails(int rewardId, int requiredPoints) {

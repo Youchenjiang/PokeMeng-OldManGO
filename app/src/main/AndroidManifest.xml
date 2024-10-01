@@ -67,7 +67,7 @@
         <!-- Other Activities -->
         <activity android:name=".dialog_instructions" android:exported="false" />
         <activity android:name=".TEST" android:exported="false" />
-        <activity android:name=".MainActivity2" android:exported="false" />
+        <activity android:name=".MainActivity2" android:exported="true" />
         <activity android:name=".medicined.MainActivity5" android:exported="false" />
         <!-- Main Activity -->
         <activity android:name=".MainActivity" android:exported="true">
