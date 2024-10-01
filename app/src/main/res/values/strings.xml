@@ -4,7 +4,14 @@
     <string name="challenge_myStepText">目前步數%1$d步</string>
     <string name="task_show_choose_date">ShowChooseDate</string>
     <string name="task_returnImageDescription">goBack</string>
-    <string name="all_points">我的積分: %1$d</string>
+    <string name="TaskAll_points_text">我的積分：</string>
+    <string name="TaskAll_daily_tasks">每日任務</string>
+    <string name="TaskAll_add_image">addImage</string>
+    <string name="TaskAll_add_task">新增任務</string>
+    <string name="TaskAll_scheduled_tasks">已排日程</string>
+    <string name="TaskAll_cheat_select_all">作弊：全選</string>
+    <string name="TaskAll_reward_hint">可領取全選獎勵！</string>
+    <string name="TaskAll_all_points">我的積分: %1$d</string>
 
     <string name="web_id">485011129050-hq7o32c78m9jg2shtu3pv0uea3udm5ua.apps.googleusercontent.com</string>
 

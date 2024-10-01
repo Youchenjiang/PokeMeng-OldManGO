@@ -30,7 +30,7 @@ public class video_main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_main);
+        setContentView(R.layout.video_main);
 
         videoView = findViewById(R.id.videoView);
         videoContainer = findViewById(R.id.aspect_ratio_frame);

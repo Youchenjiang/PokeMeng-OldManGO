@@ -335,7 +335,7 @@
         android:layout_height="58dp"
         android:layout_marginTop="-20dp"
         android:layout_marginBottom="-20dp"
-        android:background="@drawable/btnstyle"
+        android:background="@drawable/all_style_button"
         android:fontFamily="@font/jfopenhuninn"
         android:onClick="gotomain"
         android:text="回主介面"
