@@ -337,7 +337,7 @@
         android:layout_marginBottom="-20dp"
         android:background="@drawable/all_style_button"
         android:fontFamily="@font/jfopenhuninn"
-        android:onClick="gotomain"
+        android:onClick="gotoMain"
         android:text="回主介面"
         android:textColor="@color/white"
         android:textSize="24sp"

@@ -17,7 +17,7 @@
         android:layout_marginBottom="-5dp"
         android:backgroundTint="@color/design_default_color_background"
         android:fontFamily="@font/jfopenhuninn"
-        android:onClick="gotomain"
+        android:onClick="gotoMain"
         android:text="主介面"
         android:textAlignment="center"
         android:textAllCaps="false"

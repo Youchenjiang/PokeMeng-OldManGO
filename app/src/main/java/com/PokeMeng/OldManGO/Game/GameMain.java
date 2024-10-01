@@ -29,27 +29,27 @@ public class GameMain extends AppCompatActivity {
             else Log.d("FireStore", "ChallengeCompleted already completed for today.");
         });
     }
-    public void gotomain (View v){
+    public void gotoMain(View v){
         Intent it=new Intent(this, MainActivity.class);
         startActivity(it);
     }
-    public void gotoeye (View v){
+    public void gotoEye(View v){
         Intent it=new Intent(this, ColorGame.class);
         startActivity(it);
     }
-    public void gotofruit (View v){
+    public void gotoFruit(View v){
         Intent it=new Intent(this, GameView.class);
         startActivity(it);
     }
-    public void gotowash (View v){
+    public void gotoWash(View v){
         Intent it=new Intent(this, WashGames.class);
         startActivity(it);
     }
-    public void gotocard (View v){
+    public void gotoCard(View v){
         Intent it=new Intent(this, CardGame.class);
         startActivity(it);
     }
-    public void gotovideo (View v){
+    public void gotoVideo(View v){
         Intent it=new Intent(this, video_main.class);
         startActivity(it);
     }
