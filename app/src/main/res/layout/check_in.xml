@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/view2"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="160dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/all_style_button"
+        android:fontFamily="@font/jfopenhuninn"
+        android:onClick="buttonsign"
+        android:text="今日簽到"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.099"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateDisplay"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        style="@style/CustomCalendarView"
+        android:layout_width="327dp"
+        android:layout_height="436dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/all_style_button"
+        android:dateTextAppearance="?attr/textAppearanceSearchResultTitle"
+        android:selectedWeekBackgroundColor="@color/material_dynamic_primary0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/dateDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="-10dp"
+        android:layout_marginBottom="128dp"
+        android:fontFamily="@font/jfopenhuninn"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="160dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/all_style_button"
+        android:fontFamily="@font/jfopenhuninn"
+        android:onClick="gotomain"
+        android:text="主頁面"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.876"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateDisplay"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

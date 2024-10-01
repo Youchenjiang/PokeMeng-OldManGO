@@ -10,8 +10,8 @@ android {
         applicationId = "com.PokeMeng.OldManGO"
         minSdk = 26
         targetSdk = 34
-        versionCode = 35
-        versionName = "1.0.35"
+        versionCode = 37
+        versionName = "1.0.37"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -25,8 +25,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         viewBinding = true

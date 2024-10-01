@@ -4,18 +4,30 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.PokeMeng.OldManGO.MainActivity;
 import com.PokeMeng.OldManGO.R;
+import com.PokeMeng.OldManGO.TaskManager;
 import com.PokeMeng.OldManGO.Video.video_main;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class GameMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2_gamemain);
+        setContentView(R.layout.game_main);
+        TaskManager taskManager = new TaskManager(FirebaseFirestore.getInstance(), "your_user_id");
+        taskManager.checkAndCompleteTask("PlayedGame", result -> {
+            if (!result) {
+                Log.d("FireStore", "ChallengeCompleted not completed yet.");
+                taskManager.updateTaskStatusForSteps(5);
+                taskManager.markTaskAsCompleted("PlayedGame");
+            }
+            else Log.d("FireStore", "ChallengeCompleted already completed for today.");
+        });
     }
     public void gotomain (View v){
         Intent it=new Intent(this, MainActivity.class);

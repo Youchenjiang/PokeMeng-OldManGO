@@ -45,7 +45,7 @@ public class TEST extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.test);
 
         heartImageView = findViewById(R.id.heartImageView);
         dollImageView = findViewById(R.id.dollImageView);

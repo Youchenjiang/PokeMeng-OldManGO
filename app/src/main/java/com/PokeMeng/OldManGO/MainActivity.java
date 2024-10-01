@@ -11,14 +11,14 @@ import android.widget.TextClock;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.PokeMeng.OldManGO.Challenge.ChallengeAll;
-import com.PokeMeng.OldManGO.DailyCheckIn.Ca;
-import com.PokeMeng.OldManGO.Firstlogin.FacebookGoogle;
+import com.PokeMeng.OldManGO.DailyCheckIn.CheckIn;
+import com.PokeMeng.OldManGO.FirstLogin.FacebookGoogle;
 import com.PokeMeng.OldManGO.Game.GameMain;
 import com.PokeMeng.OldManGO.Personal.SetPersonalData;
+import com.PokeMeng.OldManGO.Prize.Prize;
 import com.PokeMeng.OldManGO.Task.TaskAll;
-import com.PokeMeng.OldManGO.location.MapMainActivity;
-import com.PokeMeng.OldManGO.location.login;
-import com.PokeMeng.OldManGO.medicined.MainActivity5;
+import com.PokeMeng.OldManGO.Location.MapMainActivity;
+import com.PokeMeng.OldManGO.Medicine.MainActivity5;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.imageButton6).setOnClickListener(v -> {
             speak("獎勵兌換");
-            startActivity(new Intent(this, prize.class));
+            startActivity(new Intent(this, Prize.class));
         });
 
         findViewById(R.id.imageButton5).setOnClickListener(v -> {
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.button8).setOnClickListener(v -> {
             speak("每日簽到");
-            startActivity(new Intent(this, Ca.class));
+            startActivity(new Intent(this, CheckIn.class));
         });
 
         // 設定台灣時區

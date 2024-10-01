@@ -37,13 +37,13 @@
         <!-- Personal Activities -->
         <activity android:name=".Personal.SetPersonalData" android:exported="false" />
         <!-- First Login Activities -->
-        <activity android:name=".Firstlogin.FacebookGoogle" android:exported="false" />
-        <activity android:name=".Firstlogin.Logout" android:exported="false" />
+        <activity android:name=".FirstLogin.FacebookGoogle" android:exported="false" />
+        <activity android:name=".FirstLogin.Logout" android:exported="false" />
         <!-- Daily Check-In Activities -->
-        <activity android:name=".DailyCheckIn.Ca" android:exported="false" />
+        <activity android:name=".DailyCheckIn.CheckIn" android:exported="false" />
         <!-- Location Activities -->
-        <activity android:name=".location.login" android:exported="false" />
-        <activity android:name=".location.MapMainActivity" android:exported="false" />
+        <activity android:name=".Location.login" android:exported="false" />
+        <activity android:name=".Location.MapMainActivity" android:exported="false" />
         <!-- Task Activities -->
         <activity android:name=".Task.TaskScheduled" android:exported="false" />
         <activity android:name=".Task.TaskAdd" android:exported="false" />
@@ -52,9 +52,9 @@
         <activity android:name=".Challenge.ChallengeNow" android:exported="false" />
         <activity android:name=".Challenge.ChallengeAll" android:exported="false" />
         <!-- Exchange and Prize Activities -->
-        <activity android:name=".exchange_history" android:exported="false" />
-        <activity android:name=".prize" android:exported="false" />
-        <activity android:name=".reward_details" android:exported="false" />
+        <activity android:name=".Prize.ExchangeHistory" android:exported="false" />
+        <activity android:name=".Prize.Prize" android:exported="false" />
+        <activity android:name=".Prize.RewardDetails" android:exported="false" />
         <!-- Video Activities -->
         <activity android:name=".Video.video_main" android:configChanges="orientation|screenSize" android:exported="false" />
         <!-- Game Activities -->
@@ -65,10 +65,10 @@
         <activity android:name=".Game.ColorGame" android:exported="false" />
         <activity android:name=".Game.GameMain" android:exported="false" />
         <!-- Other Activities -->
-        <activity android:name=".dialog_instructions" android:exported="false" />
+        <activity android:name=".Game.dialogInstructions" android:exported="false" />
         <activity android:name=".TEST" android:exported="false" />
-        <activity android:name=".MainActivity2" android:exported="true" />
-        <activity android:name=".medicined.MainActivity5" android:exported="false" />
+        <activity android:name=".Welcome" android:exported="true" />
+        <activity android:name=".Medicine.MainActivity5" android:exported="false" />
         <!-- Main Activity -->
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
@@ -77,6 +77,6 @@
             </intent-filter>
         </activity>
         <!-- Receiver -->
-        <receiver android:name=".medicined.AlarmReceiver" />
+        <receiver android:name=".Medicine.AlarmReceiver" />
     </application>
 </manifest>

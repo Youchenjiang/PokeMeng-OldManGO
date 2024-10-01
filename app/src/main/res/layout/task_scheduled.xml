@@ -89,7 +89,7 @@
         android:layout_width="95dp"
         android:layout_height="60dp"
         android:layout_marginTop="660dp"
-        android:background="@drawable/btnstyle"
+        android:background="@drawable/all_style_button"
         android:fontFamily="@font/jfopenhuninn"
         android:text="返回"
         android:textSize="24sp"
