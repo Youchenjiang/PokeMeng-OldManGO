@@ -1,4 +1,4 @@
-package com.PokeMeng.OldManGO.Medicine.ui.notifications;
+package com.PokeMeng.OldManGO.medicined.ui.notifications;
 
 
 import android.app.DatePickerDialog;
@@ -40,7 +40,7 @@ public class NotificationsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        binding = MFragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
