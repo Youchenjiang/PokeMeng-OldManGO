@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <!-- Allows the application to use the device's accelerometer sensor -->
     <uses-feature android:name="android.hardware.sensor.accelerometer" />
-
+    <!-- Vibration and Internet permissions -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Activity recognition and boot completed permissions -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Location permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
-
-
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Storage permissions -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <!-- Notification and alarm permissions -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.SET_ALARM"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <!-- Network and wake lock permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
-
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -35,106 +32,51 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication0412"
+        android:theme="@style/Theme.PokeMengOldManGO"
         tools:targetApi="31">
-
-        <activity
-            android:name=".Personal.SetPersonalData"
-            android:exported="true" />
-        <activity
-            android:name=".Firstlogin.FacebookGoogle"
-            android:exported="true" />
-        <activity
-            android:name=".DailyCheckIn.Ca"
-            android:exported="true" />
-        <activity
-            android:name=".Firstlogin.Logout"
-            android:exported="true" />
-        <activity
-            android:name=".location.login"
-            android:exported="true" />
-        <activity
-            android:name=".location.MapMainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Task.TaskScheduled"
-            android:exported="false" />
-        <activity
-            android:name=".Task.TaskAdd"
-            android:exported="false" />
-        <activity
-            android:name=".Task.TaskAll"
-            android:exported="true" />
-        <activity
-            android:name=".Challenge.ChallengeNow"
-            android:exported="false" />
-        <activity
-            android:name=".Challenge.ChallengeAll"
-            android:exported="true" />
-        <activity
-            android:name=".exchange_history"
-            android:exported="false" />
-        <activity
-            android:name=".prize"
-            android:exported="true" />
-        <activity
-            android:name=".reward_details"
-            android:exported="true" />
-        <activity
-            android:name=".Video.video_main"
-            android:configChanges="orientation|screenSize"
-            android:exported="true" />
-        <activity
-            android:name=".Game.CardGame"
-            android:exported="true" />
-        <activity
-            android:name=".Game.GameView"
-            android:exported="true" />
-        <activity
-            android:name=".dialog_instructions"
-            android:exported="true" />
-        <activity
-            android:name=".Game.WashGames"
-            android:exported="true" />
-        <activity
-            android:name=".Game.GameCanvasView"
-            android:exported="true" />
-        <activity
-            android:name=".TEST"
-            android:exported="true" />
-        <activity
-            android:name=".Game.ColorGame"
-            android:exported="true" />
-        <activity
-            android:name=".Game.GameMain"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".medicined.MainActivity5"
-            android:exported="true"
-            android:label="@string/title_activity_main5"
-            android:launchMode="singleTop">
+        <!-- Personal Activities -->
+        <activity android:name=".Personal.SetPersonalData" android:exported="false" />
+        <!-- First Login Activities -->
+        <activity android:name=".FirstLogin.FacebookGoogle" android:exported="false" />
+        <activity android:name=".FirstLogin.Logout" android:exported="false" />
+        <!-- Daily Check-In Activities -->
+        <activity android:name=".DailyCheckIn.CheckIn" android:exported="false" />
+        <!-- Location Activities -->
+        <activity android:name=".Location.login" android:exported="false" />
+        <activity android:name=".Location.MapMainActivity" android:exported="false" />
+        <!-- Task Activities -->
+        <activity android:name=".Task.TaskScheduled" android:exported="false" />
+        <activity android:name=".Task.TaskAdd" android:exported="false" />
+        <activity android:name=".Task.TaskAll" android:exported="false" />
+        <!-- Challenge Activities -->
+        <activity android:name=".Challenge.ChallengeNow" android:exported="false" />
+        <activity android:name=".Challenge.ChallengeAll" android:exported="false" />
+        <!-- Exchange and Prize Activities -->
+        <activity android:name=".Prize.ExchangeHistory" android:exported="false" />
+        <activity android:name=".Prize.Prize" android:exported="false" />
+        <activity android:name=".Prize.RewardDetails" android:exported="false" />
+        <!-- Video Activities -->
+        <activity android:name=".Video.video_main" android:configChanges="orientation|screenSize" android:exported="false" />
+        <!-- Game Activities -->
+        <activity android:name=".Game.CardGame" android:exported="false" />
+        <activity android:name=".Game.GameView" android:exported="false" />
+        <activity android:name=".Game.WashGames" android:exported="false" />
+        <activity android:name=".Game.GameCanvasView" android:exported="false" />
+        <activity android:name=".Game.ColorGame" android:exported="false" />
+        <activity android:name=".Game.GameMain" android:exported="false" />
+        <!-- Other Activities -->
+        <activity android:name=".Game.dialogInstructions" android:exported="false" />
+        <activity android:name=".TEST" android:exported="false" />
+        <activity android:name=".Welcome" android:exported="true" />
+        <activity android:name=".Medicine.MainActivity5" android:exported="false" />
+        <!-- Main Activity -->
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".MainActivity2"
-            android:exported="true" />
-
-        <receiver android:name=".medicined.AlarmReceiver" />
-
+        <!-- Receiver -->
+        <receiver android:name=".Medicine.AlarmReceiver" />
     </application>
-
 </manifest>

@@ -120,11 +120,11 @@ public class ChallengeNow extends AppCompatActivity {
         void onCallback(List<ChallengeHistoryStep> list);
     }
     public static class ChallengeHistoryStep {
-        private String stepDate; // Add this field
+        private String stepDate;
         int stepNumber;
-        public ChallengeHistoryStep(int stepNumber) {
-            this.stepNumber = stepNumber;
-        }
+        //序列化失敗處理-無參數建構子https://stackoverflow.com/questions/60389906/could-not-deserialize-object-does-not-define-a-no-argument-constructor-if-you：
+        @SuppressWarnings("unused") public ChallengeHistoryStep() {}
+        @SuppressWarnings("unused") public ChallengeHistoryStep(int stepNumber) { this.stepNumber = stepNumber;}
         public int getStepNumber() { return stepNumber;}
         public String getStepDate() { return stepDate;}
         public void setStepDate(String stepDate) { this.stepDate = stepDate;}

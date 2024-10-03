@@ -43,7 +43,7 @@ public class CardGame extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cardgame);
+        setContentView(R.layout.game_card_game);
 
         gridLayout = findViewById(R.id.gridLayout);
         scoreTextView = findViewById(R.id.scoreTextView);
@@ -80,7 +80,7 @@ public class CardGame extends AppCompatActivity {
         // 創建對話框
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // 加載對話框佈局
-        View dialogView = getLayoutInflater().inflate(R.layout.activity_dialog_instructions, null);
+        View dialogView = getLayoutInflater().inflate(R.layout.game_dialog_instructions, null);
         builder.setView(dialogView);
 
         // 設置對話框按鈕

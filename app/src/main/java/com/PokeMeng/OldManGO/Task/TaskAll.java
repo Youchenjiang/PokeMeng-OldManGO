@@ -27,12 +27,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.PokeMeng.OldManGO.Challenge.ChallengeAll;
-import com.PokeMeng.OldManGO.DailyCheckIn.Ca;
+import com.PokeMeng.OldManGO.DailyCheckIn.CheckIn;
 import com.PokeMeng.OldManGO.Game.GameMain;
-import com.PokeMeng.OldManGO.MainActivity;
 import com.PokeMeng.OldManGO.R;
 import com.PokeMeng.OldManGO.Video.video_main;
-import com.PokeMeng.OldManGO.medicined.MainActivity5;
+import com.PokeMeng.OldManGO.Medicine.MainActivity5;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -121,7 +120,8 @@ public class TaskAll extends AppCompatActivity {
     }
     private void loadDateSpinner() {
         dateList = new ArrayList<>();
-        FirebaseFirestore.getInstance().collection("Tasks").get().addOnCompleteListener(task -> {
+        String userId = "your_user_id"; // Replace with actual user ID
+        FirebaseFirestore.getInstance().collection("Users").document(userId).collection("TaskDetails").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 processTaskDocuments(task.getResult().getDocuments());
                 addCurrentDateIfMissing();
@@ -134,8 +134,7 @@ public class TaskAll extends AppCompatActivity {
     private void processTaskDocuments(List<DocumentSnapshot> documents) {
         for (DocumentSnapshot document : documents) {
             Object taskDatesObj = document.get("任務日期");
-            if (taskDatesObj instanceof List<?>) {
-                List<?> taskDates = (List<?>) taskDatesObj;
+            if (taskDatesObj instanceof List<?> taskDates) {
                 for (Object timestampObj : taskDates)
                     if (timestampObj instanceof Timestamp)
                         addDateInfoFromTimestamp((Timestamp) timestampObj);
@@ -225,8 +224,7 @@ public class TaskAll extends AppCompatActivity {
     private void processDocument(QueryDocumentSnapshot document, DateInfo compareDate) {
         String taskName = document.getString("任務名稱");
         Object taskDatesObj = document.get("任務日期");
-        if (taskDatesObj instanceof List<?>) {
-            List<?> taskDates = (List<?>) taskDatesObj;
+        if (taskDatesObj instanceof List<?> taskDates) {
             for (Object timestampObj : taskDates) {
                 if (timestampObj instanceof Timestamp) {
                     DateInfo dateInfo = getDateInfoFromTimestamp((Timestamp) timestampObj);
@@ -257,13 +255,13 @@ public class TaskAll extends AppCompatActivity {
         long currentDate = System.currentTimeMillis();
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
         DocumentReference rewardRef = db.collection("Users").document(userId)
-                .collection("hasClaimedFullCompletionReward").document(formattedDate);
+                .collection("hasGetReward").document(formattedDate);
         rewardRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 DocumentSnapshot document = task.getResult();
-                hasClaimedReward = document.exists();
-                if (hasClaimedReward) {
-                    ((TextView)findViewById(R.id.TaskAll_hintText)).setText("今日任務已全部完成，獎勵已領取");
+                if (document.exists() && document.contains("FullCompleted")) {
+                    hasClaimedReward = Boolean.TRUE.equals(document.getBoolean("FullCompleted"));
+                    if (hasClaimedReward) ((TextView)findViewById(R.id.TaskAll_hintText)).setText("已領取全選獎勵！");
                 }
             } else {
                 Log.w("FireStore", "Error getting reward document", task.getException());
@@ -317,14 +315,13 @@ public class TaskAll extends AppCompatActivity {
         private void changeActivity(int position) {
             switch (position){
                 case 0:
+                case 6:
                     startActivity(new Intent(getContext(), ChallengeAll.class));
                     break;
                 case 1:
-                    startActivity(new Intent(getContext(), Ca.class));
+                    startActivity(new Intent(getContext(), CheckIn.class));
                     break;
                 case 2:
-                    startActivity(new Intent(getContext(), MainActivity5.class));
-                    break;
                 case 3:
                     startActivity(new Intent(getContext(), MainActivity5.class));
                     break;
@@ -333,9 +330,6 @@ public class TaskAll extends AppCompatActivity {
                     break;
                 case 5:
                     startActivity(new Intent(getContext(), GameMain.class));
-                    break;
-                case 6:
-                    startActivity(new Intent(getContext(), ChallengeAll.class));
                     break;
             }
         }
@@ -367,8 +361,7 @@ public class TaskAll extends AppCompatActivity {
             long currentDate = System.currentTimeMillis();
             String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
             db.collection("Users").document(userId)
-                    .collection("TaskStatus").document(formattedDate)
-                    .set(taskStatus)
+                    .collection("TaskStatus").document(formattedDate).set(taskStatus)
                     .addOnSuccessListener(aVoid -> Log.d("FireStore", "日期狀態成功上傳!"))
                     .addOnFailureListener(e -> Log.w("FireStore", "上船日期狀態失敗", e));
             checkAndAddPointsIfAllTasksCompleted();
@@ -398,7 +391,7 @@ public class TaskAll extends AppCompatActivity {
                 DocumentSnapshot document = task.getResult();
                 Long currentPoints = document.getLong("points");
                 if (currentPoints == null) currentPoints = 0L;
-                userRef.set(Collections.singletonMap("points", currentPoints + 5), SetOptions.merge())
+                userRef.set(Collections.singletonMap("points", currentPoints + 10), SetOptions.merge())
                         .addOnSuccessListener(aVoid -> Log.d("FireStore", "Points successfully updated!"))
                         .addOnFailureListener(e -> Log.w("FireStore", "Error updating points", e));
             } else {
@@ -417,8 +410,8 @@ public class TaskAll extends AppCompatActivity {
         long currentDate = System.currentTimeMillis();
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
         DocumentReference rewardRef = db.collection("Users").document(userId)
-                .collection("hasClaimedFullCompletionReward").document(formattedDate);
-        rewardRef.set(Collections.singletonMap("claimed", true))
+                .collection("hasGetReward").document(formattedDate);
+        rewardRef.set(Collections.singletonMap("FullCompleted", true))
                 .addOnSuccessListener(aVoid -> Log.d("FireStore", "Reward claim status updated!"))
                 .addOnFailureListener(e -> Log.w("FireStore", "Error updating reward claim status", e));
         checkIfRewardClaimed();
@@ -433,7 +426,7 @@ public class TaskAll extends AppCompatActivity {
                 Long currentPoints = document.getLong("points");
                 if (currentPoints == null) currentPoints = 0L;
                 TextView pointsTextView = findViewById(R.id.TaskAll_pointsText);
-                pointsTextView.setText(getResources().getString(R.string.all_points, currentPoints));
+                pointsTextView.setText(getResources().getString(R.string.TaskAll_all_points, currentPoints));
             } else {
                 Log.w("FireStore", "Error getting user document", task.getException());
             }
@@ -450,34 +443,18 @@ public class TaskAll extends AppCompatActivity {
         @SuppressWarnings("unused")
         // 呼叫 DataSnapshot.getValue(TaskStatus.class) 所需的預設建構子(簡單說就是刪了會壞掉)
         public TaskStatus() {}
-
         public TaskStatus(List<String> taskName, List<Boolean> isDone) {
             this.taskName = taskName;
             this.isDone = isDone;
         }
-
         @PropertyName("task_name")
-        public List<String> getTaskName() {
-            return taskName;
-        }
-
+        public List<String> getTaskName() { return taskName;}
         @PropertyName("is_done")
-        public List<Boolean> getTaskStatus() {
-            return isDone;
-        }
-
+        public List<Boolean> getTaskStatus() { return isDone;}
         @PropertyName("task_name")
-        public void setTaskName(List<String> taskName) {
-            this.taskName = taskName;
-        }
-
+        public void setTaskName(List<String> taskName) { this.taskName = taskName;}
         @PropertyName("is_done")
-        public void setTaskStatus(List<Boolean> done) {
-            isDone = done;
-        }
-
-        public void setCheckedIn(boolean b) {
-        }
+        public void setTaskStatus(List<Boolean> done) { isDone = done;}
     }
     static class CustomSpinnerAdapter extends ArrayAdapter<String> {
         Context context;

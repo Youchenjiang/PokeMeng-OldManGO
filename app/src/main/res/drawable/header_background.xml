@@ -6,7 +6,7 @@
             <stroke
                 android:width="5dp"
                 android:color="#000000"/> <!-- 外框顏色 -->
-            <solid android:color="#FFBD9D" />
+            <solid android:color="#FFEB3B" />
         </shape>
     </item>
 </selector>

@@ -28,6 +28,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.PokeMeng.OldManGO.R;
+import com.PokeMeng.OldManGO.TaskManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -38,6 +39,7 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
     int mSteps;
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> { });
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    TaskManager taskManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,13 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         getNowStep();
         checkSensors();
         registerSensors();
+        taskManager = new TaskManager(FirebaseFirestore.getInstance(), "your_user_id");
+        taskManager.checkAndCompleteTask("CheckChallenge", result -> {
+            if (!result) {
+                taskManager.updateTaskStatusForSteps(6);
+                taskManager.markTaskAsCompleted("CheckChallenge");
+            }
+        });
     }/*
     private void initNotification() {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "CurrentStep");
@@ -77,7 +86,6 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
     private void getNowStep() {
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(System.currentTimeMillis());
         String userId = "your_user_id"; // Replace with actual user ID
-
         db.collection("Users").document(userId).collection("StepList").document(formattedDate).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
                 ChallengeHistoryStep challengeHistoryStep = task.getResult().toObject(ChallengeHistoryStep.class);
@@ -146,14 +154,101 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         if(mSteps != 0) updateStepList();
         sendBroadcast(new Intent("com.PokeMeng.OldManGO.STEP_UPDATE").putExtra("steps", mSteps));
         Log.i(TAG,"Detected step changes:"+event.values[0]);
+        // 檢查步數是否達到150步
+        if (mSteps >= 150) {
+            taskManager.checkAndCompleteTask("Walked150", result -> {
+                if (!result) {
+                    taskManager.updateTaskStatusForSteps(0);
+                    taskManager.markTaskAsCompleted("Walked150");
+                }
+            });
+        }
     }
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.i(TAG,"onAccuracyChanged");
     }
-
-
-
+    /*
+    private static Boolean cachedChallengeResult = null;
+    private void checkAndCompleteChallenge(OnChallengeCheckCompleteListener listener) {
+        if (Boolean.TRUE.equals(cachedChallengeResult)) {
+            listener.onComplete(true);
+            return;
+        }
+        String userId = "your_user_id"; // Replace with actual user ID
+        String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(System.currentTimeMillis());
+        DocumentReference challengeRef = db.collection("Users").document(userId)
+                .collection("hasGetReward").document(formattedDate);
+        challengeRef.get().addOnCompleteListener(task -> {
+            boolean isChallengeCompleted = false;
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot document = task.getResult();
+                Boolean challengeCompleted = document.getBoolean("ChallengeCompleted");
+                if (challengeCompleted != null && challengeCompleted) {
+                    isChallengeCompleted = true;
+                    Log.d("FireStore", "Challenge already completed for today.");
+                } else Log.d("FireStore", "Challenge not completed yet.");
+            } else Log.w("FireStore", "Error getting challenge document", task.getException());
+            cachedChallengeResult = isChallengeCompleted;
+            listener.onComplete(isChallengeCompleted);
+        });
+    }
+    private void updateTaskStatusForSteps() {
+        String userId = "your_user_id"; // 替換為實際的用戶ID
+        long currentDate = System.currentTimeMillis();
+        String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
+        // 更新 TaskStatus 集合中的第1個欄位為 true
+        DocumentReference taskStatusRef = db.collection("Users").document(userId)
+                .collection("TaskStatus").document(formattedDate);
+        taskStatusRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot document = task.getResult();
+                TaskAll.TaskStatus taskStatus = document.toObject(TaskAll.TaskStatus.class);
+                if (taskStatus != null && taskStatus.getTaskStatus() != null && !taskStatus.getTaskStatus().isEmpty()) {
+                    List<Boolean> taskStatuses = new ArrayList<>(taskStatus.getTaskStatus());
+                    taskStatuses.set(6, true);
+                    taskStatus.setTaskStatus(taskStatuses);
+                    taskStatusRef.set(taskStatus, SetOptions.merge())
+                            .addOnSuccessListener(aVoid -> Log.d("FireStore", "Task status successfully updated!"))
+                            .addOnFailureListener(e -> Log.w("FireStore", "Error updating task status", e));
+                }
+            } else Log.w("FireStore", "Error getting task status document", task.getException());
+        });
+    }
+    private void markChallengeAsCompleted() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = "your_user_id"; // 替換為實際的用戶ID
+        long currentDate = System.currentTimeMillis();
+        String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
+        // 更新 hasGetReward 集合
+        DocumentReference rewardRef = db.collection("Users").document(userId)
+                .collection("hasGetReward").document(formattedDate);
+        rewardRef.set(Collections.singletonMap("ChallengeCompleted", true), SetOptions.merge())
+                .addOnSuccessListener(aVoid -> Log.d("FireStore", "Challenge completion status updated!"))
+                .addOnFailureListener(e -> Log.w("FireStore", "Error updating challenge completion status", e));
+        // 添加 10 積分
+        DocumentReference userRef = db.collection("Users").document(userId);
+        userRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot document = task.getResult();
+                Long currentPoints = document.getLong("points");
+                if (currentPoints == null) currentPoints = 0L;
+                userRef.set(Collections.singletonMap("points", currentPoints + 10), SetOptions.merge())
+                        .addOnSuccessListener(aVoid -> Log.d("FireStore", "Points successfully updated!"))
+                        .addOnFailureListener(e -> Log.w("FireStore", "Error updating points", e));
+            } else {
+                Log.w("FireStore", "Error getting user document", task.getException());
+                // 如果用戶文檔不存在，則創建一個新文檔
+                userRef.set(Collections.singletonMap("points", 10))
+                        .addOnSuccessListener(aVoid -> Log.d("FireStore", "Document successfully created with initial points!"))
+                        .addOnFailureListener(e -> Log.w("FireStore", "Error creating document", e));
+            }
+        });
+    }
+    interface OnChallengeCheckCompleteListener {
+        void onComplete(boolean result);
+    }*/
+    /*
 
     @Override
     protected void onStart() {
@@ -183,5 +278,5 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy called");
-    }
+    }*/
 }

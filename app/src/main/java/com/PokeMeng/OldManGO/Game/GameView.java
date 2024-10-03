@@ -24,7 +24,7 @@ public class GameView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_view);
+        setContentView(R.layout.game_view);
 
         gameCanvasView = findViewById(R.id.gameCanvasView);
 
@@ -38,7 +38,7 @@ public class GameView extends AppCompatActivity {
 
     private void showInstructionsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View dialogView = getLayoutInflater().inflate(R.layout.activity_dialog_instructions, null);
+        View dialogView = getLayoutInflater().inflate(R.layout.game_dialog_instructions, null);
         builder.setView(dialogView);
 
         builder.setPositiveButton("開始遊戲", new DialogInterface.OnClickListener() {

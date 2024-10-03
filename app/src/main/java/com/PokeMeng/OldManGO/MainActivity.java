@@ -5,16 +5,20 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextClock;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.PokeMeng.OldManGO.Challenge.ChallengeAll;
-import com.PokeMeng.OldManGO.DailyCheckIn.Ca;
-import com.PokeMeng.OldManGO.Firstlogin.FacebookGoogle;
+import com.PokeMeng.OldManGO.DailyCheckIn.CheckIn;
+import com.PokeMeng.OldManGO.FirstLogin.FacebookGoogle;
 import com.PokeMeng.OldManGO.Game.GameMain;
+import com.PokeMeng.OldManGO.Personal.SetPersonalData;
+import com.PokeMeng.OldManGO.Prize.Prize;
 import com.PokeMeng.OldManGO.Task.TaskAll;
-import com.PokeMeng.OldManGO.location.login;
+import com.PokeMeng.OldManGO.Location.MapMainActivity;
+import com.PokeMeng.OldManGO.Medicine.MainActivity5;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -71,14 +75,17 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.imageButton6).setOnClickListener(v -> {
             speak("獎勵兌換");
-            startActivity(new Intent(this, prize.class));
+            startActivity(new Intent(this, Prize.class));
         });
 
         findViewById(R.id.imageButton5).setOnClickListener(v -> {
             speak("定位系統");
-            startActivity(new Intent(this, login.class));
+            startActivity(new Intent(this, MapMainActivity.class));
         });
-
+        findViewById(R.id.imageButton2).setOnClickListener(v -> {
+            speak("用藥提醒");
+            startActivity(new Intent(this, MainActivity5.class));
+        });
         findViewById(R.id.button7).setOnClickListener(v -> {
             speak("登出");
             startActivity(new Intent(this, FacebookGoogle.class));
@@ -86,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.button8).setOnClickListener(v -> {
             speak("每日簽到");
-            startActivity(new Intent(this, Ca.class));
+            startActivity(new Intent(this, CheckIn.class));
         });
 
         // 設定台灣時區
@@ -121,5 +128,10 @@ public class MainActivity extends AppCompatActivity {
             tts.shutdown();
         }
         super.onDestroy();
+    }
+
+    public void gotosetpersonal(View v) {
+        Intent it = new Intent(this, SetPersonalData.class);
+        startActivity(it);
     }
 }
