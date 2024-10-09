@@ -26,6 +26,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.PokeMeng.OldManGO.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -38,6 +40,7 @@ public class ChallengeNow extends AppCompatActivity {
     private StepUpdateReceiver stepUpdateReceiver;
     private boolean isReceiverRegistered = false;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +70,11 @@ public class ChallengeNow extends AppCompatActivity {
         challengeNowProgressBar.setDuration(duration);
     }
     private void getStepList(FireStoreCallback callback) {
-        String userId = "your_user_id"; // Replace with actual user ID
-
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
         db.collection("Users").document(userId).collection("StepList").get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 List<ChallengeHistoryStep> taskList = new ArrayList<>();
@@ -90,7 +96,7 @@ public class ChallengeNow extends AppCompatActivity {
     }
     private void setHistory(View dialogView) {
         getStepList(messages -> {
-            ArrayAdapter<ChallengeHistoryStep> adapter = new ArrayAdapter<ChallengeHistoryStep>(this, R.layout.challenge_now_history_setview, messages) {
+            ArrayAdapter<ChallengeHistoryStep> adapter = new ArrayAdapter<>(this, R.layout.challenge_now_history_setview, messages) {
                 @NonNull
                 @Override
                 public View getView(int position, View convertView, @NonNull ViewGroup parent) {

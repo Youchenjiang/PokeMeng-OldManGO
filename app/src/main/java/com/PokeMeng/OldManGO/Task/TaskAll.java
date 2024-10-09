@@ -33,6 +33,8 @@ import com.PokeMeng.OldManGO.R;
 import com.PokeMeng.OldManGO.Video.video_main;
 import com.PokeMeng.OldManGO.Medicine.MainActivity5;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -58,6 +60,7 @@ public class TaskAll extends AppCompatActivity {
     private ArrayList<DateInfo> dateList;
     TaskAdapter adapter;
     private boolean hasClaimedReward = false;
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +123,11 @@ public class TaskAll extends AppCompatActivity {
     }
     private void loadDateSpinner() {
         dateList = new ArrayList<>();
-        String userId = "your_user_id"; // Replace with actual user ID
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
         FirebaseFirestore.getInstance().collection("Users").document(userId).collection("TaskDetails").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 processTaskDocuments(task.getResult().getDocuments());
@@ -174,7 +181,11 @@ public class TaskAll extends AppCompatActivity {
     //檢查並載入任務狀態
     private void checkAndLoadTaskStatus() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = "your_user_id";
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
         long currentDate = System.currentTimeMillis();
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
         db.collection("Users").document(userId)
@@ -207,9 +218,13 @@ public class TaskAll extends AppCompatActivity {
     private void loadScheduledTasks(DateInfo compareDate) {
         //載入固定任務
         stringList.addAll(Arrays.asList("每日健走150步", "每日簽到", "用藥提醒查看", "今日已完成用藥", "觀看運動影片", "玩遊戲(防失智)", "查看運動挑戰"));
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
         //載入自訂任務
-        String userID = "your_user_id"; // Replace with actual user ID
-        FirebaseFirestore.getInstance().collection("Users").document(userID).collection("TaskDetails").get().addOnCompleteListener(task -> {
+        FirebaseFirestore.getInstance().collection("Users").document(userId).collection("TaskDetails").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     processDocument(document, compareDate);
@@ -251,8 +266,11 @@ public class TaskAll extends AppCompatActivity {
     //確認是否已經領取過獎勵
     private void checkIfRewardClaimed() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = "your_user_id"; // Replace with actual user ID
-        long currentDate = System.currentTimeMillis();
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();        long currentDate = System.currentTimeMillis();
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
         DocumentReference rewardRef = db.collection("Users").document(userId)
                 .collection("hasGetReward").document(formattedDate);
@@ -357,11 +375,15 @@ public class TaskAll extends AppCompatActivity {
         }
         private void saveTaskStatus() {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            String userId = "your_user_id"; // Replace with actual user ID
+            if (currentUser == null) {
+                Log.w("TaskRead", "No current user found.");
+                return;
+            }
+            String userId = currentUser.getUid();
             long currentDate = System.currentTimeMillis();
             String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
             db.collection("Users").document(userId)
-                    .collection("TaskStatus").document(formattedDate).set(taskStatus)
+                    .collection("TaskStatus").document(formattedDate).set(taskStatus, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> Log.d("FireStore", "日期狀態成功上傳!"))
                     .addOnFailureListener(e -> Log.w("FireStore", "上船日期狀態失敗", e));
             checkAndAddPointsIfAllTasksCompleted();
@@ -384,7 +406,11 @@ public class TaskAll extends AppCompatActivity {
 
     private void addPoints() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = "your_user_id"; // 替換為實際的用戶ID
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
         DocumentReference userRef = db.collection("Users").document(userId);
         userRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
@@ -406,19 +432,27 @@ public class TaskAll extends AppCompatActivity {
     //標記獎勵已領取並上傳
     private void markRewardAsClaimed() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = "your_user_id"; // Replace with actual user ID
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
         long currentDate = System.currentTimeMillis();
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
         DocumentReference rewardRef = db.collection("Users").document(userId)
                 .collection("hasGetReward").document(formattedDate);
-        rewardRef.set(Collections.singletonMap("FullCompleted", true))
+        rewardRef.set(Collections.singletonMap("FullCompleted", true), SetOptions.merge())
                 .addOnSuccessListener(aVoid -> Log.d("FireStore", "Reward claim status updated!"))
                 .addOnFailureListener(e -> Log.w("FireStore", "Error updating reward claim status", e));
         checkIfRewardClaimed();
     }
     private void fetchAndDisplayUserPoints() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = "your_user_id"; // 替換為實際的用戶ID
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
         DocumentReference userRef = db.collection("Users").document(userId);
         userRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {

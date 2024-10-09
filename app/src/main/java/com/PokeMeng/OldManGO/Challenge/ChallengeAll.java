@@ -29,6 +29,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.PokeMeng.OldManGO.R;
 import com.PokeMeng.OldManGO.TaskManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -40,6 +42,7 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> { });
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     TaskManager taskManager;
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,12 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         getNowStep();
         checkSensors();
         registerSensors();
-        taskManager = new TaskManager(FirebaseFirestore.getInstance(), "your_user_id");
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
+        taskManager = new TaskManager(FirebaseFirestore.getInstance(), userId);
         taskManager.checkAndCompleteTask("CheckChallenge", result -> {
             if (!result) {
                 taskManager.updateTaskStatusForSteps(6);
@@ -85,7 +93,11 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
     }
     private void getNowStep() {
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(System.currentTimeMillis());
-        String userId = "your_user_id"; // Replace with actual user ID
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
         db.collection("Users").document(userId).collection("StepList").document(formattedDate).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
                 ChallengeHistoryStep challengeHistoryStep = task.getResult().toObject(ChallengeHistoryStep.class);
@@ -140,7 +152,11 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         }
     }
     private void updateStepList() {
-        String userId = "your_user_id"; // Replace with actual user ID
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(System.currentTimeMillis());
         ChallengeHistoryStep newStep = new ChallengeHistoryStep(mSteps);
         db.collection("Users").document(userId).collection("StepList").document(formattedDate).set(newStep)
