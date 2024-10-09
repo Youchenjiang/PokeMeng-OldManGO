@@ -12,7 +12,8 @@
     <string name="TaskAll_cheat_select_all">作弊：全選</string>
     <string name="TaskAll_reward_hint">可領取全選獎勵！</string>
     <string name="TaskAll_all_points">我的積分: %1$d</string>
-
+    <string name="Prize_points_text">當前積分: %1$d</string>
+    <string name="Prize_points_expiry_date">積分有效期至: %1$s</string>
     <string name="web_id">485011129050-hq7o32c78m9jg2shtu3pv0uea3udm5ua.apps.googleusercontent.com</string>
 
     <string-array name="用藥頻率">

@@ -32,6 +32,7 @@ import com.PokeMeng.OldManGO.TaskManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -107,6 +108,11 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
                 }
             } else {
                 Log.w(TAG, "Error getting document or document does not exist.", task.getException());
+                ChallengeHistoryStep newStep = new ChallengeHistoryStep(0); // Default step number is 0
+                db.collection("Users").document(userId).collection("StepList").document(formattedDate).set(newStep)
+                        .addOnSuccessListener(aVoid -> Log.d(TAG, "New step document created with default values."))
+                        .addOnFailureListener(e -> Log.w(TAG, "Error creating new step document", e));
+                mSteps = 0;
             }
             updateStepText();
         });
@@ -159,7 +165,7 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         String userId = currentUser.getUid();
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(System.currentTimeMillis());
         ChallengeHistoryStep newStep = new ChallengeHistoryStep(mSteps);
-        db.collection("Users").document(userId).collection("StepList").document(formattedDate).set(newStep)
+        db.collection("Users").document(userId).collection("StepList").document(formattedDate).set(newStep, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Step successfully updated!"))
                 .addOnFailureListener(e -> Log.w(TAG, "Error updating step", e));
     }
