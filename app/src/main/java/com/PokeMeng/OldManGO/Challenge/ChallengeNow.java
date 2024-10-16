@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -45,7 +46,6 @@ public class ChallengeNow extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate called");
         EdgeToEdge.enable(this);
         setContentView(R.layout.challenge_now);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -55,13 +55,17 @@ public class ChallengeNow extends AppCompatActivity {
         });
         findViewById(R.id.now_checkButton).setOnClickListener(v -> showHistory());
         findViewById(R.id.now_returnButton).setOnClickListener(v -> finish());
-        setNowStep(getIntent().getIntExtra("steps", 0), 2000);
+        Intent intent = getIntent();
+        setNowStep(intent.getIntExtra("steps", 0),intent.getIntExtra("goal", 0),2000);
+        ((TextView)findViewById(R.id.now_titleText)).setText(intent.getStringExtra("name"));
+        ((TextView)findViewById(R.id.now_illustrateText)).setText(getResources().getString(R.string.ChallengeNow_illustrateText,intent.getStringExtra("dateRange")));
         stepUpdateReceiver = new StepUpdateReceiver();
         registerReceiver(stepUpdateReceiver, new IntentFilter("com.PokeMeng.OldManGO.STEP_UPDATE"), Context.RECEIVER_NOT_EXPORTED); // 註冊廣播接收器
         isReceiverRegistered = true;
     }
-    private void setNowStep(int step_now, int duration) {
-        int step_goal = 500;
+    private void setNowStep(int step_now, int step_goal, int duration) {
+        if (step_goal == 0)
+            Toast.makeText(this, "目標步數不可為0，請查找問題出處", Toast.LENGTH_SHORT).show();
         ChallengeNowProgressBar challengeNowProgressBar = findViewById(R.id.now_nowCircularProgressBar);
         challengeNowProgressBar.setText("目前步數：" + step_now + "步" + "\n" + "目標步數：" + step_goal + "步");
         float progress = (float) step_now / step_goal * 100;
@@ -101,9 +105,9 @@ public class ChallengeNow extends AppCompatActivity {
                 @Override
                 public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                     convertView = convertView == null ? LayoutInflater.from(getContext()).inflate(R.layout.challenge_now_history_setview, parent, false) : convertView;
-                    ChallengeHistoryStep currentMessage = getItem(position); // Get the current message
-                    ((TextView) convertView.findViewById(R.id.Listview_timeText)).setText(Objects.requireNonNull(currentMessage).getStepDate()); // Set the date text
-                    ((TextView) convertView.findViewById(R.id.Listview_numberText)).setText(getString(R.string.challenge_DateStep, Objects.requireNonNull(currentMessage).getStepNumber())); // Set their text
+                    ChallengeHistoryStep currentMessage = getItem(position);
+                    ((TextView) convertView.findViewById(R.id.Listview_timeText)).setText(Objects.requireNonNull(currentMessage).getStepDate());
+                    ((TextView) convertView.findViewById(R.id.Listview_numberText)).setText(getString(R.string.ChallengeNow_DateStep, Objects.requireNonNull(currentMessage).getStepNumber())); // Set their text
                     return convertView;
                 }
             };
@@ -119,7 +123,7 @@ public class ChallengeNow extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && "com.PokeMeng.OldManGO.STEP_UPDATE".equals(intent.getAction()))
-                setNowStep(intent.getIntExtra("steps", 0), 1);
+                setNowStep(intent.getIntExtra("steps", 0), intent.getIntExtra("goal", 0), 1);
         }
     }
     private interface FireStoreCallback {
