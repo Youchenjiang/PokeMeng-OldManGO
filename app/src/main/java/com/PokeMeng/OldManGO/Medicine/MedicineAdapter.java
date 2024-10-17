@@ -29,6 +29,9 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
     private boolean isNotificationsFragment;
     private SharedViewModel sharedViewModel;
 
+    // 统一 SharedPreferences 名称
+    private static final String SHARED_PREFS_NAME = "MedicinePrefs";
+
     public MedicineAdapter(Context context, List<Medicine> medicines, OnItemClickListener onItemClickListener, boolean isDashboard, boolean isNotificationsFragment, SharedViewModel sharedViewModel) {
         this.context = context;
         this.medicines = medicines;
@@ -50,7 +53,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
         Medicine medicine = medicines.get(position);
         holder.bind(medicine, onItemClickListener);
         handleButtonState(holder, medicine);
-
+        Log.d("MedicineAdapter", "Binding medicine: " + medicine.getName() + ", " + medicine.getFrequency());
         if (isNotificationsFragment) {
             holder.checkmark.setVisibility(View.VISIBLE); // 在 NotificationsFragment 中显示打勾符号
         } else {
@@ -59,9 +62,9 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
     }
 
     private void handleButtonState(MedicineViewHolder holder, Medicine medicine) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("button_prefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         String firstTime = medicine.getTimes().isEmpty() ? "" : medicine.getTimes().get(0);
-        boolean isClicked = sharedPreferences.getBoolean("button_clicked_" + medicine.getId() + "_" + firstTime, false);
+        boolean isClicked = getButtonClickedState(sharedPreferences, medicine.getId(), firstTime);
 
         if (isDashboard) {
             holder.takenButton.setVisibility(View.VISIBLE);
@@ -81,15 +84,26 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
                 .setTitle("確認")
                 .setMessage("是否已服用藥物？")
                 .setPositiveButton("是", (dialog, which) -> {
-                    SharedPreferences.Editor editor = context.getSharedPreferences("button_prefs", Context.MODE_PRIVATE).edit();
-                    editor.putBoolean("button_clicked_" + medicine.getId() + "_" + firstTime, true);
-                    editor.apply();
+                    SharedPreferences.Editor editor = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE).edit();
+                    setButtonClickedState(editor, medicine.getId(), firstTime);
+                    medicine.setTaken(true); // 更新药物的 isTaken 状态
                     holder.takenButton.setEnabled(false);
                     holder.takenButton.setBackgroundColor(Color.GRAY);
                     sharedViewModel.addTakenMedicine(medicine); // 添加到已服用药物列表
                 })
                 .setNegativeButton("否", null)
                 .show();
+    }
+
+    // 读取按钮点击状态
+    private boolean getButtonClickedState(SharedPreferences sharedPreferences, int medicineId, String time) {
+        return sharedPreferences.getBoolean("button_clicked_" + medicineId + "_" + time, false);
+    }
+
+    // 设置按钮点击状态
+    private void setButtonClickedState(SharedPreferences.Editor editor, int medicineId, String time) {
+        editor.putBoolean("button_clicked_" + medicineId + "_" + time, true);
+        editor.apply();
     }
 
     @Override
