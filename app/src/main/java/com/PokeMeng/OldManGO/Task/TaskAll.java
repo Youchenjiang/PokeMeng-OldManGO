@@ -87,7 +87,7 @@ public class TaskAll extends AppCompatActivity {
         });
     }
     private void setupButtons() {
-        findViewById(R.id.TaskAll_returnButton).setOnClickListener(v -> finish());
+        //findViewById(R.id.TaskAll_returnButton).setOnClickListener(v -> finish());
         findViewById(R.id.TaskAll_addImage).setOnClickListener(v -> createTask.launch(new Intent(this, TaskAdd.class)));
         findViewById(R.id.TaskAll_scheduledButton).setOnClickListener(v -> startActivity(new Intent(this, TaskScheduled.class)));
         findViewById(R.id.TaskAll_cheatButton).setOnClickListener(v -> {

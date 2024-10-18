@@ -45,6 +45,7 @@ public class FacebookGoogle extends AppCompatActivity {
     int currentpaaIndex = 0;
     Handler handler = new Handler();
 
+
     Runnable maaRunnable = new Runnable() {
         @Override
         public void run() {
