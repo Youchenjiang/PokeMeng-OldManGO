@@ -32,16 +32,24 @@ public class Prize extends AppCompatActivity {
         String pointsExpiryDate = "2024年12月31日";
         ((TextView)findViewById(R.id.expiryDateTextView)).setText(getString(R.string.Prize_points_expiry_date, pointsExpiryDate));
         // 設置第一個獎品的點擊事件 // 獎品1所需積分為21000
-        findViewById(R.id.rewardImageView1).setOnClickListener(v -> openRewardDetails(1, 21000));
+        findViewById(R.id.rewardImageView1).setOnClickListener(v -> openRewardDetails(1, 5));
         // 設置第二個獎品的點擊事件 // 獎品2所需積分為15000
-        findViewById(R.id.rewardImageView2).setOnClickListener(v -> openRewardDetails(2, 15000));
+        findViewById(R.id.rewardImageView2).setOnClickListener(v -> openRewardDetails(2, 20));
         // 設置查看兌換記錄按鈕的點擊事件
         findViewById(R.id.viewHistoryButton).setOnClickListener(v -> startActivity(new Intent(Prize.this, ExchangeHistory.class)));
         // 假设button10对应21000积分的兑换
-        findViewById(R.id.button10).setOnClickListener(v -> handleRedeem(21000));
+        findViewById(R.id.button10).setOnClickListener(v -> handleRedeem(5));
         // 假设button9对应15000积分的兑换
-        findViewById(R.id.button9).setOnClickListener(v -> handleRedeem(15000));
-        rewardDetailsLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),result -> { if (result.getResultCode() == RESULT_OK) getPointsFromFireStore(); });
+        findViewById(R.id.button9).setOnClickListener(v -> handleRedeem(20));
+        rewardDetailsLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        int updatedPoints = result.getData().getIntExtra("updatedPoints", currentPoints);
+                        currentPoints = updatedPoints;  // 更新當前積分
+                        showCurrentUserPoints();        // 刷新積分顯示
+                    }
+                }
+        );
     }
 
     private void getPointsFromFireStore() {

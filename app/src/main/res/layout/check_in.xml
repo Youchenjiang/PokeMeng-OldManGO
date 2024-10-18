@@ -70,7 +70,7 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/all_style_button"
         android:fontFamily="@font/jfopenhuninn"
-        android:onClick="gotoMain"
+        android:onClick="gotomain"
         android:text="主頁面"
         android:textAlignment="center"
         android:textColor="@color/white"
