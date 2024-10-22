@@ -108,8 +108,8 @@ public class CheckIn extends AppCompatActivity {
 
         button.setEnabled(isToday(year, month, dayOfMonth));
 
-        // 檢查當天是否已簽到
-        checkIfAlreadyCheckedIn(getFormattedDate(currentCalendar));
+        //checkIfAlreadyCheckedIn(selectedDate);
+
 
         // 初始化按鈕狀態
         if (isToday(year, month, dayOfMonth)) {
@@ -123,7 +123,6 @@ public class CheckIn extends AppCompatActivity {
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 selectedDate=Integer.toString(year)+Integer.toString(month+1)+Integer.toString(dayOfMonth);
                 updateDateDisplay(year, month , dayOfMonth);
-
                 // 檢查選擇的日期是否為今天
                 if (isToday(year, month, dayOfMonth)) {
                     button.setEnabled(true);  // 今天可以簽到
@@ -141,15 +140,15 @@ public class CheckIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addTaskStatusForToday();
+
                 if (selectedDate != null) {
-                    checkIfAlreadyCheckedIn(selectedDate); // 檢查是否已簽到
                     addTaskStatusForToday();  // 簽到操作
                 } else {
                     Toast.makeText(CheckIn.this, "請先選擇日期", Toast.LENGTH_SHORT).show();
+                    checkIfAlreadyCheckedIn(selectedDate); // 檢查是否已簽到
                 }
             }
         });
-
 
         //databaseReference= FirebaseDatabase.getInstance().getReference("CalendarView");
     }
@@ -162,15 +161,16 @@ public class CheckIn extends AppCompatActivity {
 //        selectedDate = today.get(Calendar.YEAR) + "-" + (today.get(Calendar.MONTH) + 1) + "-" + today.get(Calendar.DAY_OF_MONTH);
 //        checkIfAlreadyCheckedIn(selectedDate); // 檢查今天的簽到狀態
 //    }
-    private String getFormattedDate(Calendar calendar) {
-        return new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(calendar.getTime());
-    }
 
-    private String getFormattedDate(int year, int month, int dayOfMonth) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, dayOfMonth);
-        return new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(calendar.getTime());
-    }
+//    private String getFormattedDate(Calendar calendar) {
+//        return new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(calendar.getTime());
+//    }
+//
+//    private String getFormattedDate(int year, int month, int dayOfMonth) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(year, month, dayOfMonth);
+//        return new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(calendar.getTime());
+//    }
 
     private void updateDateDisplay(int year, int month, int dayOfMonth) {
         selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
@@ -324,10 +324,12 @@ public class CheckIn extends AppCompatActivity {
     }
     //  檢查是否已簽到
     private void checkIfAlreadyCheckedIn(String date) {
-        FirebaseUser currentUser = auth.getCurrentUser();
+        //FirebaseUser currentUser = auth.getCurrentUser();
+        //String userId = currentUser.getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
-
             String documentId = userId + "_" + date;
             Log.d("CheckIn", "Checking document: " + documentId);
             checkInCollection.document(documentId).get().addOnSuccessListener(documentSnapshot -> {
@@ -342,7 +344,6 @@ public class CheckIn extends AppCompatActivity {
         } else {
             Toast.makeText(this, "請先登入", Toast.LENGTH_SHORT).show();
         }
-
 
     }
 
@@ -398,6 +399,12 @@ public class CheckIn extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Task status successfully added for date: " + formattedDate))
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding task status", e));
 
+
+        // 創建 SomeOtherInterface 實例
+        //SomeOtherInterface someOtherInterface = new SomeOtherInterface();
+        // 檢查是否已經完成 "每日簽到" 任務
+        //someOtherInterface.checkTaskStatus("每日簽到");
+
         // 簽到並獲得積分，然後禁用按鈕
         TaskManager taskManager = new TaskManager(FirebaseFirestore.getInstance(), userId);
         //TaskManager taskManager = new TaskManager(FirebaseFirestore.getInstance(), "your_user_id");
@@ -414,6 +421,36 @@ public class CheckIn extends AppCompatActivity {
         });
 
     }
+
+//    public class SomeOtherInterface {
+//        private TaskManager taskManager;
+//
+//        public SomeOtherInterface() {
+//            // Initialize Firebase Firestore
+//            FirebaseFirestore db = FirebaseFirestore.getInstance();
+//            String userId = "your_user_id"; // Replace with actual user ID
+//
+//            // Initialize TaskManager
+//            taskManager = new TaskManager(db, userId);
+//        }
+//
+//        public void checkTaskStatus(String taskType) {
+//            taskManager.isTaskCompletedToday(taskType, new TaskManager.OnTaskCheckCompleteListener() {
+//                @Override
+//                public void onComplete(boolean result) {
+//                    if (result) {
+//                        // Task is completed
+//                        System.out.println(taskType + " is completed for today.");
+//                    } else {
+//                        // Task is not completed
+//                        System.out.println(taskType + " is not completed for today.");
+//                    }
+//                }
+//            });
+//        }
+//    }
+
+
     public void gotomain (View v){
         Intent it=new Intent(this, MainActivity.class);
         startActivity(it);
