@@ -29,6 +29,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.PokeMeng.OldManGO.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -56,9 +57,9 @@ public class ChallengeNow extends AppCompatActivity {
         findViewById(R.id.now_checkButton).setOnClickListener(v -> showHistory());
         findViewById(R.id.now_returnButton).setOnClickListener(v -> finish());
         Intent intent = getIntent();
-        setNowStep(intent.getIntExtra("steps", 0),intent.getIntExtra("goal", 0),2000);
+        getStepsForPeriod(intent.getStringExtra("startDate"), intent.getStringExtra("endDate"), totalSteps -> setNowStep(totalSteps, intent.getIntExtra("goal", 0), 2000));
         ((TextView)findViewById(R.id.now_titleText)).setText(intent.getStringExtra("name"));
-        ((TextView)findViewById(R.id.now_illustrateText)).setText(getResources().getString(R.string.ChallengeNow_illustrateText,intent.getStringExtra("dateRange")));
+        ((TextView)findViewById(R.id.now_illustrateText)).setText(getResources().getString(R.string.ChallengeNow_illustrateText,getString(R.string.ChallengeAll_illustrateText, intent.getStringExtra("simpleStartDate"), intent.getStringExtra("simpleEndDate"))));
         stepUpdateReceiver = new StepUpdateReceiver();
         registerReceiver(stepUpdateReceiver, new IntentFilter("com.PokeMeng.OldManGO.STEP_UPDATE"), Context.RECEIVER_NOT_EXPORTED); // 註冊廣播接收器
         isReceiverRegistered = true;
@@ -88,10 +89,30 @@ public class ChallengeNow extends AppCompatActivity {
                     taskList.add(challengeHistoryStep);
                 }
                 callback.onCallback(taskList);
-            } else {
-                Log.w("FireStore", "Error getting documents.", task.getException());
-            }
+            } else Log.w("FireStore", "Error getting documents.", task.getException());
         });
+    }
+    private void getStepsForPeriod(String startDate, String endDate, FireStoreCallback2 callback) {
+        Log.d("FireStore", startDate + " " + endDate);
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        Log.d("FireStore", "getStepsForPeriod called");
+        String userId = currentUser.getUid();
+        db.collection("Users").document(userId).collection("StepList")
+                .whereGreaterThanOrEqualTo(FieldPath.documentId(), startDate)
+                .whereLessThanOrEqualTo(FieldPath.documentId(), endDate)
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        int totalSteps = 0;
+                        for (QueryDocumentSnapshot document : task.getResult())
+                            totalSteps += document.toObject(ChallengeHistoryStep.class).getStepNumber();
+                        callback.onCallback(totalSteps);
+                        Log.d("FireStore", "Total steps for period: " + totalSteps);
+                    } else
+                        Log.w("FireStore", "Error getting documents.", task.getException());
+                });
     }
     private void showHistory() {
         View dialogView = getLayoutInflater().inflate(R.layout.challenge_now_history, null);
@@ -128,6 +149,9 @@ public class ChallengeNow extends AppCompatActivity {
     }
     private interface FireStoreCallback {
         void onCallback(List<ChallengeHistoryStep> list);
+    }
+    private interface FireStoreCallback2 {
+        void onCallback(int totalSteps);
     }
     public static class ChallengeHistoryStep {
         private String stepDate;

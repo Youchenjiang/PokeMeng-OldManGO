@@ -19,7 +19,6 @@
     <!-- Notification and alarm permissions -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <!-- Network and wake lock permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -61,7 +60,6 @@
         <activity android:name=".Game.CardGame" android:exported="false" />
         <activity android:name=".Game.GameView" android:exported="false" />
         <activity android:name=".Game.WashGames" android:exported="false" />
-        <activity android:name=".Game.GameCanvasView" android:exported="false" />
         <activity android:name=".Game.ColorGame" android:exported="false" />
         <activity android:name=".Game.GameMain" android:exported="false" />
         <!-- Other Activities -->

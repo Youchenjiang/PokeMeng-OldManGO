@@ -10,8 +10,8 @@ android {
         applicationId = "com.PokeMeng.OldManGO"
         minSdk = 26
         targetSdk = 34
-        versionCode = 39
-        versionName = "1.0.39"
+        versionCode = 45
+        versionName = "1.0.45"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

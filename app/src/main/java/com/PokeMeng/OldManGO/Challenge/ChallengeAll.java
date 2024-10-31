@@ -30,10 +30,15 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.PokeMeng.OldManGO.R;
 import com.PokeMeng.OldManGO.TaskManager;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.text.ParseException;
@@ -42,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class ChallengeAll extends AppCompatActivity implements SensorEventListener{
     String TAG = "計步器";
@@ -92,13 +98,15 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         });
     }
 
+    String passStartDate;
+    String passEndDate;
+    Activity currentActivity = null;
     private void loadActivities(List<Activity> activities) {
         Date today = new Date();
         SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.getDefault());
         String currentYear = yearFormat.format(today);
 
-        Activity currentActivity = null;
         Activity nextActivity = null;
 
         for (Activity activity : activities) {
@@ -116,10 +124,12 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
 
         if (currentActivity != null) {
             String currentActivityStartDate = dateFormat.format(currentActivity.getDate());
-            String currentActivityEndDate = nextActivity != null ? dateFormat.format(new Date(nextActivity.getDate().getTime() - 1)) : "";
+            String currentActivityEndDate = nextActivity != null ? dateFormat.format(new Date(nextActivity.getDate().getTime() - 1)) : dateFormat.format(today);
             ((TextView) findViewById(R.id.challenge_nowTitleText)).setText(currentActivity.getName());
-            ((TextView) findViewById(R.id.challenge_nowDateText)).setText(currentActivityStartDate + "~" + currentActivityEndDate);
-
+            ((TextView) findViewById(R.id.challenge_nowDateText)).setText(getString(R.string.ChallengeAll_illustrateText, currentActivityStartDate, currentActivityEndDate));
+            SimpleDateFormat passDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+            passStartDate = passDateFormat.format(currentActivity.getDate());
+            passEndDate = nextActivity != null ? passDateFormat.format(new Date(nextActivity.getDate().getTime() - 1)) : passDateFormat.format(today);
             // Pass the goal, name, and date range to ChallengeNow activity
             Activity finalCurrentActivity = currentActivity;
             findViewById(R.id.challenge_nowLayout).setOnClickListener(v -> {
@@ -127,7 +137,10 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
                 intent.putExtra("steps", mSteps);
                 intent.putExtra("goal", finalCurrentActivity.getGoal());
                 intent.putExtra("name", finalCurrentActivity.getName());
-                intent.putExtra("dateRange", currentActivityStartDate + "~" + currentActivityEndDate);
+                intent.putExtra("simpleStartDate", currentActivityStartDate);
+                intent.putExtra("simpleEndDate", currentActivityEndDate);
+                intent.putExtra("startDate", passStartDate);
+                intent.putExtra("endDate", passEndDate);
                 startActivity(intent);
             });
             // Store the current activity's goal in a variable
@@ -146,7 +159,7 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
             }
             String nextActivityEndDate = followingActivity != null ? dateFormat.format(new Date(followingActivity.getDate().getTime() - 1)) : "";
             ((TextView) findViewById(R.id.challenge_nextTitleText)).setText(nextActivity.getName());
-            ((TextView) findViewById(R.id.challenge_nextDateText)).setText(nextActivityStartDate + "~" + nextActivityEndDate);
+            ((TextView) findViewById(R.id.challenge_nextDateText)).setText(getString(R.string.ChallengeAll_illustrateText, nextActivityStartDate, nextActivityEndDate));
         }
     }
     /*
@@ -178,12 +191,12 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         //String[] AdminUID = getResources().getStringArray(R.array.AdminUID);
         //for (String uid : AdminUID) {
             //if (uid.equals(currentUser.getUid())) {
-                findViewById(R.id.challenge_doggyImage).setOnClickListener(v -> showAlertDialog());
+                findViewById(R.id.challenge_doggyImage).setOnClickListener(v -> createActivity());
             //}
         //}
     }
 
-    private void showAlertDialog() {
+    private void createActivity() {
         View view = getLayoutInflater().inflate(R.layout.challenge_all_add,findViewById(R.id.main),false);
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("新增活動")
@@ -200,8 +213,8 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
                     Date date;
                     try { date = dateFormat.parse(activityDate);} catch (ParseException e) { throw new RuntimeException(e);}
                     Activity newActivity = new Activity(date, Integer.parseInt(activityGoal), activityName);
-                    String year = new SimpleDateFormat("yyyy", Locale.getDefault()).format(date)+"-" +activityName;
-                    db.collection("Activities").document(year).set(newActivity, SetOptions.merge())
+                    String documentName = new SimpleDateFormat("yyyy", Locale.getDefault()).format(date)+"-" +activityName;
+                    db.collection("Activities").document(documentName).set(newActivity, SetOptions.merge())
                             .addOnSuccessListener(aVoid -> Log.d(TAG, "Activity successfully created!"))
                             .addOnFailureListener(e -> Log.w(TAG, "Error creating activity", e));
                 })
@@ -223,6 +236,7 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         public Date getDate() { return date;}
         public void setDate(Date date) { this.date = date;}
         public int getGoal() { return goal;}
+        @SuppressWarnings("unused")
         public void setGoal(int goal) { this.goal = goal;}
     }
     private void getNowStep() {
@@ -285,7 +299,7 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         Sensor sensor = sensorManager.getDefaultSensor(sensorType); // 獲取計步器sensor
         if (sensor != null) sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         else {
-            mSteps = -1;
+            Toast.makeText(this, "沒有感感器", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "No sensor found for type: " + sensorType);
         }
     }
@@ -301,6 +315,37 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Step successfully updated!"))
                 .addOnFailureListener(e -> Log.w(TAG, "Error updating step", e));
     }
+
+    private int getStepsForPeriodSync(String startDate, String endDate) {
+        Log.d("FireStore", startDate + " " + endDate);
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return -1;
+        }
+        Log.d("FireStore", "getStepsForPeriod called");
+        String userId = currentUser.getUid();
+        Task<QuerySnapshot> task = db.collection("Users").document(userId).collection("StepList")
+                .whereGreaterThanOrEqualTo(FieldPath.documentId(), startDate)
+                .whereLessThanOrEqualTo(FieldPath.documentId(), endDate)
+                .get();
+        try {
+            Tasks.await(task);
+            if (task.isSuccessful() && task.getResult() != null) {
+                int totalSteps = 0;
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    totalSteps += document.toObject(ChallengeNow.ChallengeHistoryStep.class).getStepNumber();
+                }
+                Log.d("FireStore", "Total steps for period: " + totalSteps);
+                return totalSteps;
+            } else {
+                Log.w("FireStore", "Error getting documents.", task.getException());
+                return -1;
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("FireStore", "Error waiting for task", e);
+            return -1;
+        }
+    }
     @Override
     public void onSensorChanged(SensorEvent event) { // 實現SensorEventListener回檔介面，在sensor改變時，會回檔該介面
         if (event.values[0] == 1.0f) mSteps++; // 並將結果通過event回傳給app處理
@@ -313,13 +358,22 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
             return;
         }
         // 檢查步數是否達到150步
-        if (mSteps >= currentActivityGoal) {
+        if (mSteps >= 150) {
             taskManager.checkAndCompleteTask("Walked150", result -> {
                 if (!result) {
                     taskManager.updateTaskStatusForSteps(0);
                     taskManager.markTaskAsCompleted("Walked150");
                 }
             });
+        }
+        if(passStartDate != null && passEndDate != null){
+            if (getStepsForPeriodSync(passStartDate, passEndDate) >= currentActivityGoal) {
+                String yearTaskName = new SimpleDateFormat("yyyy", Locale.getDefault()).format(currentActivity.getDate()) + "-" + currentActivity.getName();
+                db.collection("Activities").document(yearTaskName)
+                        .update("finishUser", FieldValue.arrayUnion(currentUser.getUid()))
+                        .addOnSuccessListener(aVoid -> Log.d(TAG, "User added to finishUser list"))
+                        .addOnFailureListener(e -> Log.w(TAG, "Error adding user to finishUser list", e));
+            }
         }
         //下一步：上傳使用者積分、上傳使用者積分已獲得狀態
     }

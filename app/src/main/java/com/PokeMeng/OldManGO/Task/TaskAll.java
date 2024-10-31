@@ -29,7 +29,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.PokeMeng.OldManGO.Challenge.ChallengeAll;
 import com.PokeMeng.OldManGO.DailyCheckIn.CheckIn;
 import com.PokeMeng.OldManGO.Game.GameMain;
-import com.PokeMeng.OldManGO.MainActivity;
 import com.PokeMeng.OldManGO.R;
 import com.PokeMeng.OldManGO.Video.video_main;
 import com.PokeMeng.OldManGO.Medicine.MainActivity5;
@@ -98,6 +97,7 @@ public class TaskAll extends AppCompatActivity {
             }
             adapter.notifyDataSetChanged();
         });
+        findViewById(R.id.TaskAll_returnButton).setOnClickListener(v -> finish());
     }
     private void setTaskStatusTrue(int position) {
         if (adapter.taskStatus == null) return;
@@ -524,9 +524,5 @@ public class TaskAll extends AppCompatActivity {
             textView.setBackgroundColor(position == specialItemIndex ? specialItemColor : 0);
             return textView;
         }
-    }
-    public void gotomain (View v){
-        Intent it=new Intent(this, MainActivity.class);
-        startActivity(it);
     }
 }
