@@ -12,6 +12,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
+
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -68,7 +70,7 @@ public class DashboardFragment extends Fragment {
             viewModel.addClickedMedicineFromDashboard(medicine);
             viewModel.addClickedMedicineId(medicine.getId());
             markMedicineAsTaken(medicine);
-        }, true, false, viewModel);
+        }, true, false,false, viewModel);
         recyclerView.setAdapter(adapter);
 
         // 观察药品数据
@@ -251,4 +253,7 @@ public class DashboardFragment extends Fragment {
         viewModel.addTakenMedicine(medicine);
         // 其他逻辑可以根据需求添加
     }
+
+
+
 }

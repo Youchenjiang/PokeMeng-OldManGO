@@ -11,11 +11,14 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.SavedStateHandle;
 
 import com.PokeMeng.OldManGO.Medicine.Medicine;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -58,6 +61,7 @@ public class SharedViewModel extends ViewModel {
         if (savedMedicines.isEmpty()) {
             loadDataFromFirebase(); // 从 Firebase 加载数据
         } else {
+
             stateHandle.set("medicines", savedMedicines);
         }
 
@@ -86,6 +90,7 @@ public class SharedViewModel extends ViewModel {
                     if (updatedList != null) {
                         updatedList.add(medicine);
                         stateHandle.set("medicines", updatedList); // 更新数据源
+
                         saveMedicineData(updatedList); // 确保保存到 SharedPreferences
                     }
                 }
@@ -109,6 +114,8 @@ public class SharedViewModel extends ViewModel {
                 if (currentMedicines.get(i).getId() == medicine.getId()) {
                     currentMedicines.set(i, medicine);
                     stateHandle.set("medicines", currentMedicines); // 更新数据源
+
+
                     databaseReference.child(String.valueOf(medicine.getId())).setValue(medicine);
                     break;
                 }
@@ -123,6 +130,8 @@ public class SharedViewModel extends ViewModel {
         if (currentMedicines != null) {
             currentMedicines.removeIf(medicine -> medicine.getId() == id);
             stateHandle.set("medicines", currentMedicines);
+
+
             databaseReference.child(String.valueOf(id)).removeValue(); // 从 Firebase 删除
             clickedMedicineIds.removeIf(clickedId -> clickedId == id);
             Log.d("SharedViewModel", "Removed medicine with ID: " + id);
@@ -147,6 +156,7 @@ public class SharedViewModel extends ViewModel {
     public void setMedicines(List<Medicine> medicines) {
         Set<Medicine> uniqueMedicines = new HashSet<>(medicines);
         stateHandle.set("medicines", new ArrayList<>(uniqueMedicines));
+
     }
 
 
@@ -173,6 +183,7 @@ public class SharedViewModel extends ViewModel {
                 stateHandle.set("medicines", medicines);
                 // 保存数据到 SharedPreferences
                 saveMedicineData(medicines);
+
             }
 
             @Override
@@ -289,6 +300,7 @@ public class SharedViewModel extends ViewModel {
         addClickedMedicineId(medicine.getId());
         // 保存所有数据
         saveMedicineData(stateHandle.get("medicines"));
+
     }
 
 
@@ -327,5 +339,6 @@ public class SharedViewModel extends ViewModel {
         }
         return new ArrayList<>();
     }
+
 
 }

@@ -74,7 +74,7 @@ public class NotificationsFragment extends Fragment {
 
         medicineAdapter = new MedicineAdapter(getContext(), takenMedicines, medicine -> {
             // 点击事件处理（如果需要）
-        }, false, true, viewModel);
+        }, false, true,false, viewModel);
 
         recyclerView.setAdapter(medicineAdapter);
 
@@ -103,7 +103,7 @@ public class NotificationsFragment extends Fragment {
 
         medicineAdapter = new MedicineAdapter(requireContext(), medicineList, medicine -> {
             // Handle click event (optional)
-        }, false, true, viewModel);
+        }, false, true,false, viewModel);
         recyclerView.setAdapter(medicineAdapter);
     }
 

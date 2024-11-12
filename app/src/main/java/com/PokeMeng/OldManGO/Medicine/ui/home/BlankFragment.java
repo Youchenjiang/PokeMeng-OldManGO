@@ -46,11 +46,14 @@ import com.PokeMeng.OldManGO.Medicine.DayInterval;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.OutputStream;
 import java.util.Calendar;
@@ -283,6 +286,12 @@ public class BlankFragment extends Fragment implements BottomSheet.OnFrequencySe
                 Toast.makeText(getActivity(), "資料不可為0", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            if (stock > stock2) {
+                Toast.makeText(getActivity(), "劑量不能超過庫存量", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
         } catch (NumberFormatException e) {
             Toast.makeText(getActivity(), "請填寫正確的數量", Toast.LENGTH_SHORT).show();
             return;
@@ -313,6 +322,8 @@ public class BlankFragment extends Fragment implements BottomSheet.OnFrequencySe
 
         // 先查找是否已经存在相同名称的药品
         DatabaseReference medicinesRef = FirebaseDatabase.getInstance().getReference("medicines");
+
+
         medicinesRef.orderByChild("name").equalTo(medicineName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -432,10 +443,17 @@ public class BlankFragment extends Fragment implements BottomSheet.OnFrequencySe
         try {
             updatedStock = Integer.parseInt(stockString);
             updatedStock2 = Integer.parseInt(stock2String);
+
             if (updatedStock <= 0 || updatedStock2 <= 0) {
                 Toast.makeText(getActivity(), "資料不可為0", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            if (updatedStock > updatedStock2) {
+                Toast.makeText(getActivity(), "劑量不能超過庫存量", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
         } catch (NumberFormatException e) {
             Toast.makeText(getActivity(), "請填寫正確的數量", Toast.LENGTH_SHORT).show();
             return; // 捕获异常并返回
@@ -456,6 +474,7 @@ public class BlankFragment extends Fragment implements BottomSheet.OnFrequencySe
         // 创建药品对象并更新到 Firebase
         Medicine updatedMedicine = new Medicine(updatedName, updatedFrequency, updatedTimes, updatedDosage, updatedStock, updatedStock2, updatedSpinner2Value, updatedImageUri.toString(), existingMedicineId, updatedStartDate);
         DatabaseReference medicineRef = FirebaseDatabase.getInstance().getReference("medicines").child(String.valueOf(existingMedicineId));
+
 
         medicineRef.setValue(updatedMedicine).addOnSuccessListener(aVoid -> {
             // 发送更新结果回 HomeFragment

@@ -26,12 +26,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.PokeMeng.OldManGO.Medicine.Medicine;
 import com.PokeMeng.OldManGO.Medicine.ui.SharedViewModel;
+import com.PokeMeng.OldManGO.TaskManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -49,6 +53,9 @@ public class HomeFragment extends Fragment {
     private MedicineAdapter adapter;
     private MainActivity5 activity;
 
+
+
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -57,6 +64,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.m_fragment_home, container, false);
+
+
 
         // 创建 SavedStateHandle 实例
         SavedStateHandle savedStateHandle = new SavedStateHandle();
@@ -80,7 +89,7 @@ public class HomeFragment extends Fragment {
             public void onItemClick(Medicine medicine) {
                 navigateToBlankFragment(medicine);
             }
-        }, false, false, viewModel);
+        }, false, false,true, viewModel);
         recyclerView.setAdapter(medicineAdapter);
 
         // 在观察药物列表的变化时调用
@@ -92,7 +101,16 @@ public class HomeFragment extends Fragment {
             } else {
                 Log.e("HomeFragment", "Medicines list is null");
             }
+
         });
+
+
+        medicineAdapter.setOnStockUpdateListener(medicine -> {
+            // 更新 Firebase 中的库存值
+            updateStockInFirebase(medicine);
+        });
+
+
 
         // 点击 header_section 来新增药物
         view.findViewById(R.id.header_section).setOnClickListener(v -> {
@@ -119,8 +137,10 @@ public class HomeFragment extends Fragment {
                     Log.e("HomeFragment", "Medicine ID is invalid");
                 }
             } else {
-                Toast.makeText(getContext(), "请填写所有字段", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "請填寫所有字段", Toast.LENGTH_SHORT).show();
             }
+
+
         });
 
         getParentFragmentManager().setFragmentResultListener("deleteMedicineResult", this, (requestKey, bundle) -> {
@@ -373,12 +393,27 @@ public class HomeFragment extends Fragment {
     }
 
 
+    // 更新 Firebase 中的库存值
+    private void updateStockInFirebase(Medicine medicine) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("medicines");
+        databaseReference.child(String.valueOf(medicine.getId())).child("stock2")
+                .setValue(medicine.getStock2())
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("HomeFragment", "Stock updated in Firebase successfully.");
+                    } else {
+                        Log.e("HomeFragment", "Failed to update stock in Firebase: " + task.getException().getMessage());
+                    }
+                });
+    }
+
 
 
     @Override
     public void onResume() {
         super.onResume();
         loadMedicinesFromFirebase(); // 每次返回到此 Fragment 时重新加载数据
+
         BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.nav_view);
         if (bottomNavigationView != null) {
             bottomNavigationView.setVisibility(View.VISIBLE);
