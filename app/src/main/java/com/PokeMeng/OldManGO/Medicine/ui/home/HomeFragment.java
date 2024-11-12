@@ -105,6 +105,25 @@ public class HomeFragment extends Fragment {
         });
 
 
+        // 检查 Firebase 任务是否已完成
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = currentUser.getUid();
+
+        // 添加 TaskManager 的任务检查逻辑
+        TaskManager taskManager = new TaskManager(FirebaseFirestore.getInstance(), userId);
+        taskManager.checkAndCompleteTask("CheckedMedicine", result -> {
+            if (!result) {
+                Log.d("FireStore", "ChallengeCompleted not completed yet.");
+                taskManager.updateTaskStatusForSteps(2); // 更新步骤
+                taskManager.markTaskAsCompleted("CheckedMedicine"); // 标记为完成
+            } else {
+                Log.d("FireStore", "ChallengeCompleted already completed for today.");
+            }
+        });
+
+
+
         medicineAdapter.setOnStockUpdateListener(medicine -> {
             // 更新 Firebase 中的库存值
             updateStockInFirebase(medicine);
