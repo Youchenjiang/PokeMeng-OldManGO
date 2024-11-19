@@ -46,15 +46,8 @@ import com.hankcs.hanlp.HanLP;
 
 public class CheckIn extends AppCompatActivity {
 
-    private CalendarView calendarView;
     private Button button;
     private String selectedDate;
-    private DatabaseReference databaseReference;
-    private TextView dateDisplay;
-    private FirebaseAuth auth;
-    private FirebaseFirestore firestore;
-    private CollectionReference checkInCollection;
-    private Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,55 +63,26 @@ public class CheckIn extends AppCompatActivity {
 
         setContentView(R.layout.check_in);
 
-        calendarView = findViewById(R.id.calendarView);
+
         button = findViewById(R.id.button);
-        dateDisplay = findViewById(R.id.dateDisplay);
-        back=findViewById(R.id.button);
-
-
-        // 初始化 Firebase 和 FireStore
-        auth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
-        // 指定 FireStore 集合名稱
-        checkInCollection = firestore.collection("DailyCheckIn");
-
         button.setOnClickListener(v -> markDailyCheckIn());
+        findViewById(R.id.back).setOnClickListener(v -> finish());
 
-        // 設置返回主頁面的按鈕點擊事件
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CheckIn.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
+        // 指定 FireStore 集合名稱
 
         // 獲取當前用戶
-        FirebaseUser currentUser = auth.getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
             Toast.makeText(this, "請先登入", Toast.LENGTH_SHORT).show();
             return;
         }
-
         Calendar currentCalendar = Calendar.getInstance();
         int year = currentCalendar.get(Calendar.YEAR);
         int month = currentCalendar.get(Calendar.MONTH);
         int dayOfMonth = currentCalendar.get(Calendar.DAY_OF_MONTH);
         updateDateDisplay(year, month, dayOfMonth);
-
-        button.setEnabled(isToday(year, month, dayOfMonth));
-
-        //checkIfAlreadyCheckedIn(selectedDate);
-
-
-        // 初始化按鈕狀態
-        if (isToday(year, month, dayOfMonth)) {
-            button.setEnabled(true);  // 今天可以簽到
-        } else {
-            button.setEnabled(false); // 其他日子不能簽到
-        }
-
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        button.setEnabled(isToday(year, month, dayOfMonth));  // 今天可以簽到
+        ((CalendarView)findViewById(R.id.calendarView)).setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 selectedDate=Integer.toString(year)+Integer.toString(month+1)+Integer.toString(dayOfMonth);
@@ -258,9 +222,8 @@ public class CheckIn extends AppCompatActivity {
         if (!jieQi.isEmpty()) {
             displayText += "\n節氣: " + jieQi;
         }
-
 // 更新TextView顯示結果
-        dateDisplay.setText(displayText);
+        ((TextView)findViewById(R.id.dateDisplay)).setText(displayText);
 
     }
 
@@ -272,7 +235,7 @@ public class CheckIn extends AppCompatActivity {
                 (dayOfMonth == today.get(Calendar.DAY_OF_MONTH));
     }
 
-    // 標記為已簽到
+    // 標記為已簽到 TODO 請改成調用TaskManager的方法
     private void markAsCheckedIn(String date) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
@@ -292,7 +255,7 @@ public class CheckIn extends AppCompatActivity {
             checkInData.put("check_time", checkTime); // 簽到時間
 
             // 將資料寫入 Firestore
-            DocumentReference userRef = firestore.collection("dailyCheckIns").document(userId);
+            DocumentReference userRef = FirebaseFirestore.getInstance().collection("dailyCheckIns").document(userId);
             // 更新文檔內的某一天的簽到紀錄
             userRef.update("dailyCheckIns." + date, checkInData)  // 使用 'dailyCheckIns.日期' 作為欄位
                     .addOnSuccessListener(aVoid -> {
@@ -322,17 +285,16 @@ public class CheckIn extends AppCompatActivity {
             Toast.makeText(CheckIn.this, "用戶未登入", Toast.LENGTH_SHORT).show();
         }
     }
-    //  檢查是否已簽到
+    //  檢查是否已簽到 TODO 請改成調用TaskManager的方法
     private void checkIfAlreadyCheckedIn(String date) {
         //FirebaseUser currentUser = auth.getCurrentUser();
         //String userId = currentUser.getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
             String documentId = userId + "_" + date;
             Log.d("CheckIn", "Checking document: " + documentId);
-            checkInCollection.document(documentId).get().addOnSuccessListener(documentSnapshot -> {
+            FirebaseFirestore.getInstance().collection("DailyCheckIn").document(documentId).get().addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
                     Toast.makeText(CheckIn.this, "今天已經簽到過", Toast.LENGTH_SHORT).show();
                     button.setEnabled(false);
@@ -348,6 +310,7 @@ public class CheckIn extends AppCompatActivity {
     }
 
     private void markDailyCheckIn() {
+        /* TODO 請更新
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -359,52 +322,35 @@ public class CheckIn extends AppCompatActivity {
             DocumentReference taskStatusRef = db.collection("Users").document(userId)
                     .collection("TaskStatus").document(formattedDate);
 
-        }
+        }*/
     }
 
     private void addTaskStatusForToday() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //TODO 請改成調用TaskManager的方法
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "請先登入", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String userId = currentUser.getUid();
-        //String userId = "your_user_id"; // 替換為實際的用戶ID
         Long currentDate = System.currentTimeMillis();
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);
-
         // 獲取用戶文檔引用
-        DocumentReference userRef = db.collection("Users").document(userId);
-
+        DocumentReference userRef = FirebaseFirestore.getInstance().collection("Users").document(userId);
         // 獲取 TaskStatus 集合的引用
         CollectionReference taskStatusRef = userRef.collection("TaskStatus");
-
         // 初始化 is_done 和 task_name 陣列
         List<Boolean> isDone = Arrays.asList(false, true, false, false, false, false, false); // 初始狀態全部設為 false
-        List<String> taskNames = Arrays.asList(
-                "每日健走150步",
-                "每日簽到",
-                "用藥提醒查看",
-                "今日已完成用藥",
-                "觀看運動影片",
-                "玩遊戲(防失智)",
-                "查看運動挑戰"
-        );
-
+        List<String> taskNames = Arrays.asList("每日健走150步", "每日簽到", "用藥提醒查看", "今日已完成用藥", "觀看運動影片", "玩遊戲(防失智)", "查看運動挑戰");
         // 建立存入的數據
         Map<String, Object> taskStatusData = new HashMap<>();
         taskStatusData.put("is_done", isDone); // 任務完成狀態
         taskStatusData.put("task_name", taskNames); // 任務名稱
-        taskStatusData.put("createdAt", currentDate); // 記錄創建時間
 
         // 新增子集合，這裡我們新增一個文檔，名稱為當前日期格式
         taskStatusRef.document(formattedDate).set(taskStatusData)
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Task status successfully added for date: " + formattedDate))
-                .addOnFailureListener(e -> Log.w("Firestore", "Error adding task status", e));
-
-
-        // 創建 SomeOtherInterface 實例
-        //SomeOtherInterface someOtherInterface = new SomeOtherInterface();
-        // 檢查是否已經完成 "每日簽到" 任務
-        //someOtherInterface.checkTaskStatus("每日簽到");
-
+                .addOnSuccessListener(aVoid -> Log.d("FireStore", "Task status successfully added for date: " + formattedDate))
+                .addOnFailureListener(e -> Log.w("FireStore", "Error adding task status", e));
         // 簽到並獲得積分，然後禁用按鈕
         TaskManager taskManager = new TaskManager(FirebaseFirestore.getInstance(), userId);
         //TaskManager taskManager = new TaskManager(FirebaseFirestore.getInstance(), "your_user_id");
@@ -449,11 +395,4 @@ public class CheckIn extends AppCompatActivity {
 //            });
 //        }
 //    }
-
-
-    public void gotomain (View v){
-        Intent it=new Intent(this, MainActivity.class);
-        startActivity(it);
-    }
-
 }
