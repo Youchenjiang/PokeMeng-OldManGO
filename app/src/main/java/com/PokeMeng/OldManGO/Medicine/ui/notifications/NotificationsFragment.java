@@ -112,8 +112,11 @@ public class NotificationsFragment extends Fragment {
         ImageButton pickButton = binding.pickButton;
         selectedCalendar = Calendar.getInstance();
 
+        // 默认设置 textView12 的文本为 "點選圖示可查看紀錄"
+        textView12.setText("點選圖示可查看紀錄");
+
         // 加载保存的日期
-        loadSavedDate();
+        // loadSavedDate();
 
         pickButton.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -190,6 +193,8 @@ public class NotificationsFragment extends Fragment {
             Log.d("NotificationsFragment", "Loaded history medicines: " + medicines.size());
         });
     }
+
+
 
 
 

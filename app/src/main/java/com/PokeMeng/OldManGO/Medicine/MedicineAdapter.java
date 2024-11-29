@@ -67,7 +67,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
         handleButtonState(holder, medicine);
 
         // 显示当前库存
-        holder.stockTextView.setText("库存: " + medicine.getStock2());
+        holder.stockTextView.setText("庫存: " + medicine.getStock2());
 
         // 点击事件来更新库存
         holder.stockTextView.setOnClickListener(v -> {
@@ -78,7 +78,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
 
             // 更新 Medicine 对象中的库存值
             medicine.setStock2(newStock2);
-            holder.stockTextView.setText("库存: " + newStock2); // 更新显示
+            holder.stockTextView.setText("庫存: " + newStock2); // 更新显示
 
             // 通知 Fragment 进行 Firebase 更新
             if (onStockUpdateListener != null) {
@@ -114,28 +114,10 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
             holder.takenButton.setBackgroundColor(isClicked ? Color.GRAY : Color.BLACK);
 
 
-            // 检查 Firebase 任务是否已完成
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-            String userId = currentUser.getUid();
-
-            // 添加 TaskManager 的任务检查逻辑
-            TaskManager taskManager = new TaskManager(FirebaseFirestore.getInstance(), userId);
-            taskManager.checkAndCompleteTask("CompletedMedicine", result -> {
-                if (!result) {
-                    Log.d("FireStore", "ChallengeCompleted not completed yet.");
-                    taskManager.updateTaskStatusForSteps(3); // 更新步骤
-                    taskManager.markTaskAsCompleted("CompletedMedicine"); // 标记为完成
-                } else {
-                    Log.d("FireStore", "ChallengeCompleted already completed for today.");
-                }
-            });
-
-
-
             if (!isClicked) {
                 // 修改这里，传递 position
                 holder.takenButton.setOnClickListener(v -> showConfirmationDialog(holder, medicine, firstTime, holder.getAdapterPosition()));
+
             }
         } else {
             holder.takenButton.setVisibility(View.GONE); // 在 HomeFragment 中隐藏按钮
@@ -195,6 +177,23 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
 
                     // 通知 RecyclerView 更新当前项
                     notifyItemChanged(position);
+
+                    // 检查 Firebase 任务是否已完成
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String userId = currentUser.getUid();
+
+                    // 添加 TaskManager 的任务检查逻辑
+                    TaskManager taskManager = new TaskManager(FirebaseFirestore.getInstance(), userId);
+                    taskManager.checkAndCompleteTask("CompletedMedicine", result -> {
+                        if (!result) {
+                            Log.d("FireStore", "ChallengeCompleted not completed yet.");
+                            taskManager.updateTaskStatusForSteps(3); // 更新步骤
+                            taskManager.markTaskAsCompleted("CompletedMedicine"); // 标记为完成
+                        } else {
+                            Log.d("FireStore", "ChallengeCompleted already completed for today.");
+                        }
+                    });
                 })
                 .setNegativeButton("否", null)
                 .show();
