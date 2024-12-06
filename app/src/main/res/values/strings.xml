@@ -5,6 +5,7 @@
     <string name="ChallengeAll_illustrateText">%1$s~%2$s</string>
     <string name="ChallengeNow_DateStep">%1$d步</string>
     <string name="ChallengeNow_illustrateText">%1$s達成目標\n即可獲得10點積分</string>
+    <string name="ChallengeNow_imageDescription">finishChallenge</string>
     <string name="doggyDescription">doggy</string>
     <string name="task_show_choose_date">ShowChooseDate</string>
     <string name="task_returnImageDescription">goBack</string>

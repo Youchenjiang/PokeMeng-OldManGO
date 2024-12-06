@@ -34,6 +34,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -44,10 +46,14 @@ import com.google.firebase.firestore.SetOptions;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ChallengeAll extends AppCompatActivity implements SensorEventListener{
     String TAG = "計步器";
@@ -57,6 +63,7 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
     TaskManager taskManager;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     int currentActivityGoal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +71,6 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.challenge_all);
         setupWindowInsets();
         getNowStep();
-        checkSensors();
-        registerSensors();
         checkAndLoadActivities(); // 新增的函式调用
         if (currentUser == null) {
             Log.w("TaskRead", "No current user found.");
@@ -161,6 +166,8 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
             ((TextView) findViewById(R.id.challenge_nextTitleText)).setText(nextActivity.getName());
             ((TextView) findViewById(R.id.challenge_nextDateText)).setText(getString(R.string.ChallengeAll_illustrateText, nextActivityStartDate, nextActivityEndDate));
         }
+        checkSensors();
+        registerSensors();
     }
     /*
     private void initNotification() {
@@ -299,7 +306,7 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         Sensor sensor = sensorManager.getDefaultSensor(sensorType); // 獲取計步器sensor
         if (sensor != null) sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         else {
-            Toast.makeText(this, "沒有感感器", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "沒有感測器", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "No sensor found for type: " + sensorType);
         }
     }
@@ -315,8 +322,41 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Step successfully updated!"))
                 .addOnFailureListener(e -> Log.w(TAG, "Error updating step", e));
     }
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    private int getStepsForPeriodSync(String startDate, String endDate) {
+    private Future<Integer> getStepsForPeriodAsync(String startDate, String endDate) {
+        return executorService.submit(() -> {
+            Log.d("FireStore", startDate + " " + endDate);
+            if (currentUser == null) {
+                Log.w("TaskRead", "No current user found.");
+                return -1;
+            }
+            Log.d("FireStore", "getStepsForPeriod called");
+            String userId = currentUser.getUid();
+            Task<QuerySnapshot> task = db.collection("Users").document(userId).collection("StepList")
+                    .whereGreaterThanOrEqualTo(FieldPath.documentId(), startDate)
+                    .whereLessThanOrEqualTo(FieldPath.documentId(), endDate)
+                    .get();
+            try {
+                Tasks.await(task);
+                if (task.isSuccessful() && task.getResult() != null) {
+                    int totalSteps = 0;
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        totalSteps += document.toObject(ChallengeNow.ChallengeHistoryStep.class).getStepNumber();
+                    }
+                    Log.d("FireStore", "Total steps for period: " + totalSteps);
+                    return totalSteps;
+                } else {
+                    Log.w("FireStore", "Error getting documents.", task.getException());
+                    return -1;
+                }
+            } catch (ExecutionException | InterruptedException e) {
+                Log.e("FireStore", "Error waiting for task", e);
+                return -1;
+            }
+        });
+    }
+    /*private int getStepsForPeriodSync(String startDate, String endDate) {
         Log.d("FireStore", startDate + " " + endDate);
         if (currentUser == null) {
             Log.w("TaskRead", "No current user found.");
@@ -345,19 +385,43 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
             Log.e("FireStore", "Error waiting for task", e);
             return -1;
         }
+    }*/
+    private void addPoints() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        if (currentUser == null) {
+            Log.w("TaskRead", "No current user found.");
+            return;
+        }
+        String userId = currentUser.getUid();
+        DocumentReference userRef = db.collection("Users").document(userId);
+        userRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot document = task.getResult();
+                Long currentPoints = document.getLong("points");
+                if (currentPoints == null) currentPoints = 0L;
+                userRef.set(Collections.singletonMap("points", currentPoints + 10), SetOptions.merge())
+                        .addOnSuccessListener(aVoid -> Log.d("FireStore", "Points successfully updated!"))
+                        .addOnFailureListener(e -> Log.w("FireStore", "Error updating points", e));
+            } else {
+                Log.w("FireStore", "Error getting user document", task.getException());
+                // 如果用戶文檔不存在，則創建一個新文檔
+                userRef.set(Collections.singletonMap("points", 5))
+                        .addOnSuccessListener(aVoid -> Log.d("FireStore", "Document successfully created with initial points!"))
+                        .addOnFailureListener(e -> Log.w("FireStore", "Error creating document", e));
+            }
+        });
     }
     @Override
-    public void onSensorChanged(SensorEvent event) { // 實現SensorEventListener回檔介面，在sensor改變時，會回檔該介面
-        if (event.values[0] == 1.0f) mSteps++; // 並將結果通過event回傳給app處理
+    public void onSensorChanged(SensorEvent event) {
+        if (event.values[0] == 1.0f) mSteps++;
         updateStepText();
-        if(mSteps != 0) updateStepList();
-        sendBroadcast(new Intent("com.PokeMeng.OldManGO.STEP_UPDATE").putExtra("steps", mSteps));
-        Log.i(TAG,"Detected step changes:"+event.values[0]);
+        if (mSteps != 0) updateStepList();
+        sendBroadcast(new Intent("com.PokeMeng.OldManGO.STEP_UPDATE"));
+        Log.i(TAG, "Detected step changes:" + event.values[0]);
         if (currentActivityGoal == 0) {
             Toast.makeText(this, "目標步數不可為0，請查找問題出處", Toast.LENGTH_SHORT).show();
             return;
         }
-        // 檢查步數是否達到150步
         if (mSteps >= 150) {
             taskManager.checkAndCompleteTask("Walked150", result -> {
                 if (!result) {
@@ -366,16 +430,39 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
                 }
             });
         }
-        if(passStartDate != null && passEndDate != null){
-            if (getStepsForPeriodSync(passStartDate, passEndDate) >= currentActivityGoal) {
-                String yearTaskName = new SimpleDateFormat("yyyy", Locale.getDefault()).format(currentActivity.getDate()) + "-" + currentActivity.getName();
-                db.collection("Activities").document(yearTaskName)
-                        .update("finishUser", FieldValue.arrayUnion(currentUser.getUid()))
-                        .addOnSuccessListener(aVoid -> Log.d(TAG, "User added to finishUser list"))
-                        .addOnFailureListener(e -> Log.w(TAG, "Error adding user to finishUser list", e));
-            }
+
+        if (passStartDate != null && passEndDate != null) {
+            new Thread(() -> {
+                try {
+                    int totalSteps = getStepsForPeriodAsync(passStartDate, passEndDate).get();
+                    runOnUiThread(() -> {
+                        if (totalSteps >= currentActivityGoal) {
+                            String yearTaskName = new SimpleDateFormat("yyyy", Locale.getDefault()).format(currentActivity.getDate()) + "-" + currentActivity.getName();
+                            DocumentReference activityRef = db.collection("Activities").document(yearTaskName);
+                            activityRef.get().addOnCompleteListener(task -> {
+                                if (task.isSuccessful() && task.getResult() != null) {
+                                    List<String> finishUsers = (List<String>) task.getResult().get("finishUser");
+                                    if (finishUsers == null || !finishUsers.contains(currentUser.getUid())) {
+                                        activityRef.update("finishUser", FieldValue.arrayUnion(currentUser.getUid()))
+                                                .addOnSuccessListener(aVoid -> {
+                                                    Log.d(TAG, "User added to finishUser list");
+                                                    addPoints();
+                                                })
+                                                .addOnFailureListener(e -> Log.w(TAG, "Error adding user to finishUser list", e));
+                                    } else {
+                                        Log.d(TAG, "User is already in the finishUser list");
+                                    }
+                                } else {
+                                    Log.w(TAG, "Error getting activity document", task.getException());
+                                }
+                            });
+                        }
+                    });
+                } catch (ExecutionException | InterruptedException e) {
+                    Log.e(TAG, "Error getting steps for period", e);
+                }
+            }).start();
         }
-        //下一步：上傳使用者積分、上傳使用者積分已獲得狀態
     }
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -429,7 +516,7 @@ public class ChallengeAll extends AppCompatActivity implements SensorEventListen
         });
     }
     private void markChallengeAsCompleted() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFireStore db = FirebaseFireStore.getInstance();
         String userId = "your_user_id"; // 替換為實際的用戶ID
         long currentDate = System.currentTimeMillis();
         String formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentDate);

@@ -39,7 +39,7 @@ import java.util.Objects;
 
 public class ChallengeNow extends AppCompatActivity {
 
-    private StepUpdateReceiver stepUpdateReceiver;
+    StepUpdateReceiver stepUpdateReceiver = new StepUpdateReceiver();
     private boolean isReceiverRegistered = false;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -60,19 +60,25 @@ public class ChallengeNow extends AppCompatActivity {
         getStepsForPeriod(intent.getStringExtra("startDate"), intent.getStringExtra("endDate"), totalSteps -> setNowStep(totalSteps, intent.getIntExtra("goal", 0), 2000));
         ((TextView)findViewById(R.id.now_titleText)).setText(intent.getStringExtra("name"));
         ((TextView)findViewById(R.id.now_illustrateText)).setText(getResources().getString(R.string.ChallengeNow_illustrateText,getString(R.string.ChallengeAll_illustrateText, intent.getStringExtra("simpleStartDate"), intent.getStringExtra("simpleEndDate"))));
-        stepUpdateReceiver = new StepUpdateReceiver();
-        registerReceiver(stepUpdateReceiver, new IntentFilter("com.PokeMeng.OldManGO.STEP_UPDATE"), Context.RECEIVER_NOT_EXPORTED); // 註冊廣播接收器
+        registerReceiver(stepUpdateReceiver, new IntentFilter("com.PokeMeng.OldManGO.STEP_UPDATE"), Context.RECEIVER_EXPORTED); // 註冊廣播接收器
         isReceiverRegistered = true;
     }
+    private void checkFinish(int nowStep, int goal) {
+        if(nowStep >= goal) findViewById(R.id.now_finishImage).setVisibility(View.VISIBLE);
+        else findViewById(R.id.now_finishImage).setVisibility(View.GONE);
+    }
     private void setNowStep(int step_now, int step_goal, int duration) {
-        if (step_goal == 0)
+        if (step_goal == 0) {
             Toast.makeText(this, "目標步數不可為0，請查找問題出處", Toast.LENGTH_SHORT).show();
+            return;
+        }
         ChallengeNowProgressBar challengeNowProgressBar = findViewById(R.id.now_nowCircularProgressBar);
         challengeNowProgressBar.setText("目前步數：" + step_now + "步" + "\n" + "目標步數：" + step_goal + "步");
         float progress = (float) step_now / step_goal * 100;
         progress = Math.max(0, Math.min(progress, 100)); // Ensure progress is between 0 and 100
         challengeNowProgressBar.setProgress(progress);
         challengeNowProgressBar.setDuration(duration);
+        checkFinish(step_now, step_goal);
     }
     private void getStepList(FireStoreCallback callback) {
         if (currentUser == null) {
@@ -96,6 +102,12 @@ public class ChallengeNow extends AppCompatActivity {
         Log.d("FireStore", startDate + " " + endDate);
         if (currentUser == null) {
             Log.w("TaskRead", "No current user found.");
+            Toast.makeText(this, "資料錯誤", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (startDate == null || endDate == null) {
+            Log.w("FireStore", "Start date or end date is null.");
+            Toast.makeText(this, "日期錯誤", Toast.LENGTH_SHORT).show();
             return;
         }
         Log.d("FireStore", "getStepsForPeriod called");
@@ -143,8 +155,10 @@ public class ChallengeNow extends AppCompatActivity {
     private class StepUpdateReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null && "com.PokeMeng.OldManGO.STEP_UPDATE".equals(intent.getAction()))
-                setNowStep(intent.getIntExtra("steps", 0), intent.getIntExtra("goal", 0), 1);
+            Log.d(TAG, "Broadcast received");
+            if (intent != null && "com.PokeMeng.OldManGO.STEP_UPDATE".equals(intent.getAction())) {
+                getStepsForPeriod(getIntent().getStringExtra("startDate"), getIntent().getStringExtra("endDate"), totalSteps -> setNowStep(totalSteps, getIntent().getIntExtra("goal", 0), 1));
+            }
         }
     }
     private interface FireStoreCallback {
