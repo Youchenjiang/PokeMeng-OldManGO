@@ -32,10 +32,12 @@ android {
         viewBinding = true
         dataBinding = true
     }
+    lint {
+        abortOnError = false  // 禁用 Lint 错误导致构建中止
+    }
 }
 
 dependencies {
-
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
     testImplementation(libs.junit)

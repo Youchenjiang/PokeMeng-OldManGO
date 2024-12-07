@@ -15,7 +15,6 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/all_style_button"
         android:fontFamily="@font/jfopenhuninn"
-        android:onClick="buttonsign"
         android:text="今日簽到"
         android:textAlignment="center"
         android:textColor="@color/white"

@@ -28,29 +28,33 @@ import java.util.Locale;
 import java.util.TimeZone;
 import android.speech.tts.TextToSpeech;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private TextToSpeech tts;
-
+    private AudioManager audioManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // 初始化 AudioManager 並將音量設置為最大音量的 70%
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,  (int) (maxVolume * 0.7), 0);
+        int seventyPercentVolume = (int) (maxVolume * 0.7);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, seventyPercentVolume, 0);
 
         // 初始化 TextToSpeech
         tts = new TextToSpeech(this, status -> {
             if (status == TextToSpeech.SUCCESS) {
                 int result = tts.setLanguage(Locale.TRADITIONAL_CHINESE);
-                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED)
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                     Log.e("TTS", "這個語言不支援");
-                else Log.i("TTS", "TTS 初始化成功");
-            } else Log.e("TTS", "TTS 初始化失敗");
+                } else {
+                    Log.i("TTS", "TTS 初始化成功");
+                }
+            } else {
+                Log.e("TTS", "TTS 初始化失敗");
+            }
         });
 
         tts.setSpeechRate(0.7f); // 調整語速，1.0 為正常速度
@@ -94,27 +98,32 @@ public class MainActivity extends AppCompatActivity {
             speak("每日簽到");
             startActivity(new Intent(this, CheckIn.class));
         });
-
-        findViewById(R.id.imageButton12).setOnClickListener(v -> {
-            speak("個人資料");
-            startActivity(new Intent(this, SetPersonalData.class));
-        });
-
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) ((TextView)findViewById(R.id.textView14)).setText(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        else ((TextView)findViewById(R.id.textView14)).setText("未登入");
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String id = currentUser.getUid();
+        ((TextView)findViewById(R.id.textView14)).setText(id);
         // 設定台灣時區
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Taipei"));
+
+        // 取得當前時間
+        Calendar calendar = Calendar.getInstance();
+
         // 使用 SimpleDateFormat 取得中文的星期表示
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy / MM / dd E\nH:mm", Locale.CHINESE);
-        String formattedDate = sdf.format(Calendar.getInstance().getTime());
+        String formattedDate = sdf.format(calendar.getTime());
+
+        // 找到 TextClock
+        TextClock textClock = findViewById(R.id.textClock2);
+
         // 設定 TextClock 的格式來顯示日期、時間和中文星期
-        ((TextClock)findViewById(R.id.textClock2)).setFormat24Hour(formattedDate);
+        textClock.setFormat12Hour(formattedDate);
+        textClock.setFormat24Hour(formattedDate);
     }
 
     // 播放語音的功能
     private void speak(String text) {
-        if (tts != null && !tts.isSpeaking())
+        if (tts != null && !tts.isSpeaking()) {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
     }
 
     @Override
@@ -124,5 +133,10 @@ public class MainActivity extends AppCompatActivity {
             tts.shutdown();
         }
         super.onDestroy();
+    }
+
+    public void gotosetpersonal(View v) {
+        Intent it = new Intent(this, SetPersonalData.class);
+        startActivity(it);
     }
 }

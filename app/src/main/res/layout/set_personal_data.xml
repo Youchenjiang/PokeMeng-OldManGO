@@ -273,7 +273,7 @@
         android:layout_marginEnd="8dp"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
-        android:onClick="gotoCa"
+
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
