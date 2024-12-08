@@ -321,8 +321,8 @@ public class BlankFragment extends Fragment implements BottomSheet.OnFrequencySe
         }
 
         // 先查找是否已经存在相同名称的药品
-        DatabaseReference medicinesRef = FirebaseDatabase.getInstance().getReference("medicines");
-
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // 获取当前用户的 UID
+        DatabaseReference medicinesRef = FirebaseDatabase.getInstance().getReference("medicines").child(userUid);
 
         medicinesRef.orderByChild("name").equalTo(medicineName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -339,7 +339,7 @@ public class BlankFragment extends Fragment implements BottomSheet.OnFrequencySe
                     // 将 ID 设置到药品对象中
                     newMedicine.setId(medicineId); // 设置药物 ID
 
-                    // 创建数据库引用并使用整数 ID
+                    // 创建数据库引用并使用字符串 ID
                     DatabaseReference medicineRef = medicinesRef.child(String.valueOf(medicineId)); // 使用字符串 ID
 
                     // 存储药品数据到 Firebase
@@ -472,8 +472,9 @@ public class BlankFragment extends Fragment implements BottomSheet.OnFrequencySe
         }
 
         // 创建药品对象并更新到 Firebase
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // 获取当前用户的 UID
         Medicine updatedMedicine = new Medicine(updatedName, updatedFrequency, updatedTimes, updatedDosage, updatedStock, updatedStock2, updatedSpinner2Value, updatedImageUri.toString(), existingMedicineId, updatedStartDate);
-        DatabaseReference medicineRef = FirebaseDatabase.getInstance().getReference("medicines").child(String.valueOf(existingMedicineId));
+        DatabaseReference medicineRef = FirebaseDatabase.getInstance().getReference("medicines").child(userUid).child(String.valueOf(existingMedicineId));
 
 
         medicineRef.setValue(updatedMedicine).addOnSuccessListener(aVoid -> {

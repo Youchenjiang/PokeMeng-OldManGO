@@ -162,15 +162,18 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
                     }
 
                     // 更新 Firebase 中的库存量
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                    databaseReference.child("medicines").child(String.valueOf(medicine.getId()))
-                            .child("stock2").setValue(newStock2)
-                            .addOnSuccessListener(aVoid -> {
-                                Log.d("MedicineAdapter", "Firebase 库存更新成功");
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e("MedicineAdapter", "Firebase 库存更新失败", e);
-                            });
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String userId = currentUser.getUid();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference medicineRef = database.getReference("medicines").child(userId).child(String.valueOf(medicine.getId()));
+
+                    medicineRef.child("stock2").setValue(newStock2).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("HomeFragment", "Stock updated successfully in Firebase.");
+                        } else {
+                            Log.e("HomeFragment", "Failed to update stock in Firebase: " + task.getException().getMessage());
+                        }
+                    });
 
                     // 更新 SharedViewModel
                     sharedViewModel.addTakenMedicine(medicine);
@@ -179,11 +182,6 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
                     notifyItemChanged(position);
 
                     // 检查 Firebase 任务是否已完成
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                    String userId = currentUser.getUid();
-
-                    // 添加 TaskManager 的任务检查逻辑
                     TaskManager taskManager = new TaskManager(FirebaseFirestore.getInstance(), userId);
                     taskManager.checkAndCompleteTask("CompletedMedicine", result -> {
                         if (!result) {
@@ -198,6 +196,7 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
                 .setNegativeButton("否", null)
                 .show();
     }
+
 
 
     // 读取按钮点击状态

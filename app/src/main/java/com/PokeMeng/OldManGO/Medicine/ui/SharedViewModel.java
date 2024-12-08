@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -45,29 +46,40 @@ public class SharedViewModel extends ViewModel {
 
     private final DatabaseReference databaseReference; // Firebase Database reference
 
+    private String userId;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private final Context context;
 
+    private final FirebaseFirestore firestore;
+
     public SharedViewModel(SavedStateHandle stateHandle, Context context) {
         this.stateHandle = stateHandle;
-        this.databaseReference = FirebaseDatabase.getInstance().getReference("medicines");
         this.context = context;
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            this.userId = user.getUid(); // 获取当前用户 UID
+            this.databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+        } else {
+            throw new IllegalStateException("User not authenticated");
+        }
+
+        this.firestore = FirebaseFirestore.getInstance(); // 初始化 Firestore
 
         sharedPreferences = context.getSharedPreferences("MedicinePrefs", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         List<Medicine> savedMedicines = loadMedicineData();
         if (savedMedicines.isEmpty()) {
-            loadDataFromFirebase(); // 从 Firebase 加载数据
+            loadMedicinesFromFirestore(); // 如果没有本地数据，从 Firestore 加载
         } else {
-
-            stateHandle.set("medicines", savedMedicines);
+            stateHandle.set("medicines", savedMedicines); // 设置 LiveData
         }
 
-        List<Medicine> savedHistoryMedicines = loadHistoryMedicines(); // 确保加载历史药品数据
+        List<Medicine> savedHistoryMedicines = loadHistoryMedicines();
         if (!savedHistoryMedicines.isEmpty()) {
-            historyMedicines.setValue(savedHistoryMedicines); // 将历史数据加载到 LiveData
+            historyMedicines.setValue(savedHistoryMedicines);
         }
     }
 
@@ -80,63 +92,84 @@ public class SharedViewModel extends ViewModel {
 
     // 添加药物
     public void addMedicine(Medicine medicine) {
-        int id = medicine.getId();
-        databaseReference.child(String.valueOf(id)).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()) {
-                    databaseReference.child(String.valueOf(id)).setValue(medicine);
+        String recordKey = String.valueOf(medicine.getId());
+
+        // 保存到 Firestore
+        firestore.collection("Users")
+                .document(userId)
+                .collection("medicines")
+                .document(recordKey)
+                .set(medicine)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "Medicine added successfully");
+
+                    // 更新 LiveData 和 SharedPreferences
                     List<Medicine> updatedList = getMedicines().getValue();
                     if (updatedList != null) {
                         updatedList.add(medicine);
-                        stateHandle.set("medicines", updatedList); // 更新数据源
-
-                        saveMedicineData(updatedList); // 确保保存到 SharedPreferences
+                        stateHandle.set("medicines", updatedList);
+                        saveMedicineData(updatedList);
                     }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("SharedViewModel", "Failed to add medicine", error.toException());
-            }
-        });
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error adding medicine", e));
     }
-
-
 
 
     // 更新药物信息
     public void updateMedicine(Medicine medicine) {
-        List<Medicine> currentMedicines = getMedicines().getValue();
-        if (currentMedicines != null) {
-            for (int i = 0; i < currentMedicines.size(); i++) {
-                if (currentMedicines.get(i).getId() == medicine.getId()) {
-                    currentMedicines.set(i, medicine);
-                    stateHandle.set("medicines", currentMedicines); // 更新数据源
+        String recordKey = String.valueOf(medicine.getId());
 
+        // 更新 Firestore 数据
+        firestore.collection("Users")
+                .document(userId)
+                .collection("medicines")
+                .document(recordKey)
+                .set(medicine)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "Medicine updated successfully");
 
-                    databaseReference.child(String.valueOf(medicine.getId())).setValue(medicine);
-                    break;
-                }
-            }
-        }
+                    // 更新 LiveData 和 SharedPreferences
+                    List<Medicine> currentMedicines = getMedicines().getValue();
+                    if (currentMedicines != null) {
+                        for (int i = 0; i < currentMedicines.size(); i++) {
+                            if (currentMedicines.get(i).getId() == medicine.getId()) {
+                                currentMedicines.set(i, medicine);
+                                stateHandle.set("medicines", currentMedicines);
+                                saveMedicineData(currentMedicines);
+                                break;
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error updating medicine", e));
     }
+
 
 
     // 删除药物
     public void removeMedicine(int id) {
-        List<Medicine> currentMedicines = getMedicines().getValue();
-        if (currentMedicines != null) {
-            currentMedicines.removeIf(medicine -> medicine.getId() == id);
-            stateHandle.set("medicines", currentMedicines);
+        String recordKey = String.valueOf(id);
 
+        // 从 Firestore 删除
+        firestore.collection("Users")
+                .document(userId)
+                .collection("medicines")
+                .document(recordKey)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "Medicine deleted successfully");
 
-            databaseReference.child(String.valueOf(id)).removeValue(); // 从 Firebase 删除
-            clickedMedicineIds.removeIf(clickedId -> clickedId == id);
-            Log.d("SharedViewModel", "Removed medicine with ID: " + id);
-        }
+                    // 更新 LiveData 和 SharedPreferences
+                    List<Medicine> currentMedicines = getMedicines().getValue();
+                    if (currentMedicines != null) {
+                        currentMedicines.removeIf(medicine -> medicine.getId() == id);
+                        stateHandle.set("medicines", currentMedicines);
+                        saveMedicineData(currentMedicines);
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error deleting medicine", e));
     }
+
 
     // 添加药品到历史记录
     public void addToHistory(Medicine medicine) {
@@ -168,30 +201,29 @@ public class SharedViewModel extends ViewModel {
     }
 
     // 从 Firebase 加载数据后保存到 SharedPreferences
-    public void loadDataFromFirebase() {
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Medicine> medicines = new ArrayList<>();
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    Medicine medicine = data.getValue(Medicine.class);
-                    if (medicine != null) {
-                        medicines.add(medicine);
+    public void loadMedicinesFromFirestore() {
+        firestore.collection("Users")
+                .document(userId)
+                .collection("medicines")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Medicine> medicines = new ArrayList<>();
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Medicine medicine = document.toObject(Medicine.class);
+                            if (medicine != null) {
+                                medicines.add(medicine);
+                            }
+                        }
+                        // 更新 LiveData 和 SharedPreferences
+                        stateHandle.set("medicines", medicines);
+                        saveMedicineData(medicines);
+                    } else {
+                        Log.e("Firestore", "Error getting medicines", task.getException());
                     }
-                }
-                // 保存到 LiveData
-                stateHandle.set("medicines", medicines);
-                // 保存数据到 SharedPreferences
-                saveMedicineData(medicines);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("SharedViewModel", "Failed to load data from Firebase", error.toException());
-            }
-        });
+                });
     }
+
 
     // 保存药品信息到 SharedPreferences
     // 保存药品信息到 SharedPreferences

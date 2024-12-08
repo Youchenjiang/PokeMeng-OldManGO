@@ -201,7 +201,7 @@ public class HomeFragment extends Fragment {
         medicines.removeIf(medicine -> medicine.getId() == medicineId);
         medicineAdapter.notifyDataSetChanged();
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("medicines");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("medicines").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseReference.child(String.valueOf(medicineId)).removeValue().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.d("HomeFragment", "Medicine deleted from Firebase successfully.");
@@ -210,6 +210,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 
 
 
@@ -231,6 +232,7 @@ public class HomeFragment extends Fragment {
             medicineAdapter.notifyItemChanged(position);
         }
     }
+
 
 
     private int getMedicinePositionById(int medicineId) {
@@ -385,10 +387,14 @@ public class HomeFragment extends Fragment {
 
     // 添加 Firebase 数据加载逻辑
     private void loadMedicinesFromFirebase() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("medicines");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = currentUser.getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference medicinesRef = database.getReference("medicines").child(userId);
+
+        medicinesRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 medicines.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Medicine medicine = snapshot.getValue(Medicine.class);
@@ -398,14 +404,10 @@ public class HomeFragment extends Fragment {
                 }
                 medicineAdapter.notifyDataSetChanged();
                 updateEmptyView(textView);
-
-
-                // 将数据更新到 SharedViewModel
-                viewModel.setMedicines(medicines);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
                 Log.e("HomeFragment", "Failed to load medicines: " + databaseError.getMessage());
             }
         });
@@ -414,16 +416,18 @@ public class HomeFragment extends Fragment {
 
     // 更新 Firebase 中的库存值
     private void updateStockInFirebase(Medicine medicine) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("medicines");
-        databaseReference.child(String.valueOf(medicine.getId())).child("stock2")
-                .setValue(medicine.getStock2())
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.d("HomeFragment", "Stock updated in Firebase successfully.");
-                    } else {
-                        Log.e("HomeFragment", "Failed to update stock in Firebase: " + task.getException().getMessage());
-                    }
-                });
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = currentUser.getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference medicineRef = database.getReference("medicines").child(userId).child(String.valueOf(medicine.getId()));
+
+        medicineRef.child("stock2").setValue(medicine.getStock2()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d("HomeFragment", "Stock updated successfully in Firebase.");
+            } else {
+                Log.e("HomeFragment", "Failed to update stock in Firebase: " + task.getException().getMessage());
+            }
+        });
     }
 
 
